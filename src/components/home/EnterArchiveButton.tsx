@@ -12,10 +12,10 @@ export function EnterArchiveButton() {
       className="mt-10"
       initial={reduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: reduced ? 0 : 2.1, duration: 0.5 }}
+      transition={{ delay: reduced ? 0 : 1.4, duration: 0.5 }}
     >
-      <NeonButton href="/gallery" className="min-w-[240px] text-glow-sm">
-        Enter the Archive
+      <NeonButton href="/cryogenic-room" className="min-w-[240px] text-glow-sm">
+        Enter the Room
       </NeonButton>
     </motion.div>
   );

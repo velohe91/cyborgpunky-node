@@ -5,7 +5,7 @@ import type { MarketPricesResponse } from "@/lib/types";
 
 const POLL_MS = 45_000;
 
-type TokenKey = "btc" | "eth" | "bnb" | "sol" | "pol" | "xtz";
+type TokenKey = "btc" | "eth" | "sol" | "xtz" | "pol";
 
 type TokenChip = {
   key: TokenKey;
@@ -80,7 +80,7 @@ export function MarketTicker() {
         className: chipTone(
           status,
           data?.btcUsd ?? null,
-          "border-[#f7931a]/60 bg-[#f7931a]/10 text-[#ffb45a] shadow-[0_0_8px_rgba(247,147,26,0.12)]",
+          "border-neon-gold/60 bg-neon-gold/10 text-neon-gold shadow-[0_0_8px_rgba(255,200,37,0.12)]",
         ),
       },
       {
@@ -95,17 +95,6 @@ export function MarketTicker() {
         ),
       },
       {
-        key: "bnb",
-        label: "BNB",
-        value: data?.bnbUsd ?? null,
-        source: data?.sources.bsc ?? "pending",
-        className: chipTone(
-          status,
-          data?.bnbUsd ?? null,
-          "border-[#f3ba2f]/60 bg-[#f3ba2f]/10 text-[#ffe08a] shadow-[0_0_8px_rgba(243,186,47,0.12)]",
-        ),
-      },
-      {
         key: "sol",
         label: "SOL",
         value: data?.solUsd ?? null,
@@ -113,10 +102,9 @@ export function MarketTicker() {
         className: chipTone(
           status,
           data?.solUsd ?? null,
-          "border-[#14f1d9]/60 bg-[#14f1d9]/10 text-[#6fffe9] shadow-[0_0_8px_rgba(20,241,217,0.12)]",
+          "border-neon-cyan/60 bg-neon-cyan/10 text-neon-cyan shadow-[0_0_8px_rgba(12,241,255,0.12)]",
         ),
       },
-     
       {
         key: "xtz",
         label: "XTZ",
@@ -126,11 +114,10 @@ export function MarketTicker() {
         className: chipTone(
           status,
           data?.xtzUsd ?? data?.txzUsd ?? null,
-          "border-[#2f7df6]/60 bg-[#2f7df6]/10 text-[#75a8ff] shadow-[0_0_8px_rgba(47,125,246,0.12)]",
+          "border-neon-blue/60 bg-neon-blue/10 text-[#9aa8ff] shadow-[0_0_8px_rgba(48,3,217,0.18)]",
         ),
       },
-
-       {
+      {
         key: "pol",
         label: "POL",
         value: data?.polUsd ?? null,
@@ -138,7 +125,7 @@ export function MarketTicker() {
         className: chipTone(
           status,
           data?.polUsd ?? null,
-          "border-neon-violet/60 bg-neon-violet/10 text-[#d8a4ff] shadow-[0_0_8px_rgba(168,85,247,0.12)]",
+          "border-neon-magenta/60 bg-neon-magenta/10 text-neon-magenta shadow-[0_0_8px_rgba(219,63,253,0.12)]",
         ),
       },
     ],
@@ -158,7 +145,7 @@ export function MarketTicker() {
 
   return (
     <div
-      className="relative flex min-w-0 flex-wrap items-center gap-1.5 font-mono text-[9px] uppercase tracking-wider sm:gap-2 sm:text-[10px]"
+      className="relative flex min-w-0 flex-wrap items-center gap-1.5 font-mono text-[12px] uppercase tracking-wider sm:gap-2 sm:text-[13px]"
       title={title}
       aria-live="polite"
     >
@@ -184,7 +171,7 @@ export function MarketTicker() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="rounded border border-neon-cyan/30 bg-void/60 px-1.5 py-0.5 text-neon-cyan/80"
+          className="rounded border border-neon-cyan/30 bg-void/60 px-2.5 py-1 text-[12px] text-neon-cyan/80 sm:text-[13px]"
           aria-expanded={open}
           aria-label={`Show ${overflow.length} more prices`}
         >
@@ -214,7 +201,7 @@ function Chip({
   const label = status === "loading" && token.value == null ? "…" : formatUsd(token.value);
   return (
     <span
-      className={`rounded border px-1.5 py-0.5 sm:px-2 ${token.className} ${className}`}
+      className={`rounded border px-2.5 py-1 sm:px-3 sm:py-1.5 ${token.className} ${className}`}
       title={token.hint}
     >
       <span className="hidden text-muted sm:inline">

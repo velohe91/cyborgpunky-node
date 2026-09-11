@@ -19,15 +19,15 @@ export function SectionHeading({
       transition={{ duration: 0.5 }}
     >
       {eyebrow && (
-        <p className="mb-2 font-mono text-xs uppercase tracking-[0.35em] text-neon-cyan/80">
+        <p className="mb-2 font-mono text-[13.5pt] leading-[1.55] uppercase tracking-[0.35em] text-neon-cyan/80">
           {eyebrow}
         </p>
       )}
-      <h1 className="font-sans text-3xl font-bold tracking-wider text-glow sm:text-4xl md:text-5xl">
+      <h1 className="font-sans text-lg tracking-wide text-glow sm:text-xl md:text-2xl">
         {title}
       </h1>
       {subtitle && (
-        <p className="mt-3 font-mono text-sm leading-relaxed text-muted sm:text-base">
+        <p className="mt-3 font-mono text-[13.5pt] leading-[1.55] text-muted">
           {subtitle}
         </p>
       )}

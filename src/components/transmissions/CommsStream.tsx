@@ -52,12 +52,12 @@ export function CommsStream({
       <EraTabs value={era} onChange={setEra} counts={eraCounts} />
 
       {isArchive ? (
-        <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-violet-300/70">
-          {"// sealed channel · TX-001–008 · LOG-001–009 · newest first"}
+        <p className="mb-4 font-mono text-[13.5pt] leading-[1.55] uppercase tracking-[0.25em] text-violet-300/70">
+          {"// sealed channel · newest first"}
         </p>
       ) : (
-        <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-neon-cyan/70">
-          {"// live channel · BC · TX-VΣ · LOG-VΣ · newest first"}
+        <p className="mb-4 font-mono text-[13.5pt] leading-[1.55] uppercase tracking-[0.25em] text-neon-cyan/70">
+          {"// live channel · TX-000 · LOG-000 · newest first"}
         </p>
       )}
 
@@ -74,7 +74,7 @@ export function CommsStream({
         />
 
         {visible.length === 0 ? (
-          <p className="pl-8 font-mono text-sm text-muted">
+          <p className="pl-8 font-mono text-[13.5pt] leading-[1.55] text-muted">
             {isArchive
               ? "// no sealed entries in this channel"
               : "// no live entries in this channel"}

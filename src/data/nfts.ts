@@ -330,3 +330,12 @@ export const nfts: NftItem[] = [...nftCatalog].sort(
 export function getNftById(id: string): NftItem | undefined {
   return nftCatalog.find((n) => n.id === id);
 }
+
+/** Cryogenic Room: genesis CPC only (compressed CyborgPunks). CBPS stays in catalog, not listed here. */
+export const cyborgPunksNfts: NftItem[] = nfts.filter(
+  (nft) =>
+    nft.id.startsWith("VEL-CPC") ||
+    (nft.series === "CyborgPunks" &&
+      nft.status === "Compressed" &&
+      nft.tags?.includes("genesis")),
+);

@@ -6,12 +6,16 @@ export function GlowOrb({
   color = "cyan",
 }: {
   className?: string;
-  color?: "cyan" | "blue";
+  color?: "cyan" | "blue" | "magenta" | "gold";
 }) {
   const bg =
-    color === "cyan"
-      ? "bg-neon-cyan/20"
-      : "bg-neon-blue/20";
+    color === "magenta"
+      ? "bg-neon-magenta/20"
+      : color === "gold"
+        ? "bg-neon-gold/20"
+        : color === "cyan"
+          ? "bg-neon-cyan/20"
+          : "bg-neon-blue/20";
 
   return (
     <div

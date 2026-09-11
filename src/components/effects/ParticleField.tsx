@@ -3,9 +3,15 @@
 import { useEffect, useRef } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
+const PIXEL_COLORS = [
+  "rgba(12, 241, 255, ", // #0CF1FF
+  "rgba(219, 63, 253, ", // #DB3FFD
+  "rgba(255, 200, 37, ", // #FFC825
+] as const;
+
 /**
- * Lightweight canvas particle field (cyan/blue dots drifting upward).
- * Auto-throttles particle count on small screens; pauses when reduced-motion is on.
+ * Pixel particle field — neon squares drifting upward.
+ * Pauses entirely when prefers-reduced-motion is on.
  */
 export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,10 +32,11 @@ export function ParticleField() {
     type Particle = {
       x: number;
       y: number;
-      r: number;
+      size: number;
       speed: number;
       alpha: number;
       drift: number;
+      color: (typeof PIXEL_COLORS)[number];
     };
 
     let particles: Particle[] = [];
@@ -41,6 +48,7 @@ export function ParticleField() {
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = false;
 
       const count = window.innerWidth < 768 ? 28 : 48;
       particles = Array.from({ length: count }, () => spawn(true));
@@ -49,10 +57,11 @@ export function ParticleField() {
     const spawn = (randomY = false): Particle => ({
       x: Math.random() * window.innerWidth,
       y: randomY ? Math.random() * window.innerHeight : window.innerHeight + 4,
-      r: Math.random() * 1.6 + 0.4,
+      size: Math.random() < 0.5 ? 2 : Math.random() < 0.7 ? 3 : 4,
       speed: Math.random() * 0.35 + 0.12,
-      alpha: Math.random() * 0.5 + 0.15,
+      alpha: Math.random() * 0.28 + 0.08,
       drift: (Math.random() - 0.5) * 0.25,
+      color: PIXEL_COLORS[Math.floor(Math.random() * PIXEL_COLORS.length)],
     });
 
     const tick = () => {
@@ -64,10 +73,8 @@ export function ParticleField() {
         p.x += p.drift;
         if (p.y < -8) Object.assign(p, spawn(false));
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 240, 255, ${p.alpha})`;
-        ctx.fill();
+        ctx.fillStyle = `${p.color}${p.alpha})`;
+        ctx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
       }
 
       raf = requestAnimationFrame(tick);
@@ -90,6 +97,7 @@ export function ParticleField() {
     <canvas
       ref={canvasRef}
       className="pointer-events-none fixed inset-0 z-0"
+      style={{ imageRendering: "pixelated" }}
       aria-hidden="true"
     />
   );

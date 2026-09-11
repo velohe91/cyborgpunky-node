@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const LINES = [
-  { text: "> BOOT SEQUENCE INITIATED…", delay: 0.4 },
+  { text: "> CRYOGENIC SYSTEM ACTIVATED", delay: 0.4 },
   { text: "> SYSTEM ONLINE", delay: 0.9 },
-  { text: "> ARCHIVE LINK STABLE", delay: 1.3 },
-  { text: "> EXHIBITION READY", delay: 1.7 },
 ];
 
 /**
@@ -18,7 +16,7 @@ export function SystemBootSequence() {
 
   return (
     <div
-      className="mx-auto mt-8 w-full max-w-md space-y-2 rounded-md border border-neon-cyan/20 bg-panel/60 p-4 font-mono text-left text-xs sm:text-sm"
+      className="mx-auto mt-8 w-full max-w-md space-y-2 rounded-md border border-neon-cyan/20 bg-panel/60 p-4 font-mono text-left text-[13.5pt] leading-[1.55]"
       role="status"
       aria-live="polite"
     >

@@ -15,7 +15,7 @@ export function ImmersiveShell({ children }: { children: ReactNode }) {
       <ParticleField />
       <Scanlines />
       <Navbar />
-      <main className="relative z-10 flex-1 pt-16">{children}</main>
+      <main className="relative z-10 flex-1 pt-[6.75rem]">{children}</main>
       <Footer />
     </div>
   );

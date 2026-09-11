@@ -19,13 +19,13 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-3 sm:px-6">
         <Link
           href="/"
-          className="shrink-0 font-sans text-sm font-bold tracking-[0.25em] text-neon-cyan text-glow-sm sm:text-base"
+          className="shrink-0 font-sans text-[8px] tracking-wide text-neon-cyan text-glow-sm sm:text-[10px] sm:tracking-[0.12em]"
         >
           {SITE_NAME}
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
           {NAV_LINKS.map((link) => {
             const active =
               link.href === "/"
@@ -35,17 +35,17 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors xl:px-3 xl:text-xs ${
+                className={`relative px-2 py-2 font-sans text-[8px] uppercase tracking-[0.12em] transition-colors xl:px-2.5 xl:text-[9px] ${
                   active
                     ? "text-neon-cyan"
-                    : "text-muted hover:text-neon-blue"
+                    : "text-muted hover:text-neon-magenta"
                 }`}
               >
                 {link.label}
                 {active && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute inset-x-2 -bottom-0.5 h-px bg-neon-cyan shadow-[0_0_8px_#00f0ff]"
+                    className="absolute inset-x-2 -bottom-0.5 h-px bg-neon-cyan shadow-[0_0_8px_#0cf1ff]"
                   />
                 )}
               </Link>
@@ -100,7 +100,7 @@ export function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="block px-2 py-3 font-mono text-sm uppercase tracking-widest text-muted hover:text-neon-cyan"
+                    className="block px-2 py-3 font-sans text-[10px] uppercase tracking-widest text-muted hover:text-neon-cyan"
                   >
                     {link.label}
                   </Link>

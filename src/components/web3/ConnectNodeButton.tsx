@@ -1,129 +1,173 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useMultiChain } from "@/components/web3/MultiChainProvider";
-import { ChainConnectModal } from "@/components/web3/ChainConnectModal";
-import { NodeAccountModal } from "@/components/web3/NodeAccountModal";
-import { NetworkSwitchModal } from "@/components/web3/NetworkSwitchModal";
-import { getChainBadgeLabel, PRIMARY_CHAIN } from "@/lib/web3/config";
+import { HAS_WALLETCONNECT_PROJECT_ID } from "@/lib/web3/config";
 import { truncateAddress } from "@/lib/web3/multi-chain";
 
+const nodeBtnClass =
+  "rounded border border-[#0CF1FF] bg-[#0CF1FF]/10 px-2.5 py-1.5 font-sans text-[8px] tracking-wide text-[#0CF1FF] transition-colors hover:border-[#DB3FFD] hover:bg-[#DB3FFD]/15 hover:text-[#DB3FFD] sm:text-[9px]";
+
 /**
- * CONNECT NODE — multi-namespace entry.
- * EVM via RainbowKit; Solana/Tezos via injected helpers.
- * Custom NetworkSwitchModal replaces RainbowKit openChainModal.
- * Custom NodeAccountModal replaces RainbowKit openAccountModal.
+ * Header CONNECT NODE — RainbowKit connect / account modals only.
+ * Disconnect lives in RainbowKit's account modal.
  */
 export function ConnectNodeButton() {
-  const { solana, tezos, hasAnyAltChain, focusedNamespace } = useMultiChain();
-  const [chainModalOpen, setChainModalOpen] = useState(false);
-  const [accountModalOpen, setAccountModalOpen] = useState(false);
-  const [networkModalOpen, setNetworkModalOpen] = useState(false);
+  const [missingEnvOpen, setMissingEnvOpen] = useState(false);
 
   return (
-    <ConnectButton.Custom>
-      {({ account, chain, openConnectModal, mounted }) => {
-        const ready = mounted;
-        const evmConnected = Boolean(ready && account && chain);
-        const anyConnected = evmConnected || hasAnyAltChain;
+    <>
+      <ConnectButton.Custom>
+        {({
+          account,
+          chain,
+          openAccountModal,
+          openChainModal,
+          openConnectModal,
+          mounted,
+        }) => {
+          const ready = mounted;
 
-        const displayAddress =
-          focusedNamespace === "solana" && solana
-            ? solana.address
-            : focusedNamespace === "tezos" && tezos
-              ? tezos.address
-              : evmConnected
-                ? account!.address
-                : solana?.address ?? tezos?.address ?? null;
+          const onConnect = () => {
+            if (!HAS_WALLETCONNECT_PROJECT_ID) {
+              setMissingEnvOpen(true);
+              return;
+            }
+            openConnectModal();
+          };
 
-        const networkBadgeLabel =
-          focusedNamespace === "solana" && solana
-            ? "SOLANA"
-            : focusedNamespace === "tezos" && tezos
-              ? "TEZOS"
-              : chain && !chain.unsupported
-                ? getChainBadgeLabel(chain.id, chain.name)
-                : hasAnyAltChain && solana
-                  ? "SOLANA"
-                  : hasAnyAltChain && tezos
-                    ? "TEZOS"
-                    : chain
-                      ? getChainBadgeLabel(chain.id, chain.name)
-                      : "NETWORK";
-
-        if (!ready) {
-          return (
-            <button
-              type="button"
-              disabled
-              className="rounded border border-neon-cyan/20 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-widest text-muted opacity-50"
-            >
-              …
-            </button>
-          );
-        }
-
-        return (
-          <>
-            {!anyConnected ? (
+          if (!ready) {
+            return (
               <button
                 type="button"
-                onClick={() => setChainModalOpen(true)}
-                className="rounded border border-neon-cyan/50 bg-neon-cyan/10 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-widest text-neon-cyan transition-colors hover:border-neon-cyan hover:bg-neon-cyan/20"
+                disabled
+                className={`${nodeBtnClass} uppercase opacity-50`}
+              >
+                …
+              </button>
+            );
+          }
+
+          if (!account || !chain) {
+            return (
+              <button
+                type="button"
+                onClick={onConnect}
+                className={`${nodeBtnClass} uppercase`}
               >
                 Connect Node
               </button>
-            ) : chain?.unsupported && evmConnected ? (
+            );
+          }
+
+          if (chain.unsupported) {
+            return (
               <button
                 type="button"
-                onClick={() => setNetworkModalOpen(true)}
-                className="rounded border border-amber-400/50 bg-amber-500/10 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-widest text-amber-200 transition-colors hover:bg-amber-500/20"
-                title={`Switch to ${PRIMARY_CHAIN.name}`}
+                onClick={openChainModal}
+                className={`${nodeBtnClass} uppercase`}
               >
                 Switch Network
               </button>
-            ) : (
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setNetworkModalOpen(true)}
-                  className="hidden rounded border border-neon-blue/30 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-neon-blue sm:inline-flex"
-                  title="Switch network"
-                >
-                  {networkBadgeLabel}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAccountModalOpen(true)}
-                  className="rounded border border-neon-cyan/40 bg-neon-cyan/5 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-neon-cyan transition-colors hover:border-neon-cyan hover:bg-neon-cyan/10"
-                  title={displayAddress ?? "Node account"}
-                >
-                  <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-                  {displayAddress
-                    ? truncateAddress(displayAddress)
-                    : "Node"}
-                </button>
-              </div>
-            )}
+            );
+          }
 
-            <ChainConnectModal
-              open={chainModalOpen}
-              onClose={() => setChainModalOpen(false)}
-              onOpenEvm={openConnectModal}
-            />
-            <NetworkSwitchModal
-              open={networkModalOpen}
-              onClose={() => setNetworkModalOpen(false)}
-            />
-            <NodeAccountModal
-              open={accountModalOpen}
-              onClose={() => setAccountModalOpen(false)}
-              onLinkAnother={() => setChainModalOpen(true)}
-            />
-          </>
-        );
-      }}
-    </ConnectButton.Custom>
+          return (
+            <button
+              type="button"
+              onClick={openAccountModal}
+              className={nodeBtnClass}
+              title={account.address}
+            >
+              {truncateAddress(account.address, 4, 4)}
+            </button>
+          );
+        }}
+      </ConnectButton.Custom>
+
+      {missingEnvOpen && (
+        <MissingProjectIdModal onClose={() => setMissingEnvOpen(false)} />
+      )}
+    </>
+  );
+}
+
+function MissingProjectIdModal({ onClose }: { onClose: () => void }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[200] flex items-center justify-center overflow-y-auto p-4">
+      <button
+        type="button"
+        className="absolute inset-0 bg-void/85 backdrop-blur-sm"
+        aria-label="Close"
+        onClick={onClose}
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="missing-wc-title"
+        className="panel box-glow relative z-10 my-auto w-full max-w-md rounded-lg border border-[#0CF1FF]/40 p-5 sm:p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80">
+          Node // Env
+        </p>
+        <h2
+          id="missing-wc-title"
+          className="mt-2 font-sans text-[11px] leading-relaxed tracking-wide text-[#0CF1FF] sm:text-xs"
+        >
+          WalletConnect Project ID missing
+        </h2>
+        <p className="mt-3 font-mono text-sm leading-relaxed text-muted">
+          CONNECT NODE needs{" "}
+          <code className="text-[#0CF1FF]">
+            NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
+          </code>
+          .
+        </p>
+        <ol className="mt-3 list-decimal space-y-2 pl-5 font-mono text-sm leading-relaxed text-muted">
+          <li>
+            Copy <code className="text-[#0CF1FF]">.env.local.example</code> to{" "}
+            <code className="text-[#0CF1FF]">.env.local</code>
+          </li>
+          <li>
+            Create a Project ID at{" "}
+            <a
+              href="https://cloud.walletconnect.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-2 hover:text-[#DB3FFD]"
+            >
+              cloud.walletconnect.com
+            </a>
+          </li>
+          <li>Paste it into the env file and restart the dev server.</li>
+        </ol>
+        <button
+          type="button"
+          onClick={onClose}
+          className={`${nodeBtnClass} mt-5 w-full uppercase`}
+        >
+          Close
+        </button>
+      </div>
+    </div>,
+    document.body,
   );
 }

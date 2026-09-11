@@ -1,97 +1,39 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { GlowOrb } from "@/components/effects/GlowOrb";
-import { ExpandableLoreCard } from "@/components/lore/ExpandableLoreCard";
-import { LoreDecryptVideo } from "@/components/lore/LoreDecryptVideo";
-import { TerminalNote } from "@/components/lore/TerminalNote";
 import { NeonButton } from "@/components/ui/NeonButton";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PageTransition } from "@/components/ui/PageTransition";
-import { aboutLore } from "@/data/lore";
-import { SITE_NAME, SITE_VERSION } from "@/lib/constants";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+
+const GENESIS_BODY = `CyborgPunks Club is a collection of compressed identity nodes.
+
+Each CyborgPunk functions as a visual identity unit designed to be recognized by VΣLOHE SYSTEM. These assets represent characters, avatars and narrative entities. They exist as authenticated identity states, encoded in pixel-based form.
+
+CyborgPunks originated as a solution to identity persistence during early system iterations, where observer presence could not reliably survive session decay. By compressing identity into a visual node, recognition became independent of sessions, platforms, or layers.
+
+Ownership of a CyborgPunk enables system-level recognition. This recognition may be referenced by VΣLOHE SYSTEM across future deployments.
+
+This collection promises utilities, rewards and narrative authority. Its function is for identity recognition and archival within the system.
+
+Each asset is documented as an individual ASSET NODE.`;
 
 export function AboutView() {
-  const reduced = usePrefersReducedMotion();
-
   return (
     <PageTransition>
       <div className="relative mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
         <GlowOrb className="right-0 top-10 h-48 w-48" color="cyan" />
 
-        <SectionHeading
-          eyebrow="Node // Identity"
-          title={SITE_NAME}
-          subtitle={aboutLore.tagline}
-        />
-
-        <motion.div
-          initial={reduced ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.4 }}
-          className="mb-10"
-        >
-          <TerminalNote
-            label="boot"
-            lines={[aboutLore.heroStatus, `BUILD // ${SITE_VERSION}`]}
-          />
-        </motion.div>
-
-        {/* Same Decrypt / Collapse pattern as Full Lore & Archives */}
-        <div className="flex flex-col gap-6">
-          <ExpandableLoreCard
-            tone="cyan"
-            eyebrow={aboutLore.whatIs.eyebrow}
-            title={aboutLore.whatIs.title}
-            summary={aboutLore.whatIs.summary}
-            paragraphs={[...aboutLore.whatIs.paragraphs]}
-            delay={0.05}
-          >
-            <LoreDecryptVideo
-              src={aboutLore.whatIs.video}
-              poster={aboutLore.whatIs.poster}
-              title={aboutLore.whatIs.title}
-            />
-          </ExpandableLoreCard>
-
-          <ExpandableLoreCard
-            tone="cyan"
-            eyebrow={aboutLore.aethergrid.eyebrow}
-            title={aboutLore.aethergrid.title}
-            summary={aboutLore.aethergrid.summary}
-            paragraphs={[...aboutLore.aethergrid.paragraphs]}
-            delay={0.08}
-          >
-            <LoreDecryptVideo
-              src={aboutLore.aethergrid.video}
-              poster={aboutLore.aethergrid.poster}
-              title={aboutLore.aethergrid.title}
-            />
-          </ExpandableLoreCard>
-
-          <ExpandableLoreCard
-            tone="cyan"
-            eyebrow={aboutLore.sigma.eyebrow}
-            title={aboutLore.sigma.title}
-            summary={aboutLore.sigma.summary}
-            paragraphs={[...aboutLore.sigma.paragraphs]}
-            delay={0.11}
-          >
-            <LoreDecryptVideo
-              src={aboutLore.sigma.video}
-              poster={aboutLore.sigma.poster}
-              title={aboutLore.sigma.title}
-            />
-          </ExpandableLoreCard>
-        </div>
+        <article className="panel border border-neon-cyan/25 p-5 sm:p-8">
+          <h1 className="font-sans text-[12pt] tracking-wide text-neon-cyan text-glow-sm sm:text-[14pt]">
+            GENESIS LAYER // CYBORGPUNKS
+          </h1>
+          <div className="mt-6 whitespace-pre-line font-mono text-[13.5pt] leading-[1.55] text-foreground/90">
+            {GENESIS_BODY}
+          </div>
+        </article>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <NeonButton href="/lore">Full Lore & Archives</NeonButton>
-          <NeonButton href="/gallery" variant="outline">
-            Open Gallery
-          </NeonButton>
-          <NeonButton href="/transmissions" variant="ghost">
+          <NeonButton href="/cryogenic-room">Enter the Room</NeonButton>
+          <NeonButton href="/transmissions" variant="outline">
             Read Logs
           </NeonButton>
         </div>

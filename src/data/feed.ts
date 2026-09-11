@@ -1,7 +1,7 @@
 /**
  * Mixed chronological feeds:
- * Live = BC + TX-VΣ## + LOG-VΣ## (newest first)
- * Archives = TX-001–008 · LOG-001–009 (newest first)
+ * Live = TX-000 · LOG-000 (newest first)
+ * Archives = sealed TX/LOG records (newest first)
  */
 
 import { systemBroadcasts } from "@/data/broadcasts";
@@ -16,12 +16,12 @@ const allItems: FeedItem[] = [
   ...systemLogs,
 ];
 
-/** Live channel — newest first (broadcasts, TX-VΣ, LOG-VΣ). */
+/** Live channel — newest first (TX-000 · LOG-000). */
 export const liveFeedItems: FeedItem[] = sortFeedNewestFirst(
   filterByEra(allItems, "live"),
 );
 
-/** Sealed archives — newest first (TX-001–008 · LOG-001–009). */
+/** Sealed archives — newest first. */
 export const archiveFeedItems: FeedItem[] = sortFeedNewestFirst(
   filterByEra(allItems, "archive"),
 );

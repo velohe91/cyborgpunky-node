@@ -16,14 +16,14 @@ export function PlayGameButton() {
       className="mt-4"
       initial={reduced ? false : { opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: reduced ? 0 : 2.35, duration: 0.45 }}
+      transition={{ delay: reduced ? 0 : 1.7, duration: 0.45 }}
     >
       <NeonButton
-        href="/game"
+        href="/arcade"
         variant="outline"
         className="min-w-[240px] border-neon-blue/30 text-neon-blue/85 hover:border-neon-cyan/50 hover:text-neon-cyan/90"
       >
-        Play a Game
+        Arcade
       </NeonButton>
     </motion.div>
   );

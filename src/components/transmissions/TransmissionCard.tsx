@@ -94,7 +94,7 @@ export function TransmissionCard({
 
         <div
           id={contentId}
-          className="mt-3 space-y-3 font-mono text-xs leading-relaxed text-muted sm:text-sm"
+          className="mt-3 space-y-3 font-mono text-[13.5pt] leading-[1.55] text-muted"
         >
           <AnimatePresence initial={false} mode="wait">
             {preview ? (
@@ -128,7 +128,7 @@ export function TransmissionCard({
           {needsExpand && (
             <button
               type="button"
-              className="font-mono text-[10px] uppercase tracking-[0.2em] text-neon-cyan transition-colors hover:text-neon-blue focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neon-cyan/60"
+              className="font-mono text-[10pt] uppercase tracking-[0.2em] text-neon-cyan transition-colors hover:text-neon-blue focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neon-cyan/60"
               aria-expanded={expanded}
               aria-controls={contentId}
               onClick={() => setExpanded((v) => !v)}

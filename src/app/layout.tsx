@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-import { Orbitron, Share_Tech_Mono } from "next/font/google";
+import { Press_Start_2P, VT323 } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ImmersiveShell } from "@/components/layout/ImmersiveShell";
 import { Web3Providers } from "@/components/web3/Web3Providers";
 import { SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
 import "./globals.css";
 
-const orbitron = Orbitron({
-  variable: "--font-orbitron",
+const pressStart = Press_Start_2P({
+  variable: "--font-press-start",
   subsets: ["latin"],
-  // Include SemiBold (600) for the home wordmark
-  weight: ["400", "500", "600", "700"],
+  weight: "400",
   display: "swap",
 });
 
-const shareTech = Share_Tech_Mono({
-  variable: "--font-share-tech",
+const vt323 = VT323({
+  variable: "--font-vt323",
   weight: "400",
   subsets: ["latin"],
   display: "swap",
@@ -27,8 +26,8 @@ export const metadata: Metadata = {
     template: `%s · ${SITE_NAME}`,
   },
   description:
-    "VΣLOHE SYSTEM — an immersive cyberpunk NFT exhibition archive with lore, transmissions, and holographic gallery experiences.",
-  keywords: ["NFT", "exhibition", "cyberpunk", "VΣLOHE", "archive"],
+    "CyborgPunks Club — cryogenic identity archive for compressed genesis nodes and activated CyborgPunk states.",
+  keywords: ["CyborgPunks", "NFT", "cryogenic", "cyberpunk", "archive"],
 };
 
 export default function RootLayout({
@@ -39,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${orbitron.variable} ${shareTech.variable} font-mono antialiased`}
+        className={`${pressStart.variable} ${vt323.variable} font-mono antialiased`}
       >
         <Web3Providers>
           <ImmersiveShell>{children}</ImmersiveShell>

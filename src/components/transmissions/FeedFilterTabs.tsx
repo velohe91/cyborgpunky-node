@@ -44,7 +44,7 @@ export function FeedFilterTabs({
             aria-selected={active}
             id={`feed-tab-${tab.id}`}
             className={[
-              "rounded-md px-3 py-2 font-mono text-[10px] uppercase tracking-[0.18em] transition-all sm:px-4 sm:text-xs",
+              "rounded-md px-3 py-2 font-mono text-[10pt] uppercase tracking-[0.18em] transition-all sm:px-4",
               "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neon-cyan/70",
               active
                 ? "bg-neon-cyan/15 text-neon-cyan box-glow border border-neon-cyan/45"

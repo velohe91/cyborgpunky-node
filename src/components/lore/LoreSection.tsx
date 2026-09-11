@@ -44,7 +44,7 @@ export function LoreSection({
           {title}
         </h2>
         <div
-          className={`mt-4 space-y-4 border-t ${ruleClass} pt-4 font-mono text-sm leading-relaxed text-muted`}
+          className={`mt-4 space-y-4 border-t ${ruleClass} pt-4 font-mono text-[13.5pt] leading-[1.55] text-muted`}
         >
           {paragraphs.map((p, i) => (
             <p key={i}>{p}</p>

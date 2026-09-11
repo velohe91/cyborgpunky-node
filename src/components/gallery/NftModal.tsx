@@ -203,16 +203,16 @@ export function NftModal({ nft, onClose }: Props) {
 
                 <h2
                   id={titleId}
-                  className="font-sans text-xl font-bold tracking-wide text-glow-sm sm:text-2xl"
+                  className="font-sans text-sm tracking-wide text-glow-sm sm:text-base"
                 >
                   {nft.title}
                 </h2>
 
-                <p className="mt-2 font-mono text-sm leading-relaxed text-muted">
+                <p className="mt-2 font-mono text-[13.5pt] leading-[1.55] text-muted">
                   {nft.description}
                 </p>
 
-                <dl className="mt-3 grid grid-cols-2 gap-2 font-mono text-[11px] text-muted">
+                <dl className="mt-3 grid grid-cols-2 gap-2 font-mono text-[13.5pt] leading-[1.55] text-muted">
                   {nft.series && (
                     <>
                       <dt className="text-neon-cyan/70">Series</dt>
@@ -234,10 +234,10 @@ export function NftModal({ nft, onClose }: Props) {
                 </dl>
 
                 <div className="mt-5 border-t border-neon-cyan/15 pt-4">
-                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-neon-cyan/80">
+                  <p className="mb-2 font-mono text-[13.5pt] leading-[1.55] uppercase tracking-[0.3em] text-neon-cyan/80">
                     Lore
                   </p>
-                  <p className="whitespace-pre-line font-mono text-sm leading-relaxed text-foreground/90">
+                  <p className="whitespace-pre-line font-mono text-[13.5pt] leading-[1.55] text-foreground/90">
                     {nft.lore}
                   </p>
                 </div>
@@ -261,7 +261,7 @@ export function NftModal({ nft, onClose }: Props) {
                       href={nft.marketplace}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex w-full items-center justify-center rounded-md border border-neon-cyan/50 bg-neon-cyan/10 px-6 py-3 font-sans text-sm uppercase tracking-[0.2em] text-neon-cyan transition-colors hover:border-neon-cyan hover:bg-neon-cyan/20 sm:w-auto"
+                      className="inline-flex w-full items-center justify-center rounded-md border border-neon-cyan/50 bg-neon-cyan/10 px-6 py-3 font-sans text-[10pt] uppercase tracking-[0.16em] text-neon-cyan transition-colors hover:border-neon-cyan hover:bg-neon-cyan/20 sm:w-auto"
                     >
                       OpenSea
                     </a>
@@ -271,7 +271,7 @@ export function NftModal({ nft, onClose }: Props) {
                       href={nft.objkt}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex w-full items-center justify-center rounded-md border border-neon-soft/50 bg-neon-soft/10 px-6 py-3 font-sans text-sm uppercase tracking-[0.2em] text-neon-soft transition-colors hover:border-neon-soft hover:bg-neon-soft/20 sm:w-auto"
+                      className="inline-flex w-full items-center justify-center rounded-md border border-neon-soft/50 bg-neon-soft/10 px-6 py-3 font-sans text-[10pt] uppercase tracking-[0.16em] text-neon-soft transition-colors hover:border-neon-soft hover:bg-neon-soft/20 sm:w-auto"
                     >
                       Objkt
                     </a>
@@ -280,7 +280,7 @@ export function NftModal({ nft, onClose }: Props) {
                     ref={closeRef}
                     type="button"
                     onClick={onClose}
-                    className="inline-flex w-full items-center justify-center rounded-md border border-neon-blue/40 px-6 py-3 font-sans text-sm uppercase tracking-[0.2em] text-neon-blue transition-colors hover:border-neon-cyan hover:text-neon-cyan sm:w-auto"
+                    className="inline-flex w-full items-center justify-center rounded-md border border-neon-blue/40 px-6 py-3 font-sans text-[10pt] uppercase tracking-[0.16em] text-neon-blue transition-colors hover:border-neon-cyan hover:text-neon-cyan sm:w-auto"
                   >
                     Close
                   </button>

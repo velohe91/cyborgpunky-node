@@ -23,7 +23,7 @@ const LEVEL_GLOW: Record<string, string> = {
 };
 
 const linkClass =
-  "inline-flex items-center font-mono text-[10px] uppercase tracking-widest text-neon-blue/90 transition-colors hover:text-neon-cyan focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neon-cyan/60";
+  "inline-flex items-center font-mono text-[10pt] uppercase tracking-widest text-neon-blue/90 transition-colors hover:text-neon-cyan focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neon-cyan/60";
 
 const actionLinkClass = `${linkClass} rounded border border-neon-cyan/30 bg-neon-cyan/5 px-2.5 py-1.5 hover:border-neon-cyan/60 hover:bg-neon-cyan/10`;
 
@@ -221,7 +221,7 @@ export function SystemLogLine({
                 </p>
               )}
 
-              <p className="whitespace-pre-line text-[11px] leading-relaxed text-neon-cyan/90 sm:text-xs">
+              <p className="whitespace-pre-line text-[13.5pt] leading-[1.55] text-neon-cyan/90">
                 <span className="mr-1 select-none text-neon-cyan/35" aria-hidden>
                   &gt;
                 </span>
@@ -254,7 +254,7 @@ export function SystemLogLine({
               </p>
             )}
 
-            <p className="mt-1.5 whitespace-pre-line text-xs leading-relaxed text-neon-cyan/90 sm:text-[13px]">
+            <p className="mt-1.5 whitespace-pre-line text-[13.5pt] leading-[1.55] text-neon-cyan/90">
               <span className="mr-1.5 select-none text-neon-cyan/40" aria-hidden>
                 &gt;
               </span>

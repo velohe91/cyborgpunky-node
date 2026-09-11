@@ -49,10 +49,10 @@ export function NftCard({ nft, index, onOpen }: Props) {
             {nft.rarity}
           </span>
         </div>
-        <h3 className="font-sans text-sm font-semibold tracking-wide text-foreground sm:text-base">
+        <h3 className="font-sans text-[10px] tracking-wide text-foreground sm:text-xs">
           {nft.title}
         </h3>
-        <p className="line-clamp-2 font-mono text-[11px] leading-relaxed text-muted">
+        <p className="line-clamp-2 font-mono text-[13.5pt] leading-[1.55] text-muted">
           {nft.description}
         </p>
         <div className="mt-auto flex flex-col gap-1 pt-1 font-mono text-[10px] tracking-wide text-muted/80">

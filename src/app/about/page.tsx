@@ -4,7 +4,7 @@ import { AboutView } from "@/components/lore/AboutView";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Official primer: VΣLOHE SYSTEM, The Aethergrid, and the meaning of Σ — Summation of Signals.",
+    "Genesis Layer // CyborgPunks — compressed identity nodes of CyborgPunks Club.",
 };
 
 export default function AboutPage() {

@@ -69,7 +69,7 @@ export function BroadcastCard({
           {entry.title}
         </h3>
 
-        <div className="relative mt-4 space-y-3 border-l-2 border-neon-cyan/40 pl-4 font-mono text-xs leading-relaxed text-foreground/90 sm:text-sm">
+        <div className="relative mt-4 space-y-3 border-l-2 border-neon-cyan/40 pl-4 font-mono text-[13.5pt] leading-[1.55] text-foreground/90">
           {paras.map((p, i) => (
             <p key={i} className="whitespace-pre-line">
               {p}

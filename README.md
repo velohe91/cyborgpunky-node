@@ -121,7 +121,40 @@ The application uses the **Next.js App Router** and is designed for deployment o
 npm install
 ```
 
-Configure the required environment values locally using the project's environment template.
+### 🔗 Wallet connection (RainbowKit)
+
+CONNECT NODE uses the RainbowKit stack already in this repo (`RainbowKit` + `wagmi` + `viem`). No extra wallet SDK.
+
+1. Copy the env template:
+
+```bash
+cp .env.local.example .env.local
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.local.example .env.local
+```
+
+2. Create a WalletConnect Cloud project at [https://cloud.walletconnect.com](https://cloud.walletconnect.com) and copy the **Project ID**.
+
+3. Paste it into `.env.local`:
+
+```text
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
+NEXT_PUBLIC_ALCHEMY_ID=
+```
+
+`NEXT_PUBLIC_ALCHEMY_ID` is optional (Ethereum + Polygon RPC). Leave it blank to use public RPCs.
+
+4. Restart the dev server after changing env values (`NEXT_PUBLIC_*` is inlined at boot).
+
+If the Project ID is missing, the **CONNECT NODE** button still renders. Opening it shows a short modal that explains the env setup instead of the RainbowKit wallet list.
+
+**Networks:** Ethereum (default — CyborgPunks Club collection) and Polygon. Solana injected helpers already live in `src/lib/web3/multi-chain.ts`; the header connect modal is RainbowKit (EVM).
+
+Connect, truncated address (`0x12…abcd`), and disconnect only. No mint, buy, or marketplace.
 
 Then launch the development server:
 

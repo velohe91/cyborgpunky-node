@@ -7,7 +7,7 @@ import { archiveFeedItems, liveFeedItems } from "@/data/feed";
 export const metadata: Metadata = {
   title: "Transmissions",
   description:
-    "Live Outer Mesh signals and sealed archives — long-form transmissions and system logs from VΣLOHE.",
+    "Live Outer Mesh signals and sealed archives — long-form transmissions and system logs from CyborgPunks Club.",
 };
 
 export default function TransmissionsPage() {
@@ -17,7 +17,7 @@ export default function TransmissionsPage() {
         <SectionHeading
           eyebrow="Comms // Stream"
           title="Transmissions"
-          subtitle="Live Feed: system broadcasts, TX-VΣ, and LOG-VΣ (newest first). Archives: TX-001–008 and LOG-001–009."
+          subtitle="Live Feed: TX-000 · LOG-000 (newest first). Archives: sealed channel."
         />
         <CommsStream
           liveItems={liveFeedItems}

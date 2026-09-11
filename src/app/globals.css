@@ -1,29 +1,33 @@
 @import "tailwindcss";
 
-/* ─── VΣLOHE SYSTEM design tokens ─── */
+/* ─── CyborgPunks Club design tokens ─── */
 :root {
-  --bg-void: #03050a;
-  --bg-panel: rgba(8, 16, 32, 0.78);
-  --neon-blue: #00a3ff;
-  --neon-cyan: #00f0ff;
-  --neon-soft: #3b82f6;
+  --bg-void: #05010d;
+  --bg-panel: rgba(12, 4, 28, 0.82);
+  --neon-cyan: #0cf1ff;
+  --neon-blue: #3003d9;
+  --neon-magenta: #db3ffd;
+  --neon-gold: #ffc825;
+  --neon-soft: #db3ffd;
   --text-primary: #e8f4ff;
-  --text-muted: #7a8fa6;
-  --border-glow: rgba(0, 240, 255, 0.28);
+  --text-muted: #8a7aa6;
+  --border-glow: rgba(12, 241, 255, 0.28);
   --scanline-opacity: 0.045;
 }
 
 @theme inline {
   --color-background: var(--bg-void);
   --color-foreground: var(--text-primary);
-  --color-void: #03050a;
-  --color-panel: #081020;
-  --color-neon-blue: #00a3ff;
-  --color-neon-cyan: #00f0ff;
-  --color-neon-soft: #3b82f6;
-  --color-muted: #7a8fa6;
-  --font-sans: var(--font-orbitron);
-  --font-mono: var(--font-share-tech);
+  --color-void: #05010d;
+  --color-panel: #0c041c;
+  --color-neon-blue: #3003d9;
+  --color-neon-cyan: #0cf1ff;
+  --color-neon-magenta: #db3ffd;
+  --color-neon-gold: #ffc825;
+  --color-neon-soft: #db3ffd;
+  --color-muted: #8a7aa6;
+  --font-sans: var(--font-press-start);
+  --font-mono: var(--font-vt323);
 }
 
 /* ─── Base ─── */
@@ -36,6 +40,13 @@ body {
   color: var(--text-primary);
   min-height: 100dvh;
   overflow-x: hidden;
+  font-size: 13.5pt;
+  line-height: 1.55;
+}
+
+p {
+  font-size: 13.5pt;
+  line-height: 1.55;
 }
 
 /* Soft vignette over the whole stage */
@@ -59,7 +70,7 @@ body::before {
 
 /* Custom selection */
 ::selection {
-  background: rgba(0, 240, 255, 0.25);
+  background: rgba(12, 241, 255, 0.25);
   color: #fff;
 }
 
@@ -69,36 +80,36 @@ body::before {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #05080f;
+  background: #05010d;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00a3ff, #00f0ff);
+  background: linear-gradient(180deg, #3003d9, #0cf1ff);
   border-radius: 4px;
 }
 
 /* ─── Utility classes ─── */
 .text-glow {
   text-shadow:
-    0 0 8px rgba(0, 240, 255, 0.7),
-    0 0 24px rgba(0, 163, 255, 0.4);
+    0 0 8px rgba(12, 241, 255, 0.7),
+    0 0 24px rgba(219, 63, 253, 0.35);
 }
 
 .text-glow-sm {
-  text-shadow: 0 0 6px rgba(0, 240, 255, 0.5);
+  text-shadow: 0 0 6px rgba(12, 241, 255, 0.5);
 }
 
 .box-glow {
   box-shadow:
-    0 0 12px rgba(0, 240, 255, 0.25),
-    0 0 40px rgba(0, 163, 255, 0.12),
-    inset 0 0 20px rgba(0, 240, 255, 0.04);
+    0 0 12px rgba(12, 241, 255, 0.25),
+    0 0 40px rgba(48, 3, 217, 0.18),
+    inset 0 0 20px rgba(12, 241, 255, 0.04);
 }
 
 .box-glow-strong {
   box-shadow:
-    0 0 16px rgba(0, 240, 255, 0.45),
-    0 0 48px rgba(0, 163, 255, 0.25),
-    inset 0 0 24px rgba(0, 240, 255, 0.06);
+    0 0 16px rgba(12, 241, 255, 0.45),
+    0 0 48px rgba(219, 63, 253, 0.22),
+    inset 0 0 24px rgba(12, 241, 255, 0.06);
 }
 
 .panel {
@@ -121,9 +132,11 @@ body::before {
   background: conic-gradient(
     from var(--holo-angle, 0deg),
     transparent 0%,
-    rgba(0, 240, 255, 0.6) 20%,
-    transparent 40%,
-    rgba(0, 163, 255, 0.5) 70%,
+    rgba(12, 241, 255, 0.6) 18%,
+    transparent 36%,
+    rgba(219, 63, 253, 0.5) 55%,
+    transparent 72%,
+    rgba(255, 200, 37, 0.4) 88%,
     transparent 100%
   );
   -webkit-mask:
@@ -176,7 +189,7 @@ body::before {
   background: linear-gradient(
     to bottom,
     transparent,
-    rgba(0, 240, 255, 0.03),
+    rgba(12, 241, 255, 0.03),
     transparent
   );
   animation: sweep 8s linear infinite;
@@ -194,9 +207,25 @@ body::before {
 /* Grid background for panels */
 .cyber-grid {
   background-image:
-    linear-gradient(rgba(0, 163, 255, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 163, 255, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(12, 241, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(48, 3, 217, 0.08) 1px, transparent 1px);
   background-size: 40px 40px;
+}
+
+/* Press Start 2P is dense; arcade UI needs extra line-height */
+.font-sans {
+  line-height: 1.7;
+}
+
+/* Home wordmark — two-line, never clipped */
+.home-wordmark {
+  font-size: clamp(1.25rem, 8vw, 1.85rem);
+  overflow: visible;
+}
+@media (min-width: 768px) {
+  .home-wordmark {
+    font-size: clamp(1.6rem, 6vw, 3.25rem);
+  }
 }
 
 /* Focus ring for a11y */

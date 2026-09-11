@@ -2,23 +2,22 @@
  * App-wide constants: routes, branding, and chrome copy.
  */
 
-export const SITE_NAME = "VΣLOHE SYSTEM";
-export const SITE_TAGLINE = "NFT Exhibition System";
+export const SITE_NAME = "CyborgPunks Club";
+export const SITE_TAGLINE = "Cryogenic System";
 export const SITE_VERSION = "v2.0";
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/gallery", label: "Gallery" },
   { href: "/transmissions", label: "Transmissions" },
+  { href: "/cryogenic-room", label: "Cryogenic Room" },
   { href: "/about", label: "About" },
-  { href: "/UnknownSector/theaethergrid", label: "Unknown Sector" },
 ] as const;
 
 export const RARITY_COLORS: Record<string, string> = {
   common: "text-slate-300 border-slate-500/50",
-  rare: "text-sky-300 border-sky-400/60",
-  "super-rare": "text-fuchsia-300 border-fuchsia-400/60",
-  epic: "text-violet-300 border-violet-400/60",
-  legendary: "text-amber-300 border-amber-400/60",
-  mythic: "text-cyan-300 border-cyan-300/80",
+  rare: "text-neon-cyan border-neon-cyan/60",
+  "super-rare": "text-neon-magenta border-neon-magenta/60",
+  epic: "text-neon-blue border-neon-blue/60",
+  legendary: "text-neon-gold border-neon-gold/60",
+  mythic: "text-neon-cyan border-neon-cyan/80",
 };

@@ -53,8 +53,8 @@ export interface NftItem {
 export type LogLevel = "INFO" | "WARN" | "SIGNAL" | "LORE" | "ERROR";
 
 /**
- * Live ≈ BC + TX-VΣ## + LOG-VΣ##
- * Archive ≈ TX-001–008 / LOG-001–009
+ * Live ≈ TX-000 · LOG-000
+ * Archive ≈ sealed TX/LOG records
  */
 export type FeedEra = "live" | "archive";
 

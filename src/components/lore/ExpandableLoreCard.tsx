@@ -68,7 +68,7 @@ export function ExpandableLoreCard({
         </div>
 
         <p
-          className={`mt-3 border-t ${ruleClass} pt-3 font-mono text-xs leading-relaxed text-muted sm:text-sm`}
+          className={`mt-3 border-t ${ruleClass} pt-3 font-mono text-[13.5pt] leading-[1.55] text-muted`}
         >
           {summary}
         </p>
@@ -84,7 +84,7 @@ export function ExpandableLoreCard({
               transition={{ duration: 0.3 }}
               className="overflow-hidden"
             >
-              <div className="mt-4 space-y-4 font-mono text-sm leading-relaxed text-muted">
+              <div className="mt-4 space-y-4 font-mono text-[13.5pt] leading-[1.55] text-muted">
                 {paragraphs.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}

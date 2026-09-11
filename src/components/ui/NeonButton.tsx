@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 type Variant = "solid" | "ghost" | "outline";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 font-sans text-sm uppercase tracking-[0.2em] transition-colors focus-visible:outline-none disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 font-sans text-[10pt] uppercase tracking-[0.16em] transition-colors focus-visible:outline-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
   solid:
