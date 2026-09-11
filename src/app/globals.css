@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+/* ─── VΣLOHE SYSTEM design tokens ─── */
+:root {
+  --bg-void: #03050a;
+  --bg-panel: rgba(8, 16, 32, 0.78);
+  --neon-blue: #00a3ff;
+  --neon-cyan: #00f0ff;
+  --neon-soft: #3b82f6;
+  --text-primary: #e8f4ff;
+  --text-muted: #7a8fa6;
+  --border-glow: rgba(0, 240, 255, 0.28);
+  --scanline-opacity: 0.045;
+}
+
+@theme inline {
+  --color-background: var(--bg-void);
+  --color-foreground: var(--text-primary);
+  --color-void: #03050a;
+  --color-panel: #081020;
+  --color-neon-blue: #00a3ff;
+  --color-neon-cyan: #00f0ff;
+  --color-neon-soft: #3b82f6;
+  --color-muted: #7a8fa6;
+  --font-sans: var(--font-orbitron);
+  --font-mono: var(--font-share-tech);
+}
+
+/* ─── Base ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Soft vignette over the whole stage */
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* RainbowKit connect modal above vignette + custom chain modals (z-200) */
+[data-rk] {
+  z-index: 300;
+}
+
+/* Custom selection */
+::selection {
+  background: rgba(0, 240, 255, 0.25);
+  color: #fff;
+}
+
+/* Scrollbar (WebKit) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #05080f;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00a3ff, #00f0ff);
+  border-radius: 4px;
+}
+
+/* ─── Utility classes ─── */
+.text-glow {
+  text-shadow:
+    0 0 8px rgba(0, 240, 255, 0.7),
+    0 0 24px rgba(0, 163, 255, 0.4);
+}
+
+.text-glow-sm {
+  text-shadow: 0 0 6px rgba(0, 240, 255, 0.5);
+}
+
+.box-glow {
+  box-shadow:
+    0 0 12px rgba(0, 240, 255, 0.25),
+    0 0 40px rgba(0, 163, 255, 0.12),
+    inset 0 0 20px rgba(0, 240, 255, 0.04);
+}
+
+.box-glow-strong {
+  box-shadow:
+    0 0 16px rgba(0, 240, 255, 0.45),
+    0 0 48px rgba(0, 163, 255, 0.25),
+    inset 0 0 24px rgba(0, 240, 255, 0.06);
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  backdrop-filter: blur(12px);
+}
+
+/* Animated holographic border sheen */
+.hologram-border {
+  position: relative;
+  overflow: hidden;
+}
+.hologram-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--holo-angle, 0deg),
+    transparent 0%,
+    rgba(0, 240, 255, 0.6) 20%,
+    transparent 40%,
+    rgba(0, 163, 255, 0.5) 70%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: holo-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes holo-spin {
+  to {
+    --holo-angle: 360deg;
+  }
+}
+
+@property --holo-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Scanline overlay */
+.scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, var(--scanline-opacity)) 2px,
+    rgba(0, 0, 0, var(--scanline-opacity)) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* Subtle horizontal CRT sweep */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 240, 255, 0.03),
+    transparent
+  );
+  animation: sweep 8s linear infinite;
+}
+
+@keyframes sweep {
+  0% {
+    top: -120px;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+/* Grid background for panels */
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(0, 163, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 163, 255, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Focus ring for a11y */
+:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 3px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hologram-border::before,
+  .scanlines::after {
+    animation: none !important;
+  }
+}
