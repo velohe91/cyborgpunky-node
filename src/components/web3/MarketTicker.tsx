@@ -129,7 +129,7 @@ export function MarketTicker() {
       title={title}
       aria-live="polite"
     >
-      <div className="flex w-full min-w-0 flex-nowrap items-center justify-center gap-1 overflow-visible">
+      <div className="ticker-row flex w-full min-w-0 flex-nowrap items-center justify-center gap-1 overflow-visible">
         {shown.map((coin) => (
           <CoinChip key={coin.id} coin={coin} status={status} />
         ))}
@@ -174,6 +174,19 @@ export function MarketTicker() {
           )}
         </div>
       </div>
+      <style jsx>{`
+        @media (max-width: 767px) {
+          .ticker-row > .ticker-chip:nth-of-type(n + 4) {
+            display: none;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .ticker-row > .ticker-chip:nth-of-type(n + 3) {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 }
