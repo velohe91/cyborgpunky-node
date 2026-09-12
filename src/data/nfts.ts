@@ -331,11 +331,32 @@ export function getNftById(id: string): NftItem | undefined {
   return nftCatalog.find((n) => n.id === id);
 }
 
-/** Cryogenic Room: genesis CPC only (compressed CyborgPunks). CBPS stays in catalog, not listed here. */
-export const cyborgPunksNfts: NftItem[] = nfts.filter(
-  (nft) =>
-    nft.id.startsWith("VEL-CPC") ||
-    (nft.series === "CyborgPunks" &&
-      nft.status === "Compressed" &&
-      nft.tags?.includes("genesis")),
-);
+function cpcSortKey(nft: NftItem): number {
+  const extra = nft as NftItem & {
+    mintedAt?: string | number;
+    tokenId?: number;
+    order?: number;
+  };
+  if (typeof extra.order === "number") return extra.order;
+  if (typeof extra.tokenId === "number") return extra.tokenId;
+  if (extra.mintedAt != null) {
+    const t =
+      typeof extra.mintedAt === "number"
+        ? extra.mintedAt
+        : Date.parse(extra.mintedAt);
+    if (!Number.isNaN(t)) return t;
+  }
+  const m = nft.id.match(/VEL-CPC(\d+)/i);
+  return m ? parseInt(m[1], 10) : 0;
+}
+
+/** Cryogenic Room: genesis CPC only (compressed CyborgPunks). CBPS stays in catalog, not listed here. Newest CPC first. */
+export const cyborgPunksNfts: NftItem[] = nfts
+  .filter(
+    (nft) =>
+      nft.id.startsWith("VEL-CPC") ||
+      (nft.series === "CyborgPunks" &&
+        nft.status === "Compressed" &&
+        nft.tags?.includes("genesis")),
+  )
+  .sort((a, b) => cpcSortKey(b) - cpcSortKey(a));

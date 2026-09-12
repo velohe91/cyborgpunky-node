@@ -44,7 +44,7 @@ export function ExpandableLoreCard({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, delay }}
     >
-      <HologramFrame className="panel rounded-xl p-5 sm:p-7">
+      <HologramFrame className="p-5 sm:p-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <p
@@ -52,7 +52,7 @@ export function ExpandableLoreCard({
             >
               {eyebrow}
             </p>
-            <h2 className="font-sans text-xl font-semibold tracking-wide text-foreground text-glow-sm sm:text-2xl">
+            <h2 className="font-sans text-xl tracking-wide text-[#FF2CF0] sm:text-2xl">
               {title}
             </h2>
           </div>
@@ -68,7 +68,7 @@ export function ExpandableLoreCard({
         </div>
 
         <p
-          className={`mt-3 border-t ${ruleClass} pt-3 font-mono text-[13.5pt] leading-[1.55] text-muted`}
+          className={`mt-3 border-t ${ruleClass} pt-3 font-mono text-[14px] leading-[1.5] text-muted`}
         >
           {summary}
         </p>
@@ -84,7 +84,7 @@ export function ExpandableLoreCard({
               transition={{ duration: 0.3 }}
               className="overflow-hidden"
             >
-              <div className="mt-4 space-y-4 font-mono text-[13.5pt] leading-[1.55] text-muted">
+              <div className="mt-4 space-y-4 font-mono text-[14px] leading-[1.5] text-muted">
                 {paragraphs.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}

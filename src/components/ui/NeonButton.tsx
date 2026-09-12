@@ -6,17 +6,6 @@ import type { ReactNode } from "react";
 
 type Variant = "solid" | "ghost" | "outline";
 
-const base =
-  "inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 font-sans text-[10pt] uppercase tracking-[0.16em] transition-colors focus-visible:outline-none disabled:opacity-50";
-
-const variants: Record<Variant, string> = {
-  solid:
-    "bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/50 hover:bg-neon-cyan/25 box-glow",
-  ghost: "text-neon-cyan/90 hover:text-neon-cyan hover:bg-neon-cyan/10",
-  outline:
-    "border border-neon-blue/40 text-neon-blue hover:border-neon-cyan hover:text-neon-cyan",
-};
-
 type Props = {
   children: ReactNode;
   href?: string;
@@ -28,9 +17,14 @@ type Props = {
   ariaLabel?: string;
 };
 
+const variantClass: Record<Variant, string> = {
+  solid: "hud-chip",
+  outline: "hud-chip hud-chip-outline",
+  ghost: "hud-chip hud-chip-outline",
+};
+
 /**
- * Primary interactive control styled for the cyberpunk chrome.
- * Renders as Link when `href` is set, otherwise as a button.
+ * HUD octagon chip — Press Start 2P, split magenta/cyan energy.
  */
 export function NeonButton({
   children,
@@ -42,12 +36,12 @@ export function NeonButton({
   disabled,
   ariaLabel,
 }: Props) {
-  const classes = `${base} ${variants[variant]} ${className}`;
+  const classes = `${variantClass[variant]} ${className}`;
 
   const motionProps = {
-    whileHover: { scale: 1.03 },
-    whileTap: { scale: 0.98 },
-    transition: { type: "spring" as const, stiffness: 400, damping: 22 },
+    whileHover: { y: -1 },
+    whileTap: { y: 1 },
+    transition: { duration: 0.12 },
   };
 
   if (href) {

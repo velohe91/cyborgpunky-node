@@ -1,55 +1,88 @@
 @import "tailwindcss";
 
-/* ─── CyborgPunks Club design tokens ─── */
+/* ─── CyborgPunks Club — circuit plate ─── */
 :root {
-  --bg-void: #05010d;
-  --bg-panel: rgba(12, 4, 28, 0.82);
+  --bg-void: #05010a;
+  --bg-black: #000000;
+  --bg-panel: #05010a;
+  --neon-magenta-hot: #ff2cf0;
+  --neon-magenta: #db3ffd;
   --neon-cyan: #0cf1ff;
   --neon-blue: #3003d9;
-  --neon-magenta: #db3ffd;
   --neon-gold: #ffc825;
   --neon-soft: #db3ffd;
   --text-primary: #e8f4ff;
-  --text-muted: #8a7aa6;
-  --border-glow: rgba(12, 241, 255, 0.28);
-  --scanline-opacity: 0.045;
+  --text-muted: #7a8a9a;
+  --border-glow: #0cf1ff;
+  --scanline-opacity: 0.07;
 }
 
 @theme inline {
   --color-background: var(--bg-void);
   --color-foreground: var(--text-primary);
-  --color-void: #05010d;
-  --color-panel: #0c041c;
+  --color-void: #05010a;
+  --color-panel: #05010a;
   --color-neon-blue: #3003d9;
   --color-neon-cyan: #0cf1ff;
   --color-neon-magenta: #db3ffd;
+  --color-neon-magenta-hot: #ff2cf0;
   --color-neon-gold: #ffc825;
   --color-neon-soft: #db3ffd;
-  --color-muted: #8a7aa6;
+  --color-muted: #7a8a9a;
   --font-sans: var(--font-press-start);
   --font-mono: var(--font-vt323);
 }
 
-/* ─── Base ─── */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--bg-void);
+  background: #000000;
   color: var(--text-primary);
   min-height: 100dvh;
   overflow-x: hidden;
-  font-size: 13.5pt;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 p {
-  font-size: 13.5pt;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
-/* Soft vignette over the whole stage */
+h1 {
+  font-size: 18px;
+  max-width: 100%;
+  text-wrap: wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+}
+@media (min-width: 768px) {
+  h1 {
+    font-size: 24px;
+  }
+}
+h2 {
+  font-size: 16px;
+  max-width: 100%;
+  text-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 768px) {
+  h2 {
+    font-size: 18px;
+  }
+}
+
+img,
+canvas,
+video {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Hard vignette — no photographic blur */
 body::before {
   content: "";
   pointer-events: none;
@@ -58,112 +91,226 @@ body::before {
   z-index: 50;
   background: radial-gradient(
     ellipse at center,
-    transparent 40%,
-    rgba(0, 0, 0, 0.55) 100%
+    transparent 55%,
+    rgba(0, 0, 0, 0.7) 100%
   );
 }
 
-/* RainbowKit connect modal above vignette + custom chain modals (z-200) */
 [data-rk] {
   z-index: 300;
 }
 
-/* Custom selection */
 ::selection {
-  background: rgba(12, 241, 255, 0.25);
-  color: #fff;
+  background: #ff2cf0;
+  color: #000;
 }
 
-/* Scrollbar (WebKit) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #05010d;
+  background: #000;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #3003d9, #0cf1ff);
-  border-radius: 4px;
+  background: #0cf1ff;
+  border-left: 2px solid #ff2cf0;
 }
 
-/* ─── Utility classes ─── */
+/* Hard 1–2 layer glows — no blur filters */
 .text-glow {
-  text-shadow:
-    0 0 8px rgba(12, 241, 255, 0.7),
-    0 0 24px rgba(219, 63, 253, 0.35);
+  text-shadow: 2px 0 0 #3003d9, -1px 0 0 #ff2cf0;
 }
-
 .text-glow-sm {
-  text-shadow: 0 0 6px rgba(12, 241, 255, 0.5);
+  text-shadow: 1px 0 0 #3003d9;
+}
+.text-glow-magenta {
+  text-shadow: 2px 2px 0 #3003d9, -1px 0 0 #ff2cf0;
+}
+.text-glow-cyan {
+  text-shadow: 2px 2px 0 #3003d9, 1px 0 0 #0cf1ff;
 }
 
 .box-glow {
-  box-shadow:
-    0 0 12px rgba(12, 241, 255, 0.25),
-    0 0 40px rgba(48, 3, 217, 0.18),
-    inset 0 0 20px rgba(12, 241, 255, 0.04);
+  box-shadow: -3px 0 0 #ff2cf0, 3px 0 0 #0cf1ff;
 }
-
 .box-glow-strong {
-  box-shadow:
-    0 0 16px rgba(12, 241, 255, 0.45),
-    0 0 48px rgba(219, 63, 253, 0.22),
-    inset 0 0 24px rgba(12, 241, 255, 0.06);
+  box-shadow: -4px 0 0 #ff2cf0, 4px 0 0 #0cf1ff;
 }
 
 .panel {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-glow);
-  backdrop-filter: blur(12px);
+  background: #05010a;
+  border: 2px solid #0cf1ff;
+  border-left-color: #ff2cf0;
+  border-right-color: #0cf1ff;
+  box-shadow: -3px 0 0 #ff2cf0, 3px 0 0 #0cf1ff;
 }
 
-/* Animated holographic border sheen */
-.hologram-border {
+/* Octagonal HUD chip (buttons / ticker) */
+.hud-chip {
   position: relative;
-  overflow: hidden;
-}
-.hologram-border::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(
-    from var(--holo-angle, 0deg),
-    transparent 0%,
-    rgba(12, 241, 255, 0.6) 18%,
-    transparent 36%,
-    rgba(219, 63, 253, 0.5) 55%,
-    transparent 72%,
-    rgba(255, 200, 37, 0.4) 88%,
-    transparent 100%
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.15rem;
+  font-family: var(--font-press-start), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0cf1ff;
+  background: #05010a;
+  border: 2px solid #0cf1ff;
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
   );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: holo-spin 6s linear infinite;
+  box-shadow: -2px 0 0 #ff2cf0, 2px 0 0 #0cf1ff;
+  transition: color 0.15s linear, border-color 0.15s linear, background 0.15s linear;
+}
+.hud-chip:hover {
+  color: #ff2cf0;
+  border-color: #ff2cf0;
+  background: #0a0214;
+}
+button.hud-chip:disabled {
+  opacity: 0.4;
   pointer-events: none;
 }
+.hud-chip-outline {
+  color: #ff2cf0;
+  border-color: #ff2cf0;
+  box-shadow: -2px 0 0 #ff2cf0, 2px 0 0 #0cf1ff;
+}
+.hud-chip-outline:hover {
+  color: #0cf1ff;
+  border-color: #0cf1ff;
+}
 
-@keyframes holo-spin {
-  to {
-    --holo-angle: 360deg;
+/* Ticker — single HUD stroke, no stacked box */
+.ticker-chip {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0.3rem 0.55rem;
+  font-family: var(--font-press-start), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  max-width: 100%;
+  text-transform: uppercase;
+  background: #05010a;
+  border: 2px solid #0cf1ff;
+  clip-path: polygon(
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    6px 100%,
+    0 calc(100% - 6px),
+    0 6px
+  );
+}
+
+/* Circuit plate frame — split energy + chamfer + pads */
+.circuit-frame {
+  position: relative;
+  background: #05010a;
+  border: 2px solid #0cf1ff;
+  border-left-color: #ff2cf0;
+  box-shadow: -3px 0 0 #ff2cf0, 3px 0 0 #0cf1ff;
+  clip-path: polygon(
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0 calc(100% - 14px),
+    0 14px
+  );
+}
+.circuit-frame::before,
+.circuit-frame::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #0cf1ff;
+  z-index: 2;
+  pointer-events: none;
+}
+.circuit-frame::before {
+  top: 10px;
+  left: 10px;
+  background: #ff2cf0;
+}
+.circuit-frame::after {
+  bottom: 10px;
+  right: 10px;
+  background: #0cf1ff;
+}
+
+.circuit-crosshair {
+  position: relative;
+}
+.circuit-crosshair::before,
+.circuit-crosshair::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: #ff2cf0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.circuit-crosshair::before {
+  width: 12px;
+  height: 2px;
+}
+.circuit-crosshair::after {
+  width: 2px;
+  height: 12px;
+  background: #0cf1ff;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+header,
+.ticker-chip {
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .hud-chip {
+    font-size: 12px;
+  }
+  .ticker-chip {
+    font-size: 11px;
   }
 }
 
-@property --holo-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
+.pilot-locked {
+  outline: 3px solid #ffc825;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px #0cf1ff, 2px 0 0 #ffc825, -2px 0 0 #ffc825;
 }
 
-/* Scanline overlay */
+/* Keep class name so old markup maps to circuit, not glass */
+.hologram-border {
+  position: relative;
+}
+
 .scanlines {
   pointer-events: none;
   position: fixed;
@@ -176,70 +323,60 @@ body::before {
     rgba(0, 0, 0, var(--scanline-opacity)) 2px,
     rgba(0, 0, 0, var(--scanline-opacity)) 4px
   );
-  mix-blend-mode: multiply;
 }
 
-/* Subtle horizontal CRT sweep */
 .scanlines::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  height: 120px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(12, 241, 255, 0.03),
-    transparent
-  );
-  animation: sweep 8s linear infinite;
+  height: 3px;
+  background: rgba(12, 241, 255, 0.12);
+  animation: sweep 9s linear infinite;
 }
 
 @keyframes sweep {
   0% {
-    top: -120px;
+    top: -4px;
   }
   100% {
     top: 100%;
   }
 }
 
-/* Grid background for panels */
 .cyber-grid {
   background-image:
-    linear-gradient(rgba(12, 241, 255, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(48, 3, 217, 0.08) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(rgba(12, 241, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 44, 240, 0.06) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
-/* Press Start 2P is dense; arcade UI needs extra line-height */
+.circuit-traces {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 10px,
+      #ff2cf0 10px 12px,
+      transparent 12px 28px,
+      #0cf1ff 28px 30px,
+      transparent 30px 46px
+    );
+  height: 4px;
+}
+
 .font-sans {
   line-height: 1.7;
 }
 
-/* Home wordmark — two-line, never clipped */
-.home-wordmark {
-  font-size: clamp(1.25rem, 8vw, 1.85rem);
-  overflow: visible;
-}
-@media (min-width: 768px) {
-  .home-wordmark {
-    font-size: clamp(1.6rem, 6vw, 3.25rem);
-  }
-}
-
-/* Focus ring for a11y */
 :focus-visible {
   outline: 2px solid var(--neon-cyan);
   outline-offset: 3px;
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .hologram-border::before,
   .scanlines::after {
     animation: none !important;
   }

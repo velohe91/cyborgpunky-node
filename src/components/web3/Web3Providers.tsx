@@ -33,10 +33,10 @@ export function Web3Providers({ children }: { children: ReactNode }) {
           initialChain={PRIMARY_CHAIN}
           theme={darkTheme({
             accentColor: "#0cf1ff",
-            accentColorForeground: "#05010d",
-            borderRadius: "small",
+            accentColorForeground: "#000000",
+            borderRadius: "none",
             fontStack: "system",
-            overlayBlur: "small",
+            overlayBlur: "none",
           })}
           modalSize="compact"
           coolMode={false}

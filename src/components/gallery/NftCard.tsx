@@ -4,6 +4,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import type { NftItem } from "@/lib/types";
 import { RARITY_COLORS } from "@/lib/constants";
+import { isCpcPilot } from "@/lib/pilot";
+import { useLockedPilot } from "@/hooks/useLockedPilot";
 
 type Props = {
   nft: NftItem;
@@ -13,46 +15,50 @@ type Props = {
 
 export function NftCard({ nft, index, onOpen }: Props) {
   const rarityClass = RARITY_COLORS[nft.rarity] ?? RARITY_COLORS.common;
+  const { pilotId } = useLockedPilot();
+  const locked = isCpcPilot(nft.id) && pilotId === nft.id;
 
   return (
     <motion.button
       type="button"
       onClick={() => onOpen(nft)}
-      className="group relative z-0 flex w-full flex-col overflow-hidden rounded-lg border border-neon-cyan/20 bg-panel/80 text-left hologram-border box-glow transition-shadow hover:box-glow-strong focus-visible:outline-none"
-      initial={{ opacity: 0, y: 20 }}
+      className={`circuit-frame group relative z-0 flex w-full max-w-full flex-col overflow-hidden bg-[#05010a] text-left ${
+        locked ? "pilot-locked" : ""
+      }`}
+      initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ delay: Math.min(index * 0.06, 0.4), duration: 0.4 }}
-      whileHover={{ y: -4 }}
+      transition={{ delay: Math.min(index * 0.06, 0.4), duration: 0.35 }}
     >
-      <div className="relative aspect-square overflow-hidden bg-void cyber-grid">
-        {/* unoptimized: serve /public paths as-is (avoids optimizer 404/timeouts on large NFT media) */}
+      <div className="relative aspect-square overflow-hidden bg-black cyber-grid">
         <Image
           src={nft.image}
           alt={nft.title}
           fill
           unoptimized
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover pixelated"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-80" />
+        {locked && (
+          <span className="absolute left-2 top-2 z-10 border-2 border-[#FFC825] bg-black px-1.5 py-0.5 font-sans text-[8px] uppercase tracking-wider text-[#FFC825]">
+            Pilot Locked
+          </span>
+        )}
+        <span
+          className={`absolute right-3 top-3 z-10 border-2 bg-black px-1.5 py-0.5 font-sans text-[10px] uppercase tracking-wider ${rarityClass}`}
+        >
+          {nft.rarity}
+        </span>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="flex items-start justify-between gap-2">
-          <span className="font-mono text-[10px] tracking-widest text-neon-blue">
-            {nft.id}
-          </span>
-          <span
-            className={`rounded border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider ${rarityClass}`}
-          >
-            {nft.rarity}
-          </span>
-        </div>
-        <h3 className="font-sans text-[10px] tracking-wide text-foreground sm:text-xs">
+      <div className="flex flex-1 flex-col gap-1.5 p-2.5">
+        <span className="font-mono text-[10px] tracking-widest text-neon-cyan">
+          {nft.id}
+        </span>
+        <h3 className="max-w-full font-sans text-[12px] tracking-wide text-[#FF2CF0] [overflow-wrap:anywhere] [text-wrap:wrap]">
           {nft.title}
         </h3>
-        <p className="line-clamp-2 font-mono text-[13.5pt] leading-[1.55] text-muted">
+        <p className="line-clamp-2 max-w-full font-mono text-[14px] leading-[1.5] text-muted">
           {nft.description}
         </p>
         <div className="mt-auto flex flex-col gap-1 pt-1 font-mono text-[10px] tracking-wide text-muted/80">

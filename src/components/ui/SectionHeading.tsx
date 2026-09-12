@@ -13,21 +13,22 @@ export function SectionHeading({
 }) {
   return (
     <motion.header
-      className="mb-10 max-w-3xl"
-      initial={{ opacity: 0, y: 16 }}
+      className="mb-5 max-w-3xl"
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.4 }}
     >
       {eyebrow && (
-        <p className="mb-2 font-mono text-[13.5pt] leading-[1.55] uppercase tracking-[0.35em] text-neon-cyan/80">
+        <p className="mb-2 font-mono text-[13px] leading-[1.5] uppercase tracking-[0.2em] text-neon-cyan sm:text-[14px]">
           {eyebrow}
         </p>
       )}
-      <h1 className="font-sans text-lg tracking-wide text-glow sm:text-xl md:text-2xl">
+      <h1 className="max-w-full font-sans text-[18px] tracking-wide text-[#FF2CF0] [overflow-wrap:anywhere] [text-wrap:wrap] sm:text-[22px] md:text-[26px]">
         {title}
       </h1>
+      <div className="circuit-crosshair my-2 h-0 w-40 border-t-2 border-[#0CF1FF]" />
       {subtitle && (
-        <p className="mt-3 font-mono text-[13.5pt] leading-[1.55] text-muted">
+        <p className="mt-3 font-mono text-[14px] leading-[1.5] text-muted">
           {subtitle}
         </p>
       )}

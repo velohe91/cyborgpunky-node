@@ -7,7 +7,7 @@ import { HAS_WALLETCONNECT_PROJECT_ID } from "@/lib/web3/config";
 import { truncateAddress } from "@/lib/web3/multi-chain";
 
 const nodeBtnClass =
-  "rounded border border-[#0CF1FF] bg-[#0CF1FF]/10 px-2.5 py-1.5 font-sans text-[8px] tracking-wide text-[#0CF1FF] transition-colors hover:border-[#DB3FFD] hover:bg-[#DB3FFD]/15 hover:text-[#DB3FFD] sm:text-[9px]";
+  "hud-chip !px-2.5 !py-1.5";
 
 /**
  * Header CONNECT NODE — RainbowKit connect / account modals only.
@@ -114,7 +114,7 @@ function MissingProjectIdModal({ onClose }: { onClose: () => void }) {
     <div className="fixed inset-0 z-[200] flex items-center justify-center overflow-y-auto p-4">
       <button
         type="button"
-        className="absolute inset-0 bg-void/85 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/90"
         aria-label="Close"
         onClick={onClose}
       />
@@ -122,7 +122,7 @@ function MissingProjectIdModal({ onClose }: { onClose: () => void }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="missing-wc-title"
-        className="panel box-glow relative z-10 my-auto w-full max-w-md rounded-lg border border-[#0CF1FF]/40 p-5 sm:p-6"
+        className="circuit-frame relative z-10 my-auto w-full max-w-md p-5 sm:p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80">

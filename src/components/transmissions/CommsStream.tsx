@@ -52,11 +52,11 @@ export function CommsStream({
       <EraTabs value={era} onChange={setEra} counts={eraCounts} />
 
       {isArchive ? (
-        <p className="mb-4 font-mono text-[13.5pt] leading-[1.55] uppercase tracking-[0.25em] text-violet-300/70">
+        <p className="mb-4 font-mono text-[14px] leading-[1.5] uppercase tracking-[0.25em] text-violet-300/70">
           {"// sealed channel · newest first"}
         </p>
       ) : (
-        <p className="mb-4 font-mono text-[13.5pt] leading-[1.55] uppercase tracking-[0.25em] text-neon-cyan/70">
+        <p className="mb-4 font-mono text-[14px] leading-[1.5] uppercase tracking-[0.25em] text-neon-cyan/70">
           {"// live channel · TX-000 · LOG-000 · newest first"}
         </p>
       )}
@@ -67,14 +67,14 @@ export function CommsStream({
         <div
           className={
             isArchive
-              ? "absolute bottom-0 left-[5px] top-0 w-px bg-gradient-to-b from-violet-400/50 via-violet-500/20 to-transparent"
-              : "absolute bottom-0 left-[5px] top-0 w-px bg-gradient-to-b from-neon-cyan/80 via-neon-cyan/30 to-transparent"
+              ? "absolute bottom-0 left-[5px] top-0 w-0.5 bg-[#FF2CF0]"
+              : "absolute bottom-0 left-[5px] top-0 w-0.5 bg-[#0CF1FF]"
           }
           aria-hidden
         />
 
         {visible.length === 0 ? (
-          <p className="pl-8 font-mono text-[13.5pt] leading-[1.55] text-muted">
+          <p className="pl-8 font-mono text-[14px] leading-[1.5] text-muted">
             {isArchive
               ? "// no sealed entries in this channel"
               : "// no live entries in this channel"}

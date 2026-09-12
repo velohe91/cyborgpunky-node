@@ -31,7 +31,7 @@ export function FeedFilterTabs({
     <div
       role="tablist"
       aria-label="Filter feed"
-      className="mb-8 inline-flex flex-wrap gap-1 rounded-lg border border-neon-cyan/25 bg-black/40 p-1 panel"
+      className="circuit-frame mb-8 inline-flex flex-wrap gap-1 bg-black p-1"
     >
       {TABS.map((tab) => {
         const active = value === tab.id;
@@ -44,11 +44,11 @@ export function FeedFilterTabs({
             aria-selected={active}
             id={`feed-tab-${tab.id}`}
             className={[
-              "rounded-md px-3 py-2 font-mono text-[10pt] uppercase tracking-[0.18em] transition-all sm:px-4",
-              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neon-cyan/70",
+              "px-3 py-2 font-sans text-[11px] uppercase tracking-[0.12em] transition-colors sm:px-4 sm:text-[12px]",
+              "focus-visible:outline-none",
               active
-                ? "bg-neon-cyan/15 text-neon-cyan box-glow border border-neon-cyan/45"
-                : "border border-transparent text-muted hover:border-neon-blue/30 hover:text-foreground",
+                ? "text-neon-cyan"
+                : "text-muted hover:text-[#FF2CF0]",
             ].join(" ")}
             onClick={() => onChange(tab.id)}
           >

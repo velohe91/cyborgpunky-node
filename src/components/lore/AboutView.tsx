@@ -1,6 +1,5 @@
 "use client";
 
-import { GlowOrb } from "@/components/effects/GlowOrb";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { PageTransition } from "@/components/ui/PageTransition";
 
@@ -19,19 +18,18 @@ Each asset is documented as an individual ASSET NODE.`;
 export function AboutView() {
   return (
     <PageTransition>
-      <div className="relative mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
-        <GlowOrb className="right-0 top-10 h-48 w-48" color="cyan" />
-
-        <article className="panel border border-neon-cyan/25 p-5 sm:p-8">
-          <h1 className="font-sans text-[12pt] tracking-wide text-neon-cyan text-glow-sm sm:text-[14pt]">
+      <div className="relative mx-auto max-w-3xl px-3 py-6 sm:px-4 sm:py-8">
+        <article className="circuit-frame p-4 sm:p-5">
+          <h1 className="max-w-full font-sans text-[18px] tracking-wide text-[#FF2CF0] [overflow-wrap:anywhere] [text-wrap:wrap] sm:text-[24px]">
             GENESIS LAYER // CYBORGPUNKS
           </h1>
-          <div className="mt-6 whitespace-pre-line font-mono text-[13.5pt] leading-[1.55] text-foreground/90">
+          <div className="circuit-crosshair my-3 h-0 border-t-2 border-[#0CF1FF]/50" />
+          <div className="whitespace-pre-line font-mono text-[14px] leading-[1.5] text-foreground/90">
             {GENESIS_BODY}
           </div>
         </article>
 
-        <div className="mt-10 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-2">
           <NeonButton href="/cryogenic-room">Enter the Room</NeonButton>
           <NeonButton href="/transmissions" variant="outline">
             Read Logs

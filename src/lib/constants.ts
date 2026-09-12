@@ -14,10 +14,10 @@ export const NAV_LINKS = [
 ] as const;
 
 export const RARITY_COLORS: Record<string, string> = {
-  common: "text-slate-300 border-slate-500/50",
-  rare: "text-neon-cyan border-neon-cyan/60",
-  "super-rare": "text-neon-magenta border-neon-magenta/60",
-  epic: "text-neon-blue border-neon-blue/60",
-  legendary: "text-neon-gold border-neon-gold/60",
+  common: "text-slate-300 border-slate-500/60",
+  rare: "text-neon-cyan border-neon-cyan/80",
+  "super-rare": "text-[#FF2CF0] border-[#FF2CF0]/80",
+  epic: "text-neon-magenta border-neon-magenta/80",
+  legendary: "text-neon-gold border-neon-gold/80",
   mythic: "text-neon-cyan border-neon-cyan/80",
 };

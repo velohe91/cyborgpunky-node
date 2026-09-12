@@ -1,14 +1,13 @@
-import { SITE_NAME, SITE_VERSION } from "@/lib/constants";
-
 export function Footer() {
   return (
-    <footer className="relative z-10 border-t border-neon-cyan/10 bg-void/80 py-8">
-      <div className="mx-auto grid max-w-7xl items-center gap-3 px-4 text-center sm:grid-cols-[1fr_auto_1fr] sm:px-6 sm:text-left">
-        <p className="font-mono text-[13.5pt] leading-[1.55] tracking-widest text-muted sm:justify-self-start">
-          {SITE_NAME} · {SITE_VERSION}
+    <footer className="relative z-10 border-t-2 border-[#0CF1FF] bg-black py-3">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-3 sm:flex-row sm:px-4">
+        <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-[#FF2CF0]">
+          NODE STATUS
         </p>
-        <p className="font-mono text-[13.5pt] leading-[1.55] uppercase tracking-[0.3em] text-muted/70 sm:justify-self-end">
-          Cryogenic Node
+        <span className="circuit-crosshair relative h-3 w-3" aria-hidden />
+        <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-neon-cyan">
+          {"//"} ONLINE
         </p>
       </div>
     </footer>

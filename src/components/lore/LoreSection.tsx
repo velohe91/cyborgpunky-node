@@ -34,7 +34,7 @@ export function LoreSection({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, delay }}
     >
-      <HologramFrame className="panel rounded-xl p-5 sm:p-7">
+      <HologramFrame className="p-5 sm:p-7">
         <p
           className={`mb-2 font-mono text-[10px] uppercase tracking-[0.35em] ${eyebrowClass}`}
         >
@@ -44,7 +44,7 @@ export function LoreSection({
           {title}
         </h2>
         <div
-          className={`mt-4 space-y-4 border-t ${ruleClass} pt-4 font-mono text-[13.5pt] leading-[1.55] text-muted`}
+          className={`mt-4 space-y-4 border-t ${ruleClass} pt-4 font-mono text-[14px] leading-[1.5] text-muted`}
         >
           {paragraphs.map((p, i) => (
             <p key={i}>{p}</p>

@@ -8,15 +8,12 @@ const LINES = [
   { text: "> SYSTEM ONLINE", delay: 0.9 },
 ];
 
-/**
- * Terminal-style intro lines that fade/type in on the landing page.
- */
 export function SystemBootSequence() {
   const reduced = usePrefersReducedMotion();
 
   return (
     <div
-      className="mx-auto mt-8 w-full max-w-md space-y-2 rounded-md border border-neon-cyan/20 bg-panel/60 p-4 font-mono text-left text-[13.5pt] leading-[1.55]"
+      className="circuit-frame mx-auto mt-4 w-full max-w-lg px-3 py-2 text-left font-mono text-[14px] leading-[1.5]"
       role="status"
       aria-live="polite"
     >
@@ -24,9 +21,7 @@ export function SystemBootSequence() {
         <motion.p
           key={line.text}
           className={
-            line.text.includes("ONLINE")
-              ? "text-neon-cyan text-glow-sm"
-              : "text-muted"
+            line.text.includes("ONLINE") ? "text-neon-cyan" : "text-muted"
           }
           initial={reduced ? false : { opacity: 0, x: -8 }}
           animate={{ opacity: 1, x: 0 }}
@@ -36,7 +31,7 @@ export function SystemBootSequence() {
         </motion.p>
       ))}
       <motion.span
-        className="inline-block h-4 w-2 bg-neon-cyan align-middle"
+        className="mt-1 inline-block h-4 w-2 bg-neon-cyan align-middle"
         animate={reduced ? undefined : { opacity: [1, 0, 1] }}
         transition={{ repeat: Infinity, duration: 1 }}
         aria-hidden

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Wrapper that applies the rotating holographic border effect. */
+/** Circuit plate wrapper (legacy name kept for existing imports). */
 export function HologramFrame({
   children,
   className = "",
@@ -8,7 +8,5 @@ export function HologramFrame({
   children: ReactNode;
   className?: string;
 }) {
-  return (
-    <div className={`hologram-border rounded-lg ${className}`}>{children}</div>
-  );
+  return <div className={`circuit-frame ${className}`}>{children}</div>;
 }

@@ -5,8 +5,8 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const PIXEL_COLORS = [
   "rgba(12, 241, 255, ", // #0CF1FF
+  "rgba(255, 44, 240, ", // #FF2CF0
   "rgba(219, 63, 253, ", // #DB3FFD
-  "rgba(255, 200, 37, ", // #FFC825
 ] as const;
 
 /**

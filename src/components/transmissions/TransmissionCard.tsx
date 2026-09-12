@@ -58,13 +58,13 @@ export function TransmissionCard({
       transition={{ delay: Math.min(index * 0.04, 0.35), duration: 0.4 }}
     >
       <span
-        className="absolute left-0 top-3 h-3 w-3 rounded-full border border-neon-cyan bg-void box-glow"
+        className="absolute left-0 top-3 h-2 w-2 bg-[#FF2CF0]"
         aria-hidden
       />
 
-      <div className="panel hologram-border rounded-lg p-4 sm:p-5">
+      <div className="circuit-frame p-4 sm:p-5">
         <div className="mb-3 flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-wider text-muted">
-          <span className="rounded border border-violet-400/40 px-1.5 py-0.5 text-[9px] uppercase text-violet-300">
+          <span className="border-2 border-[#FF2CF0] px-1.5 py-0.5 text-[9px] uppercase text-[#FF2CF0]">
             Transmission
           </span>
           <time dateTime={entry.date}>{entry.date}</time>
@@ -75,7 +75,7 @@ export function TransmissionCard({
           <span className="text-muted/50">{entry.id}</span>
         </div>
 
-        <h3 className="font-sans text-base font-semibold tracking-wide text-foreground text-glow-sm sm:text-lg">
+        <h3 className="max-w-full font-sans text-[16px] tracking-wide text-[#FF2CF0] [overflow-wrap:anywhere] [text-wrap:wrap] sm:text-[18px]">
           {entry.title}
         </h3>
 
@@ -94,7 +94,7 @@ export function TransmissionCard({
 
         <div
           id={contentId}
-          className="mt-3 space-y-3 font-mono text-[13.5pt] leading-[1.55] text-muted"
+          className="mt-3 space-y-3 font-mono text-[14px] leading-[1.5] text-muted"
         >
           <AnimatePresence initial={false} mode="wait">
             {preview ? (

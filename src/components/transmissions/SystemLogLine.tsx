@@ -164,15 +164,13 @@ export function SystemLogLine({
       transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.3 }}
     >
       <span
-        className={`absolute left-0.5 top-3 h-2.5 w-2.5 rounded-full border border-void ${nodeClass} opacity-90 box-glow`}
+        className={`absolute left-0.5 top-3 h-2 w-2 ${nodeClass}`}
         aria-hidden
       />
 
       <div
-        className={`overflow-hidden rounded-md border border-neon-cyan/20 bg-black/55 font-mono shadow-[inset_0_0_28px_rgba(0,240,255,0.05)] ${
-          hasImage
-            ? "hologram-border box-glow"
-            : "border-neon-cyan/15 px-3 py-2.5"
+        className={`circuit-frame overflow-hidden bg-black font-mono ${
+          hasImage ? "" : "px-3 py-2.5"
         }`}
       >
         {hasImage ? (
@@ -186,7 +184,7 @@ export function SystemLogLine({
                 fill
                 unoptimized
                 sizes="(max-width: 640px) 280px, 220px"
-                className="object-cover object-center"
+                className="object-cover object-center pixelated"
               />
               {/* Scan corner accents */}
               <span
@@ -221,7 +219,7 @@ export function SystemLogLine({
                 </p>
               )}
 
-              <p className="whitespace-pre-line text-[13.5pt] leading-[1.55] text-neon-cyan/90">
+              <p className="whitespace-pre-line text-[14px] leading-[1.5] text-neon-cyan/90">
                 <span className="mr-1 select-none text-neon-cyan/35" aria-hidden>
                   &gt;
                 </span>
@@ -254,7 +252,7 @@ export function SystemLogLine({
               </p>
             )}
 
-            <p className="mt-1.5 whitespace-pre-line text-[13.5pt] leading-[1.55] text-neon-cyan/90">
+            <p className="mt-1.5 whitespace-pre-line text-[14px] leading-[1.5] text-neon-cyan/90">
               <span className="mr-1.5 select-none text-neon-cyan/40" aria-hidden>
                 &gt;
               </span>

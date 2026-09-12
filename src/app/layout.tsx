@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${pressStart.variable} ${vt323.variable} font-mono antialiased`}
+        className={`${pressStart.variable} ${vt323.variable} font-mono`}
       >
         <Web3Providers>
           <ImmersiveShell>{children}</ImmersiveShell>

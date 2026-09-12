@@ -1,5 +1,5 @@
 /**
- * Soft neon ambient orbs for depth behind content.
+ * Split-energy plate glow — hard layers, no photographic blur.
  */
 export function GlowOrb({
   className = "",
@@ -8,19 +8,21 @@ export function GlowOrb({
   className?: string;
   color?: "cyan" | "blue" | "magenta" | "gold";
 }) {
-  const bg =
+  const tone =
     color === "magenta"
-      ? "bg-neon-magenta/20"
-      : color === "gold"
-        ? "bg-neon-gold/20"
-        : color === "cyan"
-          ? "bg-neon-cyan/20"
-          : "bg-neon-blue/20";
+      ? "bg-[#FF2CF0]/25"
+      : color === "cyan"
+        ? "bg-[#0CF1FF]/25"
+        : "bg-[#3003D9]/20";
 
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none absolute rounded-full blur-3xl ${bg} ${className}`}
+      className={`pointer-events-none absolute ${tone} ${className}`}
+      style={{
+        clipPath:
+          "polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px)",
+      }}
     />
   );
 }

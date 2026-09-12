@@ -24,7 +24,7 @@ export function EraTabs({
     <div
       role="tablist"
       aria-label="Feed era"
-      className="mb-4 inline-flex flex-wrap gap-1 rounded-lg border border-neon-blue/30 bg-black/50 p-1"
+      className="circuit-frame mb-4 inline-flex flex-wrap gap-1 bg-black p-1"
     >
       {ERAS.map((era) => {
         const active = value === era.id;
@@ -39,13 +39,13 @@ export function EraTabs({
             id={`era-tab-${era.id}`}
             title={era.hint}
             className={[
-              "rounded-md px-3 py-2.5 font-mono text-[10pt] uppercase tracking-[0.18em] transition-all sm:px-5",
-              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neon-cyan/70",
+              "px-3 py-2.5 font-sans text-[11px] uppercase tracking-[0.12em] transition-colors sm:px-5 sm:text-[12px]",
+              "focus-visible:outline-none",
               active && !isArchive
-                ? "bg-neon-cyan/15 text-neon-cyan box-glow border border-neon-cyan/50"
+                ? "text-neon-cyan"
                 : active && isArchive
-                  ? "bg-violet-500/15 text-violet-300 box-glow border border-violet-400/45"
-                  : "border border-transparent text-muted hover:border-neon-blue/30 hover:text-foreground",
+                  ? "text-[#FF2CF0]"
+                  : "text-muted hover:text-[#FF2CF0]",
             ].join(" ")}
             onClick={() => onChange(era.id)}
           >
