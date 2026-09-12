@@ -3,35 +3,38 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useAccount, useBalance, useDisconnect } from "wagmi";
-import { useMultiChain } from "@/components/web3/MultiChainProvider";
 import {
   formatNativeBalance,
   getEvmExplorerUrl,
-  getSolanaExplorerUrl,
-  getTezosExplorerUrl,
   truncateAddress,
 } from "@/lib/web3/multi-chain";
 import { getChainBadgeLabel } from "@/lib/web3/config";
+import {
+  formatUsdFiat,
+  geckoIdForNative,
+  usdFromTicker,
+} from "@/lib/web3/native-usd";
+import type { MarketPricesResponse } from "@/lib/types";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onLinkAnother: () => void;
+  onSwitchNetwork: () => void;
 };
 
 async function copyText(text: string) {
   try {
     await navigator.clipboard.writeText(text);
   } catch {
-    // ignore
+    /* ignore */
   }
 }
 
 /**
- * Custom VΣLOHE account panel — replaces RainbowKit openAccountModal.
- * Portaled to document.body so navbar backdrop-filter cannot clip it.
+ * CyborgPunks Club account panel — replaces RainbowKit openAccountModal.
+ * EVM only. Portaled to document.body.
  */
-export function NodeAccountModal({ open, onClose, onLinkAnother }: Props) {
+export function NodeAccountModal({ open, onClose, onSwitchNetwork }: Props) {
   const [mounted, setMounted] = useState(false);
   const { address, chain, isConnected } = useAccount();
   const { data: evmBalance } = useBalance({
@@ -39,8 +42,8 @@ export function NodeAccountModal({ open, onClose, onLinkAnother }: Props) {
     query: { enabled: Boolean(address) },
   });
   const { disconnect } = useDisconnect();
-  const { solana, tezos, disconnectSolana, disconnectTezos } = useMultiChain();
-  const [copied, setCopied] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [usd, setUsd] = useState<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -55,18 +58,64 @@ export function NodeAccountModal({ open, onClose, onLinkAnother }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
+  useEffect(() => {
+    if (!open) return;
+    const symbol = evmBalance?.symbol ?? chain?.nativeCurrency.symbol ?? "ETH";
+    const amount = evmBalance ? Number(evmBalance.formatted) : null;
+    let cancelled = false;
+
+    const load = async () => {
+      try {
+        const res = await fetch("/api/market/prices", { cache: "no-store" });
+        const json = (await res.json()) as MarketPricesResponse;
+        let price = usdFromTicker(symbol, json.coins ?? []);
+        if (price == null) {
+          const geckoId = geckoIdForNative(symbol);
+          const spot = await fetch(
+            `/api/market/prices?ids=${encodeURIComponent(geckoId)}`,
+            { cache: "no-store" },
+          );
+          const spotJson = (await spot.json()) as {
+            quotes?: Record<string, number | null>;
+          };
+          price = spotJson.quotes?.[geckoId] ?? null;
+        }
+        if (!cancelled) {
+          setUsd(
+            price != null && amount != null && Number.isFinite(amount)
+              ? price * amount
+              : null,
+          );
+        }
+      } catch {
+        if (!cancelled) setUsd(null);
+      }
+    };
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, evmBalance, chain?.nativeCurrency.symbol]);
+
   if (!mounted || !open) return null;
 
-  const markCopied = (id: string) => {
-    setCopied(id);
-    window.setTimeout(() => setCopied(null), 1200);
-  };
+  const symbol = evmBalance?.symbol ?? chain?.nativeCurrency.symbol ?? "ETH";
+  const cryptoLabel = evmBalance
+    ? formatNativeBalance(Number(evmBalance.formatted), symbol)
+    : `--- ${symbol}`;
+  const explorer =
+    chain?.blockExplorers?.default.url && address
+      ? `${chain.blockExplorers.default.url}/address/${address}`
+      : address
+        ? getEvmExplorerUrl(chain?.id ?? 1, address)
+        : "#";
 
   return createPortal(
     <div className="fixed inset-0 z-[200] flex items-center justify-center overflow-y-auto p-4">
       <button
         type="button"
-        className="absolute inset-0 bg-void/85 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/90"
         aria-label="Close"
         onClick={onClose}
       />
@@ -75,185 +124,92 @@ export function NodeAccountModal({ open, onClose, onLinkAnother }: Props) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="node-account-title"
-        className="panel box-glow relative z-10 my-auto w-full max-w-lg max-h-[min(88dvh,640px)] overflow-y-auto rounded-lg border border-neon-cyan/30 p-5 sm:p-6"
+        className="circuit-frame relative z-10 my-auto w-full max-w-md p-5 sm:p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-neon-cyan/70">
-          Node // Linked Identities
+        <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80">
+          Node // Link
         </p>
         <h2
           id="node-account-title"
-          className="mt-2 font-sans text-lg font-semibold tracking-wide text-neon-cyan"
+          className="mt-2 font-sans text-[11px] tracking-wide text-[#0CF1FF]"
         >
-          Account
+          CyborgPunks Club
         </h2>
 
-        <div className="mt-5 space-y-3">
-          {isConnected && address && (
-            <article className="rounded border border-neon-cyan/25 bg-black/40 p-3">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-neon-cyan">
-                    EVM
-                  </p>
-                  <p className="mt-1 font-mono text-[10px] text-muted">
-                    {chain
-                      ? getChainBadgeLabel(chain.id, chain.name)
-                      : "UNKNOWN"}
-                  </p>
-                  <p className="mt-1 font-mono text-xs text-foreground">
-                    {truncateAddress(address, 6, 4)}
-                  </p>
-                  <p className="mt-1 font-mono text-[11px] text-neon-cyan/80">
-                    {evmBalance
-                      ? formatNativeBalance(
-                          Number(evmBalance.formatted),
-                          evmBalance.symbol,
-                        )
-                      : `--- ${chain?.nativeCurrency.symbol ?? "ETH"}`}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  className="rounded border border-neon-cyan/30 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-neon-cyan hover:bg-neon-cyan/10"
-                  onClick={async () => {
-                    await copyText(address);
-                    markCopied("evm");
-                  }}
-                >
-                  {copied === "evm" ? "Copied" : "Copy"}
-                </button>
-                <a
-                  href={getEvmExplorerUrl(chain?.id ?? 1, address)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded border border-neon-blue/30 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-neon-blue hover:bg-neon-blue/10"
-                >
-                  Explorer
-                </a>
-                <button
-                  type="button"
-                  className="rounded border border-rose-400/40 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-rose-300 hover:bg-rose-500/10"
-                  onClick={() => disconnect()}
-                >
-                  Disconnect
-                </button>
-              </div>
-            </article>
-          )}
-
-          {solana && (
-            <article className="rounded border border-neon-blue/25 bg-black/40 p-3">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-neon-blue">
-                Solana
-              </p>
-              <p className="mt-1 font-mono text-[10px] text-muted">
-                {solana.walletName}
-              </p>
-              <p className="mt-1 font-mono text-xs text-foreground">
-                {truncateAddress(solana.address, 6, 4)}
-              </p>
-              <p className="mt-1 font-mono text-[11px] text-neon-blue/80">
-                {formatNativeBalance(solana.balance, solana.symbol)}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  className="rounded border border-neon-cyan/30 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-neon-cyan hover:bg-neon-cyan/10"
-                  onClick={async () => {
-                    await copyText(solana.address);
-                    markCopied("sol");
-                  }}
-                >
-                  {copied === "sol" ? "Copied" : "Copy"}
-                </button>
-                <a
-                  href={getSolanaExplorerUrl(solana.address)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded border border-neon-blue/30 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-neon-blue hover:bg-neon-blue/10"
-                >
-                  Explorer
-                </a>
-                <button
-                  type="button"
-                  className="rounded border border-rose-400/40 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-rose-300 hover:bg-rose-500/10"
-                  onClick={() => void disconnectSolana()}
-                >
-                  Disconnect
-                </button>
-              </div>
-            </article>
-          )}
-
-          {tezos && (
-            <article className="rounded border border-violet-400/25 bg-black/40 p-3">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-violet-300">
-                Tezos
-              </p>
-              <p className="mt-1 font-mono text-[10px] text-muted">
-                {tezos.walletName}
-              </p>
-              <p className="mt-1 font-mono text-xs text-foreground">
-                {truncateAddress(tezos.address, 6, 4)}
-              </p>
-              <p className="mt-1 font-mono text-[11px] text-violet-300/80">
-                {formatNativeBalance(tezos.balance, tezos.symbol)}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  className="rounded border border-neon-cyan/30 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-neon-cyan hover:bg-neon-cyan/10"
-                  onClick={async () => {
-                    await copyText(tezos.address);
-                    markCopied("xtz");
-                  }}
-                >
-                  {copied === "xtz" ? "Copied" : "Copy"}
-                </button>
-                <a
-                  href={getTezosExplorerUrl(tezos.address)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded border border-neon-blue/30 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-neon-blue hover:bg-neon-blue/10"
-                >
-                  Explorer
-                </a>
-                <button
-                  type="button"
-                  className="rounded border border-rose-400/40 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-rose-300 hover:bg-rose-500/10"
-                  onClick={() => void disconnectTezos()}
-                >
-                  Disconnect
-                </button>
-              </div>
-            </article>
-          )}
-
-          {!isConnected && !solana && !tezos && (
-            <p className="font-mono text-[11px] text-muted">
-              No namespaces linked.
+        {isConnected && address ? (
+          <article className="panel mt-4 p-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="hud-chip !px-2 !py-1">
+                {chain
+                  ? getChainBadgeLabel(chain.id, chain.name)
+                  : "UNKNOWN"}
+              </span>
+            </div>
+            <p className="mt-3 font-mono text-[11px] text-foreground">
+              {truncateAddress(address, 4, 4)}
             </p>
-          )}
-        </div>
+            <p className="mt-2 font-mono text-[11px] text-[#0CF1FF]">
+              {cryptoLabel}
+            </p>
+            <p className="mt-1 font-mono text-[11px] text-[#DB3FFD]">
+              {formatUsdFiat(usd)}
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                className="hud-chip !px-2 !py-1"
+                onClick={async () => {
+                  await copyText(address);
+                  setCopied(true);
+                  window.setTimeout(() => setCopied(false), 1200);
+                }}
+              >
+                {copied ? "Copied" : "Copy"}
+              </button>
+              <a
+                href={explorer}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hud-chip hud-chip-outline !px-2 !py-1"
+              >
+                Explorer
+              </a>
+            </div>
+          </article>
+        ) : (
+          <p className="mt-4 font-mono text-[11px] text-muted">
+            No EVM node linked.
+          </p>
+        )}
 
-        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+        <div className="mt-5 flex flex-col gap-2">
           <button
             type="button"
             onClick={() => {
               onClose();
-              onLinkAnother();
+              onSwitchNetwork();
             }}
-            className="flex-1 rounded border border-neon-cyan/40 bg-neon-cyan/10 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-neon-cyan hover:bg-neon-cyan/20"
+            className="hud-chip w-full uppercase"
           >
-            Link another chain
+            Switch Network
           </button>
+          {isConnected && (
+            <button
+              type="button"
+              onClick={() => {
+                disconnect();
+                onClose();
+              }}
+              className="hud-chip hud-chip-outline w-full uppercase"
+            >
+              Disconnect Node
+            </button>
+          )}
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded border border-neon-cyan/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-muted hover:border-neon-cyan/40 hover:text-neon-cyan"
+            className="hud-chip hud-chip-outline w-full uppercase"
           >
             Close
           </button>

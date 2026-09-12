@@ -32,7 +32,7 @@ export function Web3Providers({ children }: { children: ReactNode }) {
         <RainbowKitProvider
           initialChain={PRIMARY_CHAIN}
           theme={darkTheme({
-            accentColor: "#0cf1ff",
+            accentColor: "#0CF1FF",
             accentColorForeground: "#000000",
             borderRadius: "none",
             fontStack: "system",

@@ -1,37 +1,66 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import type { MarketPricesResponse } from "@/lib/types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { MarketCoinQuote, MarketPricesResponse } from "@/lib/types";
 
 const POLL_MS = 45_000;
-
-type TokenKey = "btc" | "eth" | "sol" | "xtz" | "pol";
-
-type TokenChip = {
-  key: TokenKey;
-  label: string;
-  value: number | null;
-  source: string;
-  tone: string;
-  hint?: string;
-};
+const VISIBLE = 7;
 
 function formatUsd(value: number | null): string {
   if (value === null || Number.isNaN(value)) return "---";
-  const digits = value < 1 ? 4 : 2;
+  if (value < 1) {
+    return `$${value.toLocaleString("en-US", {
+      minimumFractionDigits: 4,
+      maximumFractionDigits: 4,
+    })}`;
+  }
+  if (value >= 1000) {
+    return `$${value.toLocaleString("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })}`;
+  }
   return `$${value.toLocaleString("en-US", {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   })}`;
 }
 
+function chipTone(symbol: string, offline: boolean): string {
+  if (offline) return "text-muted";
+  if (symbol === "BTC") return "text-neon-gold";
+  if (symbol === "ETH") return "text-slate-100";
+  return "text-neon-cyan";
+}
+
+function CoinChip({
+  coin,
+  status,
+}: {
+  coin: MarketCoinQuote;
+  status: "loading" | "ok" | "error";
+}) {
+  const price =
+    status === "loading" && coin.usd == null ? "…" : formatUsd(coin.usd);
+  const offline = status === "error" || coin.usd == null;
+  return (
+    <span
+      className={`ticker-chip shrink-0 ${chipTone(coin.symbol, offline)}`}
+      title={coin.name}
+    >
+      {coin.symbol} {"//"} {price}
+    </span>
+  );
+}
+
 /**
- * One row, five chips: BTC ETH SOL XTZ POL.
- * Polls /api/market/prices every 45s.
+ * One compact ticker row: first 7 coins by API order, rest behind MORE.
  */
 export function MarketTicker() {
   const [data, setData] = useState<MarketPricesResponse | null>(null);
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -42,8 +71,11 @@ export function MarketTicker() {
         if (!res.ok) throw new Error(`http_${res.status}`);
         const json = (await res.json()) as MarketPricesResponse;
         if (!cancelled) {
-          setData(json);
-          setStatus("ok");
+          const coins = [...(json.coins ?? [])].sort(
+            (a, b) => a.marketCapRank - b.marketCapRank,
+          );
+          setData({ ...json, coins });
+          setStatus(coins.length ? "ok" : "error");
         }
       } catch {
         if (!cancelled) setStatus("error");
@@ -58,78 +90,90 @@ export function MarketTicker() {
     };
   }, []);
 
-  const tokens: TokenChip[] = useMemo(
-    () => [
-      {
-        key: "btc",
-        label: "BTC",
-        value: data?.btcUsd ?? null,
-        source: data?.sources.btc ?? "pending",
-        tone: "text-neon-gold",
-      },
-      {
-        key: "eth",
-        label: "ETH",
-        value: data?.ethUsd ?? null,
-        source: data?.sources.eth ?? "pending",
-        tone: "text-slate-100",
-      },
-      {
-        key: "sol",
-        label: "SOL",
-        value: data?.solUsd ?? null,
-        source: data?.sources.sol ?? "pending",
-        tone: "text-neon-cyan",
-      },
-      {
-        key: "xtz",
-        label: "XTZ",
-        hint: "Tezos",
-        value: data?.xtzUsd ?? data?.txzUsd ?? null,
-        source: data?.sources.xtz ?? data?.sources.txz ?? "pending",
-        tone: "text-[#9aa8ff]",
-      },
-      {
-        key: "pol",
-        label: "POL",
-        value: data?.polUsd ?? null,
-        source: data?.sources.pol ?? "pending",
-        tone: "text-neon-magenta",
-      },
-    ],
-    [data],
-  );
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMoreOpen(false);
+    };
+    const onPointer = (e: PointerEvent) => {
+      if (moreRef.current?.contains(e.target as Node)) return;
+      setMoreOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("pointerdown", onPointer);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerdown", onPointer);
+    };
+  }, [moreOpen]);
+
+  const coins = data?.coins ?? [];
+  const visible = useMemo(() => coins.slice(0, VISIBLE), [coins]);
+  const hidden = useMemo(() => coins.slice(VISIBLE), [coins]);
+
+  const fallback: MarketCoinQuote[] = [
+    { id: "bitcoin", symbol: "BTC", name: "Bitcoin", usd: null, marketCapRank: 1 },
+    { id: "ethereum", symbol: "ETH", name: "Ethereum", usd: null, marketCapRank: 2 },
+  ];
+  const shown = visible.length ? visible : fallback;
 
   const title = data
-    ? `Updated ${data.updatedAt} · ${tokens
-        .map((t) => `${t.label}${t.hint ? ` (${t.hint})` : ""}:${t.source}`)
-        .join(" · ")}`
+    ? `Updated ${data.updatedAt} · top ${coins.length} by USD market cap`
     : status === "error"
       ? "Price feed offline"
       : "Loading market feed";
 
   return (
     <div
-      className="flex w-full max-w-full flex-nowrap items-center justify-center gap-1.5 overflow-x-auto font-sans text-[10px] uppercase tracking-wider sm:gap-2 sm:text-[11px]"
+      className="relative z-40 w-full min-w-0 overflow-visible"
       title={title}
       aria-live="polite"
     >
-      {tokens.map((token) => {
-        const label =
-          status === "loading" && token.value == null
-            ? "…"
-            : formatUsd(token.value);
-        const offline = status === "error" || token.value == null;
-        return (
-          <span
-            key={token.key}
-            className={`ticker-chip ${offline ? "text-muted" : token.tone}`}
-            title={token.hint}
+      <div className="flex w-full min-w-0 flex-nowrap items-center justify-center gap-1 overflow-visible">
+        {shown.map((coin) => (
+          <CoinChip key={coin.id} coin={coin} status={status} />
+        ))}
+        <div className="relative z-40 shrink-0" ref={moreRef}>
+          <button
+            type="button"
+            className="ticker-chip !px-2 !py-0.5"
+            aria-expanded={moreOpen}
+            aria-haspopup="listbox"
+            onClick={(e) => {
+              e.stopPropagation();
+              setMoreOpen((v) => !v);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setMoreOpen((v) => !v);
+              }
+            }}
           >
-            {token.label} {"//"} {label}
-          </span>
-        );
-      })}
+            MORE
+          </button>
+          {moreOpen && (
+            <div
+              role="listbox"
+              className="circuit-frame panel absolute top-full left-1/2 z-40 mt-1 max-h-[60vh] w-[min(18rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-y-auto bg-black p-2"
+            >
+              {hidden.length === 0 ? (
+                <p className="px-2 py-1 font-mono text-muted">
+                  {"// no extra quotes"}
+                </p>
+              ) : (
+                <ul className="flex flex-col gap-1">
+                  {hidden.map((coin) => (
+                    <li key={coin.id}>
+                      <CoinChip coin={coin} status={status} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

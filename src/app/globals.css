@@ -98,6 +98,22 @@ body::before {
 
 [data-rk] {
   z-index: 300;
+  --rk-colors-modalBackground: #000000;
+  --rk-colors-accentColor: #0cf1ff;
+  --rk-colors-accentColorForeground: #000000;
+  --rk-colors-connectButtonBackground: #05010d;
+  --rk-colors-connectButtonText: #0cf1ff;
+  --rk-colors-profileForeground: #05010d;
+  --rk-colors-menuItemBackground: #05010d;
+  --rk-radii-modal: 0px;
+  --rk-radii-actionButton: 0px;
+  --rk-radii-connectButton: 0px;
+  --rk-radii-menuButton: 0px;
+  --rk-radii-modalMobile: 0px;
+  --rk-fonts-body: var(--font-press-start), ui-monospace, monospace;
+}
+[data-rk] * {
+  border-radius: 0 !important;
 }
 
 ::selection {
@@ -199,23 +215,22 @@ button.hud-chip:disabled {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
-  padding: 0.3rem 0.55rem;
+  padding: 0.15rem 0.35rem;
   font-family: var(--font-press-start), ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  max-width: 100%;
+  font-size: 8px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   background: #05010a;
   border: 2px solid #0cf1ff;
   clip-path: polygon(
-    6px 0,
-    calc(100% - 6px) 0,
-    100% 6px,
-    100% calc(100% - 6px),
-    calc(100% - 6px) 100%,
-    6px 100%,
-    0 calc(100% - 6px),
-    0 6px
+    3px 0,
+    calc(100% - 3px) 0,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    0 calc(100% - 3px),
+    0 3px
   );
 }
 
@@ -286,8 +301,7 @@ button.hud-chip:disabled {
   image-rendering: crisp-edges;
 }
 
-header,
-.ticker-chip {
+header {
   max-width: 100%;
 }
 
@@ -296,7 +310,7 @@ header,
     font-size: 12px;
   }
   .ticker-chip {
-    font-size: 11px;
+    font-size: 9px;
   }
 }
 

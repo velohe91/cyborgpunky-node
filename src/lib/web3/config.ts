@@ -4,7 +4,27 @@
  */
 
 import { http, createConfig, createStorage, cookieStorage } from "wagmi";
-import { mainnet, polygon } from "wagmi/chains";
+import {
+  abstract,
+  apeChain,
+  arbitrum,
+  avalanche,
+  base,
+  berachain,
+  blast,
+  flowMainnet,
+  ink,
+  mainnet,
+  monad,
+  optimism,
+  polygon,
+  ronin,
+  sei,
+  shape,
+  soneium,
+  unichain,
+  zora,
+} from "wagmi/chains";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
   metaMaskWallet,
@@ -15,13 +35,53 @@ import {
 /** Default chain: Ethereum (CyborgPunks Club collection). */
 export const PRIMARY_CHAIN = mainnet;
 
-/** EVM networks exposed in RainbowKit: Ethereum + Polygon. */
-export const SUPPORTED_CHAINS = [mainnet, polygon] as const;
+/**
+ * OpenSea EVM set, only chains exported by wagmi/viem.
+ * Skip any OpenSea network not in wagmi/chains.
+ */
+export const SUPPORTED_CHAINS = [
+  mainnet,
+  polygon,
+  arbitrum,
+  optimism,
+  avalanche,
+  base,
+  blast,
+  zora,
+  sei,
+  berachain,
+  flowMainnet,
+  apeChain,
+  soneium,
+  shape,
+  unichain,
+  ronin,
+  abstract,
+  monad,
+  ink,
+] as const;
 
 /** Short labels for chrome that still reads chain id. */
 export const CHAIN_BADGE_LABELS: Record<number, string> = {
   [mainnet.id]: "ETHEREUM",
   [polygon.id]: "POLYGON",
+  [arbitrum.id]: "ARBITRUM",
+  [optimism.id]: "OPTIMISM",
+  [avalanche.id]: "AVALANCHE",
+  [base.id]: "BASE",
+  [blast.id]: "BLAST",
+  [zora.id]: "ZORA",
+  [sei.id]: "SEI",
+  [berachain.id]: "BERACHAIN",
+  [flowMainnet.id]: "FLOW",
+  [apeChain.id]: "APECHAIN",
+  [soneium.id]: "SONEIUM",
+  [shape.id]: "SHAPE",
+  [unichain.id]: "UNICHAIN",
+  [ronin.id]: "RONIN",
+  [abstract.id]: "ABSTRACT",
+  [monad.id]: "MONAD",
+  [ink.id]: "INK",
 };
 
 export function getChainBadgeLabel(
@@ -58,13 +118,16 @@ export const APP_NAME = "CyborgPunks Club";
 function alchemyRpc(chainId: number): string | undefined {
   const id = process.env.NEXT_PUBLIC_ALCHEMY_ID?.trim();
   if (!id) return undefined;
-  if (chainId === mainnet.id) {
-    return `https://eth-mainnet.g.alchemy.com/v2/${id}`;
-  }
-  if (chainId === polygon.id) {
-    return `https://polygon-mainnet.g.alchemy.com/v2/${id}`;
-  }
-  return undefined;
+  const host: Record<number, string> = {
+    [mainnet.id]: "eth-mainnet",
+    [polygon.id]: "polygon-mainnet",
+    [base.id]: "base-mainnet",
+    [arbitrum.id]: "arb-mainnet",
+    [optimism.id]: "opt-mainnet",
+  };
+  const slug = host[chainId];
+  if (!slug) return undefined;
+  return `https://${slug}.g.alchemy.com/v2/${id}`;
 }
 
 function transportFor(chainId: number) {
@@ -88,13 +151,14 @@ export function getWagmiConfig() {
     },
   );
 
+  const transports = Object.fromEntries(
+    SUPPORTED_CHAINS.map((chain) => [chain.id, transportFor(chain.id)]),
+  ) as Record<(typeof SUPPORTED_CHAINS)[number]["id"], ReturnType<typeof http>>;
+
   return createConfig({
     connectors,
-    chains: [mainnet, polygon],
-    transports: {
-      [mainnet.id]: transportFor(mainnet.id),
-      [polygon.id]: transportFor(polygon.id),
-    },
+    chains: SUPPORTED_CHAINS,
+    transports,
     ssr: true,
     storage: createStorage({
       storage: cookieStorage,

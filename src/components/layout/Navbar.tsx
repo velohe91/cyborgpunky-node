@@ -15,7 +15,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 border-b-2 border-[#0CF1FF] bg-black">
+    <header className="fixed inset-x-0 top-0 z-30 overflow-visible border-b-2 border-[#0CF1FF] bg-black">
       <div className="mx-auto flex min-h-11 w-full max-w-7xl items-center justify-between gap-2 px-3 sm:min-h-12 sm:px-4">
         <Link
           href="/"
@@ -79,8 +79,8 @@ export function Navbar() {
           </button>
         </div>
       </div>
-      <div className="border-t border-[#FF2CF0]/40 bg-black px-2 py-1">
-        <div className="mx-auto flex max-w-7xl justify-center">
+      <div className="overflow-visible border-t border-[#FF2CF0]/40 bg-black px-2 py-1">
+        <div className="relative z-40 mx-auto w-full max-w-7xl overflow-visible">
           <MarketTicker />
         </div>
       </div>

@@ -5,28 +5,24 @@ import { createPortal } from "react-dom";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { HAS_WALLETCONNECT_PROJECT_ID } from "@/lib/web3/config";
 import { truncateAddress } from "@/lib/web3/multi-chain";
+import { NodeAccountModal } from "@/components/web3/NodeAccountModal";
+import { NetworkSwitchModal } from "@/components/web3/NetworkSwitchModal";
 
 const nodeBtnClass =
   "hud-chip !px-2.5 !py-1.5";
 
 /**
- * Header CONNECT NODE — RainbowKit connect / account modals only.
- * Disconnect lives in RainbowKit's account modal.
+ * Header CONNECT NODE — RainbowKit for wallet pick; custom NODE // LINK account.
  */
 export function ConnectNodeButton() {
   const [missingEnvOpen, setMissingEnvOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [networkOpen, setNetworkOpen] = useState(false);
 
   return (
     <>
       <ConnectButton.Custom>
-        {({
-          account,
-          chain,
-          openAccountModal,
-          openChainModal,
-          openConnectModal,
-          mounted,
-        }) => {
+        {({ account, chain, openConnectModal, mounted }) => {
           const ready = mounted;
 
           const onConnect = () => {
@@ -65,7 +61,7 @@ export function ConnectNodeButton() {
             return (
               <button
                 type="button"
-                onClick={openChainModal}
+                onClick={() => setNetworkOpen(true)}
                 className={`${nodeBtnClass} uppercase`}
               >
                 Switch Network
@@ -76,7 +72,7 @@ export function ConnectNodeButton() {
           return (
             <button
               type="button"
-              onClick={openAccountModal}
+              onClick={() => setAccountOpen(true)}
               className={nodeBtnClass}
               title={account.address}
             >
@@ -89,6 +85,15 @@ export function ConnectNodeButton() {
       {missingEnvOpen && (
         <MissingProjectIdModal onClose={() => setMissingEnvOpen(false)} />
       )}
+      <NodeAccountModal
+        open={accountOpen}
+        onClose={() => setAccountOpen(false)}
+        onSwitchNetwork={() => setNetworkOpen(true)}
+      />
+      <NetworkSwitchModal
+        open={networkOpen}
+        onClose={() => setNetworkOpen(false)}
+      />
     </>
   );
 }

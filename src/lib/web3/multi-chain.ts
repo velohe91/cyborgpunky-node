@@ -90,9 +90,13 @@ export function truncateAddress(address: string, head = 4, tail = 2): string {
 export function getEvmExplorerUrl(chainId: number, address: string): string {
   const map: Record<number, string> = {
     1: `https://etherscan.io/address/${address}`,
-    8453: `https://basescan.org/address/${address}`,
     137: `https://polygonscan.com/address/${address}`,
-    56: `https://bscscan.com/address/${address}`,
+    42161: `https://arbiscan.io/address/${address}`,
+    10: `https://optimistic.etherscan.io/address/${address}`,
+    43114: `https://snowtrace.io/address/${address}`,
+    8453: `https://basescan.org/address/${address}`,
+    81457: `https://blastscan.io/address/${address}`,
+    7777777: `https://explorer.zora.energy/address/${address}`,
   };
   return map[chainId] ?? `https://etherscan.io/address/${address}`;
 }
