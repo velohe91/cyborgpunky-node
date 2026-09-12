@@ -155,7 +155,7 @@ export function MarketTicker() {
           {moreOpen && (
             <div
               role="listbox"
-              className="circuit-frame panel absolute top-full left-1/2 z-40 mt-1 max-h-[60vh] w-[min(18rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-y-auto bg-black p-2"
+              className="circuit-frame panel !absolute top-full left-1/2 z-40 mt-1 max-h-[60vh] w-[min(18rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-y-auto bg-black p-2"
             >
               {hidden.length === 0 ? (
                 <p className="px-2 py-1 font-mono text-muted">
