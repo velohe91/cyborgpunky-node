@@ -138,7 +138,7 @@ export function MarketTicker() {
             key={coin.id}
             coin={coin}
             status={status}
-            className={index >= 2 ? "hidden md:inline" : ""}
+            className={index >= 2 ? "!hidden md:!inline-flex" : ""}
           />
         ))}
         <div className="relative z-40 shrink-0" ref={moreRef}>
