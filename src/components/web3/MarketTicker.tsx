@@ -62,6 +62,9 @@ export function MarketTicker() {
   const [data, setData] = useState<MarketPricesResponse | null>(null);
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
   const [moreOpen, setMoreOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 768,
+  );
   const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,6 +96,14 @@ export function MarketTicker() {
   }, []);
 
   useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
     if (!moreOpen) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMoreOpen(false);
@@ -118,7 +129,10 @@ export function MarketTicker() {
     { id: "bitcoin", symbol: "BTC", name: "Bitcoin", usd: null, marketCapRank: 1 },
     { id: "ethereum", symbol: "ETH", name: "Ethereum", usd: null, marketCapRank: 2 },
   ];
-  const shown = visible.length ? visible : fallback;
+  const shown = useMemo(() => {
+    if (!visible.length) return fallback;
+    return isMobile ? visible.slice(0, 2) : visible;
+  }, [visible, isMobile]);
 
   const title = data
     ? `Updated ${data.updatedAt} · top ${coins.length} by USD market cap`
@@ -133,13 +147,8 @@ export function MarketTicker() {
       aria-live="polite"
     >
       <div className="ticker-row flex w-full min-w-0 flex-nowrap items-center justify-center gap-1 overflow-visible">
-        {shown.map((coin, index) => (
-          <CoinChip
-            key={coin.id}
-            coin={coin}
-            status={status}
-            className={index >= 2 ? "!hidden md:!inline-flex" : ""}
-          />
+        {shown.map((coin) => (
+          <CoinChip key={coin.id} coin={coin} status={status} />
         ))}
         <div className="relative z-40 shrink-0" ref={moreRef}>
           <button
