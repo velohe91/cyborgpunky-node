@@ -155,7 +155,7 @@ export function MarketTicker() {
           {moreOpen && (
             <div
               role="listbox"
-              className="circuit-frame panel !absolute top-full left-1/2 z-40 mt-1 max-h-[60vh] w-[min(18rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-y-auto bg-black p-2"
+              className="circuit-frame panel ticker-dropdown z-40 bg-black p-2"
             >
               {hidden.length === 0 ? (
                 <p className="px-2 py-1 font-mono text-muted">
@@ -175,6 +175,18 @@ export function MarketTicker() {
         </div>
       </div>
       <style jsx>{`
+        .ticker-dropdown {
+          position: absolute !important;
+          top: calc(100% + 4px) !important;
+          left: 50% !important;
+          width: min(18rem, calc(100vw - 1.5rem)) !important;
+          max-height: 60vh !important;
+          height: auto !important;
+          min-height: 0 !important;
+          transform: translateX(-50%) !important;
+          overflow-y: auto !important;
+        }
+
         @media (max-width: 767px) {
           .ticker-row > .ticker-chip:nth-of-type(n + 4) {
             display: none;
