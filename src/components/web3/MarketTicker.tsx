@@ -36,16 +36,18 @@ function chipTone(symbol: string, offline: boolean): string {
 function CoinChip({
   coin,
   status,
+  className = "",
 }: {
   coin: MarketCoinQuote;
   status: "loading" | "ok" | "error";
+  className?: string;
 }) {
   const price =
     status === "loading" && coin.usd == null ? "…" : formatUsd(coin.usd);
   const offline = status === "error" || coin.usd == null;
   return (
     <span
-      className={`ticker-chip shrink-0 ${chipTone(coin.symbol, offline)}`}
+      className={`ticker-chip shrink-0 ${className} ${chipTone(coin.symbol, offline)}`}
       title={coin.name}
     >
       {coin.symbol} {"//"} {price}
@@ -109,7 +111,8 @@ export function MarketTicker() {
 
   const coins = data?.coins ?? [];
   const visible = useMemo(() => coins.slice(0, VISIBLE), [coins]);
-  const hidden = useMemo(() => coins.slice(VISIBLE), [coins]);
+  const hiddenDesktop = useMemo(() => coins.slice(VISIBLE), [coins]);
+  const hiddenMobile = useMemo(() => coins.slice(2), [coins]);
 
   const fallback: MarketCoinQuote[] = [
     { id: "bitcoin", symbol: "BTC", name: "Bitcoin", usd: null, marketCapRank: 1 },
@@ -130,8 +133,13 @@ export function MarketTicker() {
       aria-live="polite"
     >
       <div className="ticker-row flex w-full min-w-0 flex-nowrap items-center justify-center gap-1 overflow-visible">
-        {shown.map((coin) => (
-          <CoinChip key={coin.id} coin={coin} status={status} />
+        {shown.map((coin, index) => (
+          <CoinChip
+            key={coin.id}
+            coin={coin}
+            status={status}
+            className={index >= 2 ? "hidden md:inline" : ""}
+          />
         ))}
         <div className="relative z-40 shrink-0" ref={moreRef}>
           <button
@@ -157,19 +165,35 @@ export function MarketTicker() {
               role="listbox"
               className="circuit-frame panel ticker-dropdown z-40 bg-black p-2"
             >
-              {hidden.length === 0 ? (
-                <p className="px-2 py-1 font-mono text-muted">
-                  {"// no extra quotes"}
-                </p>
-              ) : (
-                <ul className="flex flex-col gap-1">
-                  {hidden.map((coin) => (
-                    <li key={coin.id}>
-                      <CoinChip coin={coin} status={status} />
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <ul className="flex flex-col gap-1">
+                {hiddenMobile.length > 0 && (
+                  <li className="md:hidden">
+                    <ul className="flex flex-col gap-1">
+                      {hiddenMobile.map((coin) => (
+                        <li key={`mobile-${coin.id}`}>
+                          <CoinChip coin={coin} status={status} />
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )}
+                {hiddenDesktop.length > 0 && (
+                  <li className="hidden md:block">
+                    <ul className="flex flex-col gap-1">
+                      {hiddenDesktop.map((coin) => (
+                        <li key={`desktop-${coin.id}`}>
+                          <CoinChip coin={coin} status={status} />
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )}
+                {hiddenMobile.length === 0 && hiddenDesktop.length === 0 && (
+                  <li className="px-2 py-1 font-mono text-muted">
+                    {"// no extra quotes"}
+                  </li>
+                )}
+              </ul>
             </div>
           )}
         </div>
@@ -185,16 +209,6 @@ export function MarketTicker() {
           min-height: 0 !important;
           transform: translateX(-50%) !important;
           overflow-y: auto !important;
-        }
-
-        @media (max-width: 767px) {
-          .ticker-row > .ticker-chip:nth-of-type(n + 3) {
-            display: none;
-          }
-
-          .ticker-dropdown {
-            z-index: 9999 !important;
-          }
         }
       `}</style>
     </div>
