@@ -21,7 +21,7 @@ const RED_HOT = "#FF4D4D";
 const ENEMY_GRAY = "#2a2a2e";
 const ENEMY_DIRT = "#8a3a6a";
 const WAVE_MS = 14000;
-const BOSS_HP = 56;
+const BOSS_HP = 168;
 const HP_BASE = 5;
 const HP_CAP = 8;
 const SHIELD_HITS = 5;
@@ -134,6 +134,13 @@ export function ArcadeRun() {
   const drops = useRef<Drop[]>([]);
   const pixels = useRef<Pixel[]>([]);
   const pointer = useRef<{ x: number; y: number } | null>(null);
+  const touchDrag = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    playerX: number;
+    playerY: number;
+  } | null>(null);
   const spawnAcc = useRef(0);
   const lastTs = useRef(0);
   const raf = useRef(0);
@@ -819,21 +826,93 @@ export function ArcadeRun() {
     }
 
     if (bossHpRef.current > 0 && waveRef.current >= 5) {
-      ctx.fillStyle = "#3003D9";
-      ctx.fillRect(20, 3, 200, 4);
-      ctx.fillStyle = MAGENTA;
-      ctx.fillRect(20, 3, Math.max(1, (200 * bossHpRef.current) / BOSS_HP), 4);
+      const barX = 20;
+      const barY = 3;
+      const barW = 64;
+      const barH = 4;
+      const gap = 4;
+      const segmentHp = BOSS_HP / 3;
+
+      for (let i = 0; i < 3; i += 1) {
+        const segmentX = barX + i * (barW + gap);
+        const segmentHpRemaining = Math.max(
+          0,
+          Math.min(segmentHp, bossHpRef.current - i * segmentHp),
+        );
+        const fillW = Math.floor((barW * segmentHpRemaining) / segmentHp);
+
+        ctx.fillStyle = "#3003D9";
+        ctx.fillRect(segmentX, barY, barW, barH);
+        if (fillW > 0) {
+          ctx.fillStyle = MAGENTA;
+          ctx.fillRect(segmentX, barY, fillW, barH);
+        }
+      }
     }
+  }
+
+  function canvasPoint(e: React.PointerEvent<HTMLCanvasElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    return {
+      x: ((e.clientX - rect.left) / rect.width) * BASE_W,
+      y: ((e.clientY - rect.top) / rect.height) * BASE_H,
+    };
   }
 
   function onPointer(e: React.PointerEvent<HTMLCanvasElement>) {
     if (phaseRef.current !== "run") return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    pointer.current = {
-      x: ((e.clientX - rect.left) / rect.width) * BASE_W,
-      y: ((e.clientY - rect.top) / rect.height) * BASE_H,
-    };
+    pointer.current = canvasPoint(e);
     keys.current.fire = true;
+  }
+
+  function onPointerDown(e: React.PointerEvent<HTMLCanvasElement>) {
+    if (phaseRef.current !== "run") return;
+
+    if (e.pointerType === "touch") {
+      const point = canvasPoint(e);
+      touchDrag.current = {
+        pointerId: e.pointerId,
+        startX: point.x,
+        startY: point.y,
+        playerX: player.current.x,
+        playerY: player.current.y,
+      };
+      e.currentTarget.setPointerCapture(e.pointerId);
+      pointer.current = null;
+      return;
+    }
+
+    onPointer(e);
+  }
+
+  function onPointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
+    if (phaseRef.current !== "run") return;
+
+    if (e.pointerType === "touch") {
+      const drag = touchDrag.current;
+      if (!drag || drag.pointerId !== e.pointerId) return;
+      const point = canvasPoint(e);
+      pointer.current = {
+        x: drag.playerX + (point.x - drag.startX) + player.current.w / 2,
+        y: drag.playerY + (point.y - drag.startY) + player.current.h / 2,
+      };
+      return;
+    }
+
+    onPointer(e);
+  }
+
+  function onPointerEnd(e: React.PointerEvent<HTMLCanvasElement>) {
+    if (e.pointerType === "touch") {
+      if (touchDrag.current?.pointerId === e.pointerId) {
+        touchDrag.current = null;
+        pointer.current = null;
+      }
+      return;
+    }
+
+    pointer.current = null;
+    keys.current.fire = false;
   }
 
   const rarityClass = pilot
@@ -930,19 +1009,32 @@ export function ArcadeRun() {
                 height: BASE_H * scale,
                 imageRendering: "pixelated",
                 maxWidth: "100%",
+      touchAction: "none",
               }}
-              onPointerDown={onPointer}
-              onPointerMove={onPointer}
-              onPointerUp={() => {
-                pointer.current = null;
-                keys.current.fire = false;
-              }}
-              onPointerLeave={() => {
-                pointer.current = null;
-                keys.current.fire = false;
-              }}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerEnd}
+              onPointerCancel={onPointerEnd}
+              onPointerLeave={onPointerEnd}
             />
-            {(phase === "over" || phase === "clear") && (
+            {phase === "run" && (
+            <div className="flex justify-center py-2 md:hidden">
+              <button
+                type="button"
+                onClick={executeSpecial}
+                disabled={specialHud !== "SPECIAL READY"}
+                className={`border-2 bg-black px-6 py-2 font-sans text-[10px] uppercase tracking-[0.2em] transition-opacity active:opacity-70 ${
+                  specialHud === "SPECIAL READY"
+                    ? "border-[#FFC825] text-[#FFC825]"
+                    : "border-zinc-700 text-zinc-600 opacity-60"
+                }`}
+              >
+                SPECIAL
+              </button>
+            </div>
+          )}
+
+          {(phase === "over" || phase === "clear") && (
               <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 font-sans text-[10px] uppercase tracking-wider text-neon-cyan">
                 <p className="text-[#DB3FFD]">
                   {phase === "clear" ? "RUN CLEAR" : "SIGNAL LOST"}
@@ -959,42 +1051,60 @@ export function ArcadeRun() {
           )}
 
           {pilot && special && (
-            <div className="circuit-frame flex items-center gap-3 bg-[#05010a] p-3">
+            <div className="circuit-frame grid grid-cols-[68px_minmax(0,1fr)] grid-rows-[auto_auto] items-start gap-1 bg-[#05010a] p-1 md:flex md:items-center md:gap-3 md:p-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={portraitSrc(pilot)}
-                alt={pilot.title}
-                className="h-16 w-16 shrink-0 object-cover sm:h-20 sm:w-20"
-                style={{
-                  imageRendering: "pixelated",
-                  outline: "3px solid #FFC825",
-                }}
-              />
-              <div className="min-w-0 flex-1">
-                <p className="font-sans text-[8px] uppercase tracking-[0.2em] text-neon-cyan">
+              <div className="col-start-1 row-start-1 flex h-16 w-16 shrink-0 items-center justify-center">
+                <img
+                  src={portraitSrc(pilot)}
+                  alt={pilot.title}
+                  className="h-16 w-16 object-cover sm:h-20 sm:w-20"
+                  style={{
+                    imageRendering: "pixelated",
+                    outline: "3px solid #FFC825",
+                  }}
+                />
+              </div>
+              <div className="col-start-2 row-start-1 min-w-0 px-1.5 py-1 md:flex-1 md:px-0 md:py-0">
+                <p className="whitespace-nowrap font-sans text-[4px] uppercase tracking-[0.06em] text-neon-cyan sm:text-[8px] sm:tracking-[0.2em]">
                   Status // Linked
                 </p>
-                <p className="font-mono text-[13.5pt] leading-[1.55] text-foreground">
-                  {pilot.id}
-                </p>
-                <p className="font-sans text-[10px] uppercase tracking-wide text-[#DB3FFD]">
-                  {pilot.title}
-                </p>
-                <p className="mt-1 font-sans text-[8px] uppercase tracking-wide text-[#FFC825]">
+                <div className="flex min-w-0 items-baseline gap-1 whitespace-nowrap">
+                  <p className="shrink-0 font-mono text-[4.5px] leading-none text-foreground sm:text-[13.5pt] sm:leading-[1.55]">
+                    {pilot.id}
+                  </p>
+                  <p className="shrink-0 font-sans text-[6px] uppercase tracking-wide text-[#DB3FFD] sm:text-[10px]">
+                    {pilot.title}
+                  </p>
+                </div>
+                <p className="mt-0.5 whitespace-nowrap font-sans text-[5.5px] uppercase tracking-[0.02em] text-[#FFC825] sm:mt-1 sm:text-[8px]">
                   Special // {special.name}
                 </p>
                 <span
-                  className={`mt-1 inline-block border-2 bg-black px-1.5 py-0.5 font-sans text-[8px] uppercase ${rarityClass}`}
+                  className={`mt-0.5 hidden border bg-black px-1 py-0.5 font-sans text-[4.5px] uppercase sm:mt-1 sm:border-2 sm:px-1.5 sm:py-0.5 sm:text-[8px] md:inline-block ${rarityClass}`}
                 >
                   {pilot.rarity}
                 </span>
               </div>
-              <NeonButton variant="outline" onClick={changePilot}>
-                Change Pilot
-              </NeonButton>
+              <div
+                className={`col-start-1 row-start-2 justify-self-center md:hidden`}
+              >
+                <span
+                  className={`inline-block border bg-black px-1 py-0.5 font-sans text-[4.5px] uppercase ${rarityClass}`}
+                >
+                  {pilot.rarity}
+                </span>
+              </div>
+              <div className="col-start-2 row-start-2 w-full justify-self-stretch md:col-auto md:row-auto md:w-auto md:shrink-0 md:justify-self-auto">
+                <NeonButton
+                  variant="outline"
+                  onClick={changePilot}
+                  className="w-full !px-3 !py-2 !text-[7px] !tracking-[0.1em] md:w-auto md:!px-4 md:!py-2.5 md:!text-[10px]"
+                >
+                  Change Pilot
+                </NeonButton>
+              </div>
             </div>
-          )}
-        </>
+          )}        </>
       )}
     </div>
   );
