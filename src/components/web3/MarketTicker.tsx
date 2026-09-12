@@ -188,14 +188,12 @@ export function MarketTicker() {
         }
 
         @media (max-width: 767px) {
-          .ticker-row > .ticker-chip:nth-of-type(n + 4) {
-            display: none;
-          }
-        }
-
-        @media (max-width: 380px) {
           .ticker-row > .ticker-chip:nth-of-type(n + 3) {
             display: none;
+          }
+
+          .ticker-dropdown {
+            z-index: 9999 !important;
           }
         }
       `}</style>
