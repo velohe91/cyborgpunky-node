@@ -129,10 +129,9 @@ export function MarketTicker() {
     { id: "bitcoin", symbol: "BTC", name: "Bitcoin", usd: null, marketCapRank: 1 },
     { id: "ethereum", symbol: "ETH", name: "Ethereum", usd: null, marketCapRank: 2 },
   ];
-  const shown = useMemo(() => {
-    if (!visible.length) return fallback;
-    return isMobile ? visible.slice(0, 2) : visible;
-  }, [visible, isMobile]);
+
+  const desktopShown = visible.length ? visible : fallback;
+  const mobileShown = desktopShown.slice(0, 2);
 
   const title = data
     ? `Updated ${data.updatedAt} · top ${coins.length} by USD market cap`
@@ -147,9 +146,18 @@ export function MarketTicker() {
       aria-live="polite"
     >
       <div className="ticker-row flex w-full min-w-0 flex-nowrap items-center justify-center gap-1 overflow-visible">
-        {shown.map((coin) => (
-          <CoinChip key={coin.id} coin={coin} status={status} />
-        ))}
+        {isMobile ? (
+          <>
+            {mobileShown.map((coin) => (
+              <CoinChip key={`mobile-${coin.id}`} coin={coin} status={status} />
+            ))}
+          </>
+        ) : (
+          visible.map((coin) => (
+            <CoinChip key={coin.id} coin={coin} status={status} />
+          ))
+        )}
+
         <div className="relative z-40 shrink-0" ref={moreRef}>
           <button
             type="button"
