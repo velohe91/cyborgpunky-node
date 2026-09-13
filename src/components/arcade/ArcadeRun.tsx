@@ -498,7 +498,7 @@ export function ArcadeRun() {
     }
 
     const cd = spec.id === "laser" && specialOnRef.current > 0 ? 90 : 260;
-    if (keys.current.fire && p.cool <= 0) {
+    if (p.cool <= 0) {
       firePlayer();
       p.cool = cd;
     }
@@ -1002,7 +1002,7 @@ export function ArcadeRun() {
               SPECIAL // {special.name} — {special.blurb}
             </p>
           )}
-          <div className="hidden justify-center pt-1 md:flex">
+          <div className="flex justify-center pt-1">
             <NeonButton onClick={startRun} disabled={!pilot}>
               Start Run
             </NeonButton>
