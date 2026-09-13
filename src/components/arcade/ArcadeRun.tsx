@@ -948,6 +948,15 @@ export function ArcadeRun() {
 
       {phase === "select" && (
         <>
+          <div className="text-sm leading-6 text-muted">
+            <p>
+              <span className="font-medium">Desktop</span> — Move with mouse cursor · <span className="font-medium">SPACE</span> — Special Attack
+            </p>
+            <p>
+              <span className="font-medium">Mobile</span> — Drag to move · <span className="font-medium">SPECIAL</span> — Special Attack
+            </p>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 md:gap-4">
             {cyborgPunksNfts.map((nft) => {
               const active = pilot?.id === nft.id;
