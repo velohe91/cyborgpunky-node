@@ -28,6 +28,8 @@ export type NftStatus =
 export interface NftItem {
   /** Unique catalog ID, e.g. "VEL-001" */
   id: string;
+    /** Marketplace ownership / sale state */
+  saleStatus?: "available" | "sold";
   title: string;
   /** Static cover / poster under /public */
   image: string;

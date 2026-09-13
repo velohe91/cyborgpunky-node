@@ -49,6 +49,7 @@ const nftCatalog: NftItem[] = [
   {
     id: "VEL-CPC001",
     title: "CYBORG PUNK 001",
+      saleStatus: "sold",
     image: "/nfts/videos/VEL-CPC001.gif",
     video: "/nfts/videos/VEL-CPC001.gif",
     description:
@@ -125,6 +126,7 @@ The Programmer ability, enabled through a dedicated cyberspace visual interface,
   {
     id: "VEL-CPC005",
     title: "CYBORG PUNK 005",
+      saleStatus: "sold",
     image: "/nfts/videos/VEL-CPC005.gif",
     video: "/nfts/videos/VEL-CPC005.gif",
     description:

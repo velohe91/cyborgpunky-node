@@ -4,8 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import type { NftItem } from "@/lib/types";
 import { RARITY_COLORS } from "@/lib/constants";
-import { isCpcPilot } from "@/lib/pilot";
-import { useLockedPilot } from "@/hooks/useLockedPilot";
+
 
 type Props = {
   nft: NftItem;
@@ -15,16 +14,13 @@ type Props = {
 
 export function NftCard({ nft, index, onOpen }: Props) {
   const rarityClass = RARITY_COLORS[nft.rarity] ?? RARITY_COLORS.common;
-  const { pilotId } = useLockedPilot();
-  const locked = isCpcPilot(nft.id) && pilotId === nft.id;
+
 
   return (
     <motion.button
       type="button"
       onClick={() => onOpen(nft)}
-      className={`circuit-frame group relative z-0 flex w-full max-w-full flex-col overflow-hidden bg-[#05010a] text-left ${
-        locked ? "pilot-locked" : ""
-      }`}
+     className="circuit-frame group relative z-0 flex w-full max-w-full flex-col overflow-hidden bg-[#05010a] text-left"
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
@@ -39,11 +35,11 @@ export function NftCard({ nft, index, onOpen }: Props) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover pixelated"
         />
-        {locked && (
-          <span className="absolute left-2 top-2 z-10 border-2 border-[#FFC825] bg-black px-1.5 py-0.5 font-sans text-[8px] uppercase tracking-wider text-[#FFC825]">
-            Pilot Locked
-          </span>
-        )}
+       {nft.saleStatus === "sold" && (
+  <span className="absolute left-2 top-2 z-10 border-2 border-[#FFC825] bg-black px-1.5 py-0.5 font-sans text-[8px] uppercase tracking-wider text-[#FFC825]">
+    Sold
+  </span>
+)}
         <span
           className={`absolute right-3 top-3 z-10 border-2 bg-black px-1.5 py-0.5 font-sans text-[10px] uppercase tracking-wider ${rarityClass}`}
         >
