@@ -974,9 +974,23 @@ export function ArcadeRun() {
                       {nft.title}
                     </p>
                     {active && (
-                      <p className="mt-1 font-sans text-[8px] uppercase tracking-wide text-[#FFC825]">
-                        {p.name}
-                      </p>
+                      <>
+                        <p className="mt-1 font-sans text-[8px] uppercase tracking-wide text-[#FFC825]">
+                          {p.name}
+                        </p>
+                        <div className="mt-2 md:hidden">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              startRun();
+                            }}
+                            className="w-full border-2 border-[#FFC825] bg-black px-2 py-2 font-sans text-[8px] uppercase tracking-[0.16em] text-[#FFC825] transition-opacity active:opacity-70"
+                          >
+                            Start Run
+                          </button>
+                        </div>
+                      </>
                     )}
                   </div>
                 </button>
@@ -988,7 +1002,7 @@ export function ArcadeRun() {
               SPECIAL // {special.name} — {special.blurb}
             </p>
           )}
-          <div className="flex justify-center pt-1">
+          <div className="hidden justify-center pt-1 md:flex">
             <NeonButton onClick={startRun} disabled={!pilot}>
               Start Run
             </NeonButton>
