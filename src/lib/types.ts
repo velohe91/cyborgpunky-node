@@ -23,12 +23,13 @@ export type NftStatus =
   | "Archived"
   | "Restricted"
   | "Unresolved"
-  | "Compressed";
+  | "Compressed"
+  | "Genesis";
 
 export interface NftItem {
   /** Unique catalog ID, e.g. "VEL-001" */
   id: string;
-    /** Marketplace ownership / sale state */
+  /** Marketplace ownership / sale state */
   saleStatus?: "available" | "sold";
   title: string;
   /** Static cover / poster under /public */
@@ -50,6 +51,19 @@ export interface NftItem {
   status?: NftStatus;
   tags?: string[];
   year?: number;
+
+/** CyborgPunks identity trait */
+cyborgId?: string;
+/** CyborgPunks faction trait */
+faction?: string;
+/** CyborgPunks gender trait */
+gender?: string;
+/** CyborgPunks hair trait */
+hair?: string;
+/** CyborgPunks accessory trait */
+accessory?: string;
+/** CyborgPunks combat ability trait */
+ability?: string;
 }
 
 export type LogLevel = "INFO" | "WARN" | "SIGNAL" | "LORE" | "ERROR";

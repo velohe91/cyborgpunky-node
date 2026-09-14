@@ -24,7 +24,7 @@ export function AboutView() {
             GENESIS LAYER // CYBORGPUNKS
           </h1>
           <div className="circuit-crosshair my-3 h-0 border-t-2 border-[#0CF1FF]/50" />
-          <div className="whitespace-pre-line font-mono text-[14px] leading-[1.5] text-foreground/90">
+          <div className="whitespace-pre-line font-mono text-[16px] leading-[1.7] text-foreground/90">
             {GENESIS_BODY}
           </div>
         </article>

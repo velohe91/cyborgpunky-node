@@ -17,6 +17,88 @@ type Props = {
 
 type MediaMode = "still" | "motion";
 
+type CyborgLore = {
+  description: string;
+  specialAttack: {
+    name: string;
+    description: string;
+    status: "ACTIVE" | "DORMANT" | "UNRESOLVED";
+  };
+}
+
+const CYBORG_LORE: Record<string, CyborgLore> = {
+  "001": {
+    description:
+      "VIREX functions as a signal interpretation node within VΣLOHE SYSTEM. Its EVO activation transformed the asset into an executable identity capable of filtering, reading, and stabilizing incoming data patterns.",
+    specialAttack: {
+      name: "X-RAY BURST",
+      description:
+        "Releases a concentrated violet burst that strikes every hostile signal on the active field.",
+      status: "ACTIVE",
+    },
+  },
+  "002": {
+    description:
+      "NULLA operates as an observation node within VΣLOHE SYSTEM. Its EVO activation enabled passive signal awareness without direct interface engagement.",
+    specialAttack: {
+      name: "PHASE CLOAK",
+      description:
+        "Shifts the identity into a ghost state, becoming untouchable while remaining present within the active field.",
+      status: "ACTIVE",
+    },
+  },
+  "003": {
+    description:
+      "LYNX functions as a node guardian within VΣLOHE SYSTEM. Its EVO activation enabled focused optical monitoring and persistent node supervision through a dedicated monocular interface.",
+    specialAttack: {
+      name: "GLITCH LASER",
+      description:
+        "Projects a sustained magenta-cyan laser through the active signal field.",
+      status: "ACTIVE",
+    },
+  },
+  "004": {
+    description:
+      "STRIPE functions as an interface runner within VΣLOHE SYSTEM. Its EVO activation enabled continuous scanline filtering and rapid traversal between system layers.",
+    specialAttack: {
+      name: "OVERCLOCK MELEE",
+      description:
+        "Overclocks the identity for rapid traversal, eliminating hostile signals through direct contact.",
+      status: "ACTIVE",
+    },
+  },
+  "005": {
+    description:
+      "ARC functions as a system coordination node within VΣLOHE SYSTEM. Its EVO activation established a stable synchronization layer capable of maintaining operational continuity across multiple active identities.",
+    specialAttack: {
+      name: "SYSTEM BREACH",
+      description:
+        "Locks the active system layer and amplifies damage while hostile signals are unable to respond.",
+      status: "DORMANT",
+    },
+  },
+  "006": {
+    description:
+      "PRISM functions as a signal routing node within VΣLOHE SYSTEM. Its EVO activation established a dual-channel interface capable of separating and directing concurrent signal streams across system layers.",
+    specialAttack: {
+      name: "SIGNAL UNRESOLVED",
+      description:
+        "Special capability remains unresolved within the current system state.",
+      status: "UNRESOLVED",
+    },
+  },
+};
+
+function getCyborgLore(nft: NftItem): CyborgLore | null {
+  const titleMatch = nft.title?.match(/CyborgPunk\s+0*(\d{1,3})/i);
+  const idMatch = nft.id?.match(/(?:^|[^0-9])0*(\d{1,3})(?:[^0-9]|$)/);
+  const key =
+    titleMatch?.[1]?.padStart(3, "0") ??
+    idMatch?.[1]?.padStart(3, "0");
+
+  return key ? CYBORG_LORE[key] ?? null : null;
+}
+
 /** Classify optional motion asset: GIF uses <img>, MP4/WebM use <video>. */
 function getMotionKind(src?: string): "gif" | "video" | null {
   if (!src) return null;
@@ -88,6 +170,7 @@ export function NftModal({ nft, onClose }: Props) {
     : "";
   const motionKind = nft ? getMotionKind(nft.video) : null;
   const showMotion = Boolean(nft?.video) && mediaMode === "motion";
+  const cyborgLore = nft ? getCyborgLore(nft) : null;
 
   return createPortal(
     <AnimatePresence>
@@ -199,57 +282,95 @@ export function NftModal({ nft, onClose }: Props) {
                 key={`scroll-${nft.id}`}
                 className="flex min-h-0 max-h-[50dvh] flex-col overflow-y-auto p-5 sm:max-h-none sm:p-6 md:max-h-[70dvh]"
               >
-                <div className="mb-3 flex items-center justify-between gap-2">
-                  <span className="font-mono text-xs tracking-widest text-neon-cyan">
-                    {nft.id}
-                  </span>
-                  <span
-                    className={`border-2 bg-black px-2 py-0.5 font-sans text-[8px] uppercase ${rarityClass}`}
-                  >
-                    {nft.rarity}
-                  </span>
-                </div>
+              <div className="mb-3 flex items-center justify-between gap-2">
+  <div>
+    <div className="font-mono text-[10px] uppercase tracking-widest text-neon-cyan/70">
+      CYBORG ID
+    </div>
+    <div className="font-mono text-[12px] tracking-widest text-neon-cyan">
+      {nft.cyborgId ?? nft.id}
+    </div>
+  </div>
 
-                <h2
-                  id={titleId}
-                  className="max-w-full font-sans text-[16px] tracking-wide text-[#FF2CF0] [overflow-wrap:anywhere] [text-wrap:wrap] sm:text-[18px]"
-                >
-                  {nft.title}
-                </h2>
+  <span
+    className={`border-2 bg-black px-2 py-0.5 font-sans text-[8px] uppercase ${rarityClass}`}
+  >
+    {nft.rarity}
+  </span>
+</div>
+
+<h2
+  id={titleId}
+  className="max-w-full font-sans text-[16px] tracking-wide text-[#FF2CF0] [overflow-wrap:anywhere] [text-wrap:wrap] sm:text-[18px]"
+>
+  {nft.title}
+</h2>
 
                 <p className="mt-2 font-mono text-[14px] leading-[1.5] text-muted">
                   {nft.description}
                 </p>
 
                 <dl className="mt-3 grid grid-cols-2 gap-2 font-mono text-[14px] leading-[1.5] text-muted">
-                  {nft.series && (
-                    <>
-                      <dt className="text-neon-cyan/70">Series</dt>
-                      <dd>{nft.series}</dd>
-                    </>
-                  )}
-                  {nft.status && (
-                    <>
-                      <dt className="text-neon-cyan/70">System Phase</dt>
-                      <dd>{nft.status}</dd>
-                    </>
-                  )}
-                  {nft.year && (
-                    <>
-                      <dt className="text-neon-cyan/70">Year</dt>
-                      <dd>{nft.year}</dd>
-                    </>
-                  )}
-                </dl>
+  {nft.status && (
+    <>
+      <dt className="text-neon-cyan/70">System Phase</dt>
+      <dd>{nft.status}</dd>
+    </>
+  )}
 
-                <div className="circuit-crosshair mt-5 border-t-2 border-[#FF2CF0]/50 pt-4">
-                  <p className="mb-2 font-mono text-[14px] leading-[1.5] uppercase tracking-[0.3em] text-neon-cyan/80">
-                    Lore
-                  </p>
-                  <p className="whitespace-pre-line font-mono text-[14px] leading-[1.5] text-foreground/90">
-                    {nft.lore}
-                  </p>
-                </div>
+  {nft.faction && (
+    <>
+      <dt className="text-neon-cyan/70">Faction</dt>
+      <dd>{nft.faction}</dd>
+    </>
+  )}
+
+  {nft.gender && (
+    <>
+      <dt className="text-neon-cyan/70">Gender</dt>
+      <dd>{nft.gender}</dd>
+    </>
+  )}
+
+  {nft.hair && (
+    <>
+      <dt className="text-neon-cyan/70">Hair</dt>
+      <dd>{nft.hair}</dd>
+    </>
+  )}
+</dl>
+
+                {cyborgLore ? (
+                  <div className="circuit-crosshair mt-5 border-t-2 border-[#FF2CF0]/50 pt-4">
+                    <p className="mb-2 font-mono text-[14px] leading-[1.5] uppercase tracking-[0.3em] text-neon-cyan/80">
+                      Lore
+                    </p>
+                    <p className="whitespace-pre-line font-mono text-[14px] leading-[1.5] text-foreground/90">
+                      {cyborgLore.description}
+                    </p>
+
+                    <div className="mt-4">
+                      <p className="mb-2 font-mono text-[12px] uppercase tracking-[0.22em] text-[#FF2CF0]">
+                        Special Attack // {cyborgLore.specialAttack.name}
+                      </p>
+                      <p className="font-mono text-[14px] leading-[1.5] text-foreground/90">
+                        {cyborgLore.specialAttack.description}
+                      </p>
+                      <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-neon-cyan/70">
+                        {cyborgLore.specialAttack.status}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="circuit-crosshair mt-5 border-t-2 border-[#FF2CF0]/50 pt-4">
+                    <p className="mb-2 font-mono text-[14px] leading-[1.5] uppercase tracking-[0.3em] text-neon-cyan/80">
+                      Lore
+                    </p>
+                    <p className="whitespace-pre-line font-mono text-[14px] leading-[1.5] text-foreground/90">
+                      {nft.lore}
+                    </p>
+                  </div>
+                )}
 
                 {nft.tags && nft.tags.length > 0 && (
                   <ul className="mt-4 flex flex-wrap gap-2">
