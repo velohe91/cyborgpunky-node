@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     "CyborgPunks Club cryogenic vault — genesis CPC identities in stasis.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function CryogenicRoomPage() {
   const cyborgPunks = await getLiveCyborgPunks();
 
