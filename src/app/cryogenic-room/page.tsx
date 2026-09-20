@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { NftGrid } from "@/components/gallery/NftGrid";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PageTransition } from "@/components/ui/PageTransition";
+import { NeonButton } from "@/components/ui/NeonButton";
 import { getLiveCyborgPunks } from "@/lib/web3/cyborg-punk";
 import type { NftItem } from "@/lib/types";
 
@@ -55,6 +56,11 @@ ability: nft.ability,
           title="Cryogenic Room"
           subtitle="Genesis CPC nodes in stasis — compressed CyborgPunks Club identities."
         />
+        <div className="mb-4">
+          <NeonButton href="/cryogenic-room/lab">
+            Enter Generation Lab
+          </NeonButton>
+        </div>
         <NftGrid items={items} />
       </div>
     </PageTransition>

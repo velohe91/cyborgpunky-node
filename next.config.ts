@@ -5,6 +5,20 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  async headers() {
+    return [
+      {
+        source: "/cryogenic-room/lab",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value:
+              "frame-src 'self' https://www.cyborgpunks.xyz https://cyborgpunks.xyz;",
+          },
+        ],
+      },
+    ];
+  },
   webpack: (config) => {
     // Quiet optional peer deps pulled by wallet stacks
     config.externals.push("pino-pretty", "lokijs", "encoding");
