@@ -15,38 +15,44 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function CryogenicRoomPage() {
-  const cyborgPunks = await getLiveCyborgPunks();
+  let items: NftItem[] = [];
 
-  const items: NftItem[] = cyborgPunks
-    .map((nft) => ({
-      id: nft.tokenId,
-      title: nft.name ?? `CyborgPunk ${nft.tokenId}`,
-      image: nft.imageUrl ?? "",
-      description:
-        nft.description ??
-        "CyborgPunks Club identity preserved within the Cryogenic Room.",
-      lore: "",
-      rarity: nft.rarity ?? "common",
-      status: "Genesis" as const,
-      tags: ["CyborgPunks Club"],
-      year: 2026,
-     cyborgId: nft.cyborgId,
-faction: nft.faction,
-gender: nft.gender,
-hair: nft.hair,
-accessory: nft.accessory,
-ability: nft.ability,
-    }))
-    .sort((a, b) => {
-      const aNumber = Number(
-        a.title.match(/(\d+)$/)?.[1] ?? Number.MAX_SAFE_INTEGER,
-      );
-      const bNumber = Number(
-        b.title.match(/(\d+)$/)?.[1] ?? Number.MAX_SAFE_INTEGER,
-      );
+  try {
+    const cyborgPunks = await getLiveCyborgPunks();
 
-      return aNumber - bNumber;
-    });
+    items = cyborgPunks
+      .map((nft) => ({
+        id: nft.tokenId,
+        title: nft.name ?? `CyborgPunk ${nft.tokenId}`,
+        image: nft.imageUrl ?? "",
+        description:
+          nft.description ??
+          "CyborgPunks Club identity preserved within the Cryogenic Room.",
+        lore: "",
+        rarity: nft.rarity ?? "common",
+        status: "Genesis" as const,
+        tags: ["CyborgPunks Club"],
+        year: 2026,
+        cyborgId: nft.cyborgId,
+        faction: nft.faction,
+        gender: nft.gender,
+        hair: nft.hair,
+        accessory: nft.accessory,
+        ability: nft.ability,
+      }))
+      .sort((a, b) => {
+        const aNumber = Number(
+          a.title.match(/(\d+)$/)?.[1] ?? Number.MAX_SAFE_INTEGER,
+        );
+        const bNumber = Number(
+          b.title.match(/(\d+)$/)?.[1] ?? Number.MAX_SAFE_INTEGER,
+        );
+
+        return aNumber - bNumber;
+      });
+  } catch (error) {
+    console.error("Cryogenic Room vault fetch failed:", error);
+  }
 
   return (
     <PageTransition>
@@ -61,6 +67,11 @@ ability: nft.ability,
             Enter Generation Lab
           </NeonButton>
         </div>
+        {items.length === 0 ? (
+          <p className="mb-4 font-mono text-[14px] uppercase tracking-[0.2em] text-muted">
+            VAULT SIGNAL OFFLINE
+          </p>
+        ) : null}
         <NftGrid items={items} />
       </div>
     </PageTransition>

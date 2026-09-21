@@ -49,7 +49,8 @@ async function fetchCyborgPunks(): Promise<OpenSeaNFT[]> {
   const apiKey = process.env.OPENSEA_API_KEY;
 
   if (!apiKey) {
-    throw new Error("OPENSEA_API_KEY is not configured");
+    console.error("OPENSEA_API_KEY is not configured");
+    return [];
   }
 
   if (!collectionPromise) {
@@ -66,10 +67,9 @@ async function fetchCyborgPunks(): Promise<OpenSeaNFT[]> {
 
       if (!response.ok) {
         const body = await response.text();
-
-        throw new Error(
-          `OpenSea API error ${response.status}: ${body}`,
-        );
+        console.error(`OpenSea API error ${response.status}: ${body}`);
+        collectionPromise = null;
+        return [];
       }
 
       const data = (await response.json()) as OpenSeaNFTResponse;
@@ -77,7 +77,8 @@ async function fetchCyborgPunks(): Promise<OpenSeaNFT[]> {
       return data.nfts;
     })().catch((error) => {
       collectionPromise = null;
-      throw error;
+      console.error("OpenSea CyborgPunks fetch failed:", error);
+      return [];
     });
   }
 
@@ -166,7 +167,11 @@ export async function getCyborgPunkToken(
 }
 
 export async function getLiveCyborgPunks(): Promise<CyborgPunkToken[]> {
-  const nfts = await fetchCyborgPunks();
-
-  return nfts.map(mapCyborgPunk);
+  try {
+    const nfts = await fetchCyborgPunks();
+    return nfts.map(mapCyborgPunk);
+  } catch (error) {
+    console.error("Failed to load live CyborgPunks:", error);
+    return [];
+  }
 }
