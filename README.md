@@ -1,255 +1,92 @@
-# VΣLOHE SYSTEM
+# CyborgPunks Club
 
-> **A digital archive, exhibition, and evolving marketplace for the Velohe universe.**
+> A Web3 environment for building, managing, and interacting with CyborgPunks digital assets.
 
-VΣLOHE SYSTEM is an immersive web platform built around a cyberpunk archival interface.
+CyborgPunks Club is a Web3 project focused on digital collectibles, NFT infrastructure, and blockchain-based experiences.
 
-The system combines **digital artifacts, narrative fragments, system transmissions, Web3 functionality, and interactive UI elements** into a single evolving platform.
+This repository contains the web application layer of CyborgPunks Club, including the interfaces, content systems, wallet connectivity, and blockchain environment used to develop and operate the project.
 
-The project is currently focused on the exhibition and archival experience while evolving toward a **multi-chain NFT marketplace** for Velohe digital assets.
+## 🧬 About CyborgPunks Club
 
----
+CyborgPunks Club explores a cyberpunk-inspired digital universe built around collectible CyborgPunks and their associated assets.
 
-## 🛰️ SYSTEM EXPERIENCE
+The project is designed to support NFT collections and Web3 functionality while keeping the application architecture flexible enough to evolve alongside the ecosystem.
 
-### 🖼️ Archive
+The official project website is:
 
-Explore the catalog of Velohe artifacts through an interactive gallery featuring artwork, metadata, rarity classifications, status indicators, and lore.
+**https://www.cyborgpunks.club**
 
-### 📡 Transmissions
+## ⚙️ Project
 
-A chronological feed of system transmissions and archival records that expands the narrative surrounding the Velohe universe.
+`cyborgpunky-node` is the application repository for CyborgPunks Club.
 
-### 🌌 Immersive Interface
+The project currently provides infrastructure for:
 
-The interface combines:
+- 🧬 CyborgPunks digital collectibles
+- 🖼️ NFT artwork and metadata
+- 🔗 Wallet connectivity
+- ⛓️ Blockchain environments
+- 🧩 Web3 application components
+- 📦 NFT collection management
+- 🛠️ Development of future minting infrastructure
 
-- ✦ Animated transitions
-- ✦ Scanlines
-- ✦ Particle effects
-- ✦ Holographic UI elements
-- ✦ Neon visual systems
-- ✦ Fullscreen presentation
-- ✦ Responsive layouts
+The repository is being developed progressively, with blockchain functionality introduced as the corresponding components become ready.
 
-The goal is to make browsing the archive feel less like navigating a conventional website and more like accessing a **digital system from another world**.
+## 🔗 Web3 Architecture
 
-### 🔗 Web3 Integration
+The application is designed to work with blockchain-based assets and NFT infrastructure.
 
-VΣLOHE SYSTEM is being developed with Web3 functionality as a core part of its future.
+The architecture is intended to support standards such as:
 
-Wallet connectivity and blockchain integrations are being introduced progressively as the platform evolves toward its marketplace phase.
+- **ERC-721** — unique NFT assets
+- **ERC-1155** — multi-token and semi-fungible assets
 
----
+Smart-contract addresses, deployment environments, network configuration, and other blockchain parameters should only be documented here when they are officially confirmed and deployed.
 
-## 🏪 MULTI-CHAIN MARKETPLACE
+## 🧬 NFT Infrastructure
 
-The long-term direction of VΣLOHE SYSTEM is a **multi-chain NFT marketplace** for Velohe digital assets.
+The project is being developed around a structured NFT workflow that can include:
 
-The platform is designed with support for multiple blockchain ecosystems in mind, including:
+1. Asset creation
+2. Layer and trait organization
+3. Metadata generation
+4. Collection preparation
+5. Wallet interaction
+6. Blockchain integration
+7. NFT minting
 
-- 💠 **Ethereum — ETH**
-- 🟡 **BNB Chain — BNB**
-- 🟣 **Solana — SOL**
-- 🔷 **Tezos — XTZ**
-- 🟪 **Polygon — POL**
+The application separates the presentation layer from the blockchain infrastructure so that the Web3 environment can evolve without unnecessarily coupling the entire application to a single contract implementation.
 
-Additional networks and compatible scaling or execution layers may be introduced as the ecosystem develops.
+## 🔐 Wallet & Blockchain Environment
 
-Velohe NFTs are intended to operate through **dedicated smart-contract infrastructure**, allowing the platform to maintain its own on-chain asset ecosystem rather than depending exclusively on third-party NFT marketplaces.
+Wallet connectivity is part of the application's Web3 infrastructure.
 
-> ⚡ **The archive is the beginning. The marketplace is the next layer.**
+Environment-specific configuration should be provided through local environment variables.
 
----
+Never commit private keys, seed phrases, API secrets, or other sensitive credentials to the repository.
 
-## 🧩 CONTENT SYSTEM
+## 🛠️ Technology
 
-The exhibition is **data-driven**.
+The project uses modern web technologies including:
 
-Artifacts and transmissions are maintained separately from the interface, allowing the archive to expand without requiring the entire application to be redesigned.
+- Next.js
+- TypeScript
+- React
+- Tailwind CSS
+- wagmi
+- viem
+- RainbowKit
 
-### 🗃️ Adding an Artifact
+The application uses the Next.js App Router.
 
-New artifacts can include:
+## 🚀 Development
 
-- 🆔 Identifier
-- 🏷️ Title
-- 🧬 Series
-- 💎 Rarity
-- 🟢 Status
-- 📅 Year
-- 🔖 Tags
-- 📜 Lore
-- 🖼️ Artwork
+### Requirements
 
-Once registered in the catalog, the exhibition interface handles its presentation automatically.
+- Node.js 18+
+- npm
 
-### 📡 Adding a Transmission
-
-New transmissions can be added to the chronological system archive.
-
-A transmission may optionally reference an existing artifact, allowing narrative records and visual artifacts to become connected pieces of the same archive.
-
----
-
-## ⚙️ TECHNOLOGY
-
-Built with modern web technologies:
-
-- ⚡ **Next.js**
-- 🔷 **TypeScript**
-- 🎨 **Tailwind CSS**
-- 🎞️ **Framer Motion**
-- 🔗 **wagmi**
-- 🧬 **viem**
-- 🌈 **RainbowKit**
-
-The application uses the **Next.js App Router** and is designed for deployment on modern web infrastructure.
-
----
-
-## 🖥️ DEVELOPMENT
-
-### 📋 Requirements
-
-- 🟢 Node.js 18+
-- 📦 npm
-
-### 🚀 Installation
+### Installation
 
 ```bash
 npm install
-```
-
-### 🔗 Wallet connection (RainbowKit)
-
-CONNECT NODE uses the RainbowKit stack already in this repo (`RainbowKit` + `wagmi` + `viem`). No extra wallet SDK.
-
-1. Copy the env template:
-
-```bash
-cp .env.local.example .env.local
-```
-
-On Windows PowerShell:
-
-```powershell
-Copy-Item .env.local.example .env.local
-```
-
-2. Create a WalletConnect Cloud project at [https://cloud.walletconnect.com](https://cloud.walletconnect.com) and copy the **Project ID**.
-
-3. Paste it into `.env.local`:
-
-```text
-NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
-NEXT_PUBLIC_ALCHEMY_ID=
-```
-
-`NEXT_PUBLIC_ALCHEMY_ID` is optional (Ethereum + Polygon RPC). Leave it blank to use public RPCs.
-
-4. Restart the dev server after changing env values (`NEXT_PUBLIC_*` is inlined at boot).
-
-If the Project ID is missing, the **CONNECT NODE** button still renders. Opening it shows a short modal that explains the env setup instead of the RainbowKit wallet list.
-
-**Networks:** Ethereum (default — CyborgPunks Club collection) and Polygon. Solana injected helpers already live in `src/lib/web3/multi-chain.ts`; the header connect modal is RainbowKit (EVM).
-
-Connect, truncated address (`0x12…abcd`), and disconnect only. No mint, buy, or marketplace.
-
-Then launch the development server:
-
-```bash
-npm run dev
-```
-
-The application will be available locally at:
-
-```text
-http://localhost:3000
-```
-
-### 🏗️ Production
-
-```bash
-npm run build
-npm start
-```
-
-### 🧹 Linting
-
-```bash
-npm run lint
-```
-
----
-
-## 🎨 DESIGN LANGUAGE
-
-VΣLOHE SYSTEM follows a dark cyberpunk archival aesthetic built around:
-
-- 🌑 Deep-space black backgrounds
-- 💠 Neon blue and cyan accents
-- 🖥️ Monospaced system typography
-- ✦ Futuristic display typography
-- 🧊 Holographic interface elements
-- 🌌 Ambient motion
-- 📺 Scanline effects
-- ✨ Particle systems
-
-Motion-aware behavior respects user accessibility preferences where supported.
-
----
-
-## 🧠 PROJECT PHILOSOPHY
-
-VΣLOHE SYSTEM is designed to **evolve as an ecosystem**.
-
-What begins as an interactive archive can expand into a broader platform for:
-
-- 🖼️ Digital exhibitions
-- 📡 Narrative transmissions
-- 💎 NFT collections
-- 🔗 Web3 assets
-- 🏪 Multi-chain trading
-- 🧬 Original smart-contract infrastructure
-
-The goal is to build a platform where the **technology, artwork, and lore develop together**.
-
-> **Preserve. Exhibit. Trade. Expand.**
-
----
-
-## 🔐 SECURITY & CONFIGURATION
-
-Public documentation intentionally avoids exposing private infrastructure, credentials, deployment configuration, internal services, or operational details.
-
-Environment-specific values should be configured locally and **must never be committed to version control**.
-
-> ⚠️ If you are contributing to the project, keep private configuration and credentials outside the repository.
-
----
-
-## 📡 SYSTEM STATUS
-
-**VΣLOHE SYSTEM**
-
-`ARCHIVE: ONLINE` 🟢  
-`EXHIBITION: ACTIVE` 🟢  
-`TRANSMISSIONS: RECEIVING` 🟢  
-`WEB3: EVOLVING` 🔵  
-`MARKETPLACE: IN DEVELOPMENT` 🟡
-
----
-
-## Design notes
-
-- **Theme:** deep void black (`#03050a`) + neon blue / cyan
-- **Type:** Orbitron (display) + Share Tech Mono (body / logs)
-- **Motion:** Framer Motion with `prefers-reduced-motion` respect
-- **Fullscreen:** Navbar control uses the browser Fullscreen API (limited on some mobile browsers)
-
----
-
-## License
-
-Private exhibition project — customize freely for your own archive.
