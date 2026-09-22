@@ -72,8 +72,7 @@ export function CyborgPunkUserDashboard() {
 
   const registeredProfile =
     profile?.xUsername && profile?.xProfileUrl ? profile : null;
-  const xRegistered = Boolean(registeredProfile);
-  const eligible = Boolean(
+    const eligible = Boolean(
     registeredProfile?.followCompleted && registeredProfile?.engagementCompleted,
   );
 
@@ -132,7 +131,7 @@ export function CyborgPunkUserDashboard() {
         </div>
       </article>
 
-      {xRegistered ? (
+      {registeredProfile ? (
         <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
