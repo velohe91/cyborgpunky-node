@@ -8,8 +8,8 @@ export const SITE_VERSION = "v2.0";
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/transmissions", label: "Transmissions" },
   { href: "/cryogenic-room", label: "Cryogenic Room" },
+  { href: "/transmissions", label: "Transmissions" },
   { href: "/about", label: "About" },
 ] as const;
 
