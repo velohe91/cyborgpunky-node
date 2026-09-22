@@ -36,7 +36,7 @@ export function CyborgPunkProfile() {
   const normalizedUsername = xUsername.trim().replace(/^@+/, "");
 
   const confirmXProfile = () => {
-    if (!normalizedUsername) return;
+    if (!address || !normalizedUsername) return;
 
     const profile = {
       walletAddress: address,
