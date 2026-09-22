@@ -115,7 +115,7 @@ export function CyborgPunkProfile() {
                     href={xProfileUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="font-mono text-[14px] text-[#0CF1FF] underline decoration-[#FF2CF0]/70 underline-offset-4 hover:text-[#FF2CF0]"
+                    className="!font-mono !text-[14px] !leading-6 !text-[#0CF1FF] underline decoration-[#FF2CF0]/70 underline-offset-4 hover:!text-[#FF2CF0]"
                   >
                     @{savedXUsername} ↗
                   </a>
