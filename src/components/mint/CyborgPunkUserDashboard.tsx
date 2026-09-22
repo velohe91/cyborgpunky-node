@@ -176,7 +176,7 @@ export function CyborgPunkUserDashboard() {
         </article>
       )}
 
-      {xRegistered ? (
+      {registeredProfile ? (
         <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 shadow-[0_0_18px_rgba(12,241,255,0.08)] sm:p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
