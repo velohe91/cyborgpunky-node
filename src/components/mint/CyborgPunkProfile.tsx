@@ -263,7 +263,7 @@ export function CyborgPunkProfile() {
 
       {showXConfirmation ? (
         <div
-          className="fixed inset-0 z-50 overflow-y-auto bg-black/80 px-4 py-10 backdrop-blur-sm"
+          className="fixed inset-0 z-50 overflow-y-auto bg-black/80 px-4 py-16 backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
           aria-labelledby="x-profile-confirmation-title"
