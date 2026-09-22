@@ -64,7 +64,7 @@ export function CyborgPunkProfile() {
           access the allowlist tasks.
         </p>
         <p className="mt-3 font-mono text-[10px] uppercase tracking-wide text-[#0CF1FF]/70">
-          Wallet identity required // No wallet address is typed manually
+          Wallet identity required
         </p>
       </article>
     );
@@ -142,7 +142,7 @@ export function CyborgPunkProfile() {
                 onChange={(event) => setXUsername(event.target.value)}
                 placeholder="@yourusername"
                 autoComplete="off"
-                className="mt-2 w-full border border-[#3003D9]/80 bg-black/60 px-3 py-3 font-mono text-sm text-foreground outline-none placeholder:text-slate-600 focus:border-[#0CF1FF]"
+                className="mt-2 w-full border border-[#3003D9]/80 bg-black/60 px-3 py-3 font-mono text-base leading-6 text-foreground outline-none placeholder:text-slate-500 focus:border-[#0CF1FF]"
               />
               <button
                 type="button"
