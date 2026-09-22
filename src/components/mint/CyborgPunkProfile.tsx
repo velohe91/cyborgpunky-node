@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { cyborgPunksNfts } from "@/data/nfts";
 import { truncateAddress } from "@/lib/web3/multi-chain";
+import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
 
 const TASKS = [
   {
@@ -66,6 +67,9 @@ export function CyborgPunkProfile() {
         <p className="mt-3 font-mono text-[10px] uppercase tracking-wide text-[#0CF1FF]/70">
           Wallet identity required
         </p>
+        <div className="mt-4">
+          <ConnectNodeButton />
+        </div>
       </article>
     );
   }
