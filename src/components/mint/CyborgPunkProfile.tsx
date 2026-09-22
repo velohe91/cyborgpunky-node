@@ -106,7 +106,7 @@ export function CyborgPunkProfile() {
         <div className="mt-4">
           <label
             htmlFor="cyborgpunk-x-username"
-            className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#0CF1FF]"
+            className="font-mono text-[14px] uppercase tracking-[0.16em] text-[#0CF1FF]"
           >
             X Username
           </label>
@@ -119,11 +119,11 @@ export function CyborgPunkProfile() {
                     href={xProfileUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-block underline decoration-[#FF2CF0]/70 underline-offset-4"
+                    className="block"
                   >
-                    <span className="font-mono text-[14px] leading-6 text-[#0CF1FF] hover:text-[#FF2CF0]">
+                    <p className="font-mono text-[14px] leading-6 text-[#0CF1FF] underline decoration-[#FF2CF0]/70 underline-offset-4 hover:text-[#FF2CF0]">
                       @{savedXUsername} ↗
-                    </span>
+                    </p>
                   </a>
                   <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.12em] text-[#0CF1FF]/70">
                     ✓ X profile registered
