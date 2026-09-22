@@ -70,11 +70,11 @@ export function CyborgPunkUserDashboard() {
     );
   }
 
-  const xRegistered = Boolean(
-    profile?.xUsername && profile?.xProfileUrl,
-  );
+  const registeredProfile =
+    profile?.xUsername && profile?.xProfileUrl ? profile : null;
+  const xRegistered = Boolean(registeredProfile);
   const eligible = Boolean(
-    xRegistered && profile?.followCompleted && profile?.engagementCompleted,
+    registeredProfile?.followCompleted && registeredProfile?.engagementCompleted,
   );
 
   const toggleTask = (taskId: (typeof TASKS)[number]["id"]) => {
@@ -149,13 +149,13 @@ export function CyborgPunkUserDashboard() {
           </div>
 
           <a
-            href={profile.xProfileUrl}
+            href={registeredProfile.xProfileUrl}
             target="_blank"
             rel="noreferrer"
             className="mt-4 block border border-[#0CF1FF]/50 bg-black/50 p-3"
           >
             <p className="font-mono text-[14px] leading-6 text-[#0CF1FF] underline decoration-[#FF2CF0]/70 underline-offset-4 hover:text-[#FF2CF0]">
-              @{profile.xUsername} ↗
+              @{registeredProfile.xUsername} ↗
             </p>
           </a>
         </article>
