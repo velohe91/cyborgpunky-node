@@ -1,10 +1,28 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { cyborgPunksNfts } from "@/data/nfts";
 import { truncateAddress } from "@/lib/web3/multi-chain";
 import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
+import {
+  loadCyborgPunkProfile,
+  saveCyborgPunkProfile,
+} from "@/lib/allowlist/profile-storage";
+
+use client";
+
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { useAccount } from "wagmi";
+import { cyborgPunksNfts } from "@/data/nfts";
+import { truncateAddress } from "@/lib/web3/multi-chain";
+import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
+import {
+  loadCyborgPunkProfile,
+  saveCyborgPunkProfile,
+} from "@/lib/allowlist/profile-storage";
 
 const TASKS = [
   {
@@ -25,13 +43,19 @@ export function CyborgPunkProfile() {
   const [savedXUsername, setSavedXUsername] = useState("");
   const [xProfileUrl, setXProfileUrl] = useState("");
   const [showXConfirmation, setShowXConfirmation] = useState(false);
-  const [followed, setFollowed] = useState(false);
-  const [engaged, setEngaged] = useState(false);
 
   const xProfileRegistered = Boolean(savedXUsername && xProfileUrl);
-  const eligible = Boolean(
-    address && xProfileRegistered && followed && engaged,
-  );
+
+  useEffect(() => {
+    if (!address) return;
+
+    const savedProfile = loadCyborgPunkProfile(address);
+    if (!savedProfile) return;
+
+    setSavedXUsername(savedProfile.xUsername);
+    setXUsername(savedProfile.xUsername);
+    setXProfileUrl(savedProfile.xProfileUrl);
+  }, [address]);
   const specimens = useMemo(() => cyborgPunksNfts.slice(0, 4), []);
 
   const normalizedUsername = xUsername.trim().replace(/^@+/, "");
@@ -39,9 +63,18 @@ export function CyborgPunkProfile() {
   const confirmXProfile = () => {
     if (!normalizedUsername) return;
 
-    setSavedXUsername(normalizedUsername);
-    setXUsername(normalizedUsername);
-    setXProfileUrl(`https://x.com/${normalizedUsername}`);
+    const profile = {
+      walletAddress: address,
+      xUsername: normalizedUsername,
+      xProfileUrl: `https://x.com/${normalizedUsername}`,
+      followCompleted: false,
+      engagementCompleted: false,
+    };
+
+    setSavedXUsername(profile.xUsername);
+    setXUsername(profile.xUsername);
+    setXProfileUrl(profile.xProfileUrl);
+    saveCyborgPunkProfile(profile);
     setShowXConfirmation(false);
   };
 
@@ -87,7 +120,7 @@ export function CyborgPunkProfile() {
             </h2>
           </div>
           <span className="hud-chip !px-2 !py-1">
-            {eligible ? "WL ELIGIBLE" : "IN PROGRESS"}
+            {xProfileRegistered ? "PROFILE REGISTERED" : "IN PROGRESS"}
           </span>
         </div>
 
@@ -101,6 +134,12 @@ export function CyborgPunkProfile() {
           <p className="mt-1 font-mono text-[10px] text-slate-500">
             This wallet is the identity associated with this profile.
           </p>
+          <Link
+            href="/mint/user"
+            className="hud-chip mt-3 inline-flex uppercase"
+          >
+            OPEN USER DASHBOARD
+          </Link>
         </div>
 
         <div className="mt-4">
@@ -163,71 +202,6 @@ export function CyborgPunkProfile() {
             </>
           )}
         </div>
-      </article>
-
-      <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 shadow-[0_0_18px_rgba(12,241,255,0.08)] sm:p-5">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
-              Registration // Tasks
-            </p>
-            <h3 className="mt-2 font-sans text-sm tracking-wide text-[#FF2CF0]">
-              WL TASKS
-            </h3>
-          </div>
-          <span className="font-mono text-[10px] text-slate-500">
-            {eligible ? "COMPLETE" : "PENDING"}
-          </span>
-        </div>
-
-        <div className="mt-4 grid gap-3">
-          {TASKS.map((task) => {
-            const complete = task.id === "follow" ? followed : engaged;
-
-            return (
-              <div
-                key={task.id}
-                className="border border-[#3003D9]/60 bg-black/30 p-3"
-              >
-                <div className="flex items-start gap-3">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      task.id === "follow"
-                        ? setFollowed((value) => !value)
-                        : setEngaged((value) => !value)
-                    }
-                    className="hud-chip shrink-0 !px-2 !py-1"
-                    aria-pressed={complete}
-                  >
-                    {complete ? "✓" : "○"}
-                  </button>
-                  <div>
-                    <p className="font-sans text-[10px] uppercase tracking-wide text-[#0CF1FF]">
-                      {task.title}
-                    </p>
-                    <p className="mt-1 font-mono text-xs leading-5 text-slate-400">
-                      {task.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <button
-          type="button"
-          disabled={!eligible}
-          className="hud-chip mt-4 w-full uppercase disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          {eligible ? "REGISTER FOR WHITELIST" : "COMPLETE TASKS TO REGISTER"}
-        </button>
-
-        <p className="mt-3 font-mono text-[10px] leading-5 text-slate-500">
-          Task verification is manual in this first version. X API verification
-          can be connected later without changing the wallet identity model.
-        </p>
       </article>
 
       <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
