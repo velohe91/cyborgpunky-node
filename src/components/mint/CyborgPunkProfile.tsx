@@ -263,12 +263,12 @@ export function CyborgPunkProfile() {
 
       {showXConfirmation ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
           aria-labelledby="x-profile-confirmation-title"
         >
-          <div className="circuit-frame w-full max-w-lg p-4 sm:p-5">
+          <div className="circuit-frame mx-auto my-4 w-[calc(100%-2rem)] max-w-lg p-4 sm:my-6 sm:p-5">
             <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
               Profile // Registration
             </p>
