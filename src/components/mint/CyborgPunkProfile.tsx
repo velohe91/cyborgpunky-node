@@ -21,11 +21,33 @@ const TASKS = [
 export function CyborgPunkProfile() {
   const { address, isConnected } = useAccount();
   const [xUsername, setXUsername] = useState("");
+  const [savedXUsername, setSavedXUsername] = useState("");
+  const [xProfileUrl, setXProfileUrl] = useState("");
+  const [showXConfirmation, setShowXConfirmation] = useState(false);
   const [followed, setFollowed] = useState(false);
   const [engaged, setEngaged] = useState(false);
 
-  const eligible = Boolean(address && xUsername.trim() && followed && engaged);
+  const xProfileRegistered = Boolean(savedXUsername && xProfileUrl);
+  const eligible = Boolean(
+    address && xProfileRegistered && followed && engaged,
+  );
   const specimens = useMemo(() => cyborgPunksNfts.slice(0, 4), []);
+
+  const normalizedUsername = xUsername.trim().replace(/^@+/, "");
+
+  const confirmXProfile = () => {
+    if (!normalizedUsername) return;
+
+    setSavedXUsername(normalizedUsername);
+    setXUsername(normalizedUsername);
+    setXProfileUrl(`https://x.com/${normalizedUsername}`);
+    setShowXConfirmation(false);
+  };
+
+  const editXProfile = () => {
+    setXUsername(savedXUsername);
+    setShowXConfirmation(false);
+  };
 
   if (!isConnected || !address) {
     return (
@@ -84,14 +106,56 @@ export function CyborgPunkProfile() {
           >
             X Username
           </label>
-          <input
-            id="cyborgpunk-x-username"
-            value={xUsername}
-            onChange={(event) => setXUsername(event.target.value)}
-            placeholder="@yourusername"
-            autoComplete="off"
-            className="mt-2 w-full border border-[#3003D9]/80 bg-black/60 px-3 py-3 font-mono text-sm text-foreground outline-none placeholder:text-slate-600 focus:border-[#0CF1FF]"
-          />
+
+          {xProfileRegistered ? (
+            <div className="mt-2 border border-[#0CF1FF]/50 bg-black/50 p-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <a
+                    href={xProfileUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-mono text-sm text-[#0CF1FF] underline decoration-[#FF2CF0]/70 underline-offset-4 hover:text-[#FF2CF0]"
+                  >
+                    @{savedXUsername} ↗
+                  </a>
+                  <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.12em] text-[#0CF1FF]/70">
+                    ✓ X profile registered
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={editXProfile}
+                  className="hud-chip !px-3 !py-2"
+                >
+                  EDIT X PROFILE
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <input
+                id="cyborgpunk-x-username"
+                value={xUsername}
+                onChange={(event) => setXUsername(event.target.value)}
+                placeholder="@yourusername"
+                autoComplete="off"
+                className="mt-2 w-full border border-[#3003D9]/80 bg-black/60 px-3 py-3 font-mono text-sm text-foreground outline-none placeholder:text-slate-600 focus:border-[#0CF1FF]"
+              />
+              <button
+                type="button"
+                disabled={!normalizedUsername}
+                onClick={() => setShowXConfirmation(true)}
+                className="hud-chip mt-3 w-full uppercase disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                SAVE X PROFILE
+              </button>
+              <p className="mt-2 font-mono text-[10px] leading-5 text-slate-500">
+                Confirm the X account you want associated with this connected
+                wallet.
+              </p>
+            </>
+          )}
         </div>
       </article>
 
@@ -112,8 +176,7 @@ export function CyborgPunkProfile() {
 
         <div className="mt-4 grid gap-3">
           {TASKS.map((task) => {
-            const complete =
-              task.id === "follow" ? followed : engaged;
+            const complete = task.id === "follow" ? followed : engaged;
 
             return (
               <div
@@ -197,6 +260,74 @@ export function CyborgPunkProfile() {
           ))}
         </div>
       </article>
+
+      {showXConfirmation ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="x-profile-confirmation-title"
+        >
+          <div className="circuit-frame w-full max-w-lg p-4 sm:p-5">
+            <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
+              Profile // Registration
+            </p>
+            <h3
+              id="x-profile-confirmation-title"
+              className="mt-2 font-sans text-[16px] tracking-wide text-[#FF2CF0] sm:text-[20px]"
+            >
+              REGISTER X PROFILE
+            </h3>
+            <div className="circuit-crosshair my-3 h-0 border-t-2 border-[#0CF1FF]/50" />
+
+            <p className="font-mono text-sm leading-6 text-slate-300">
+              Your X username will be registered and associated with your
+              connected CyborgPunk wallet.
+            </p>
+
+            <div className="mt-4 grid gap-3 border border-[#3003D9]/70 bg-[#05010d]/80 p-3">
+              <div>
+                <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#0CF1FF]/70">
+                  X Profile
+                </p>
+                <p className="mt-1 font-mono text-sm text-foreground">
+                  @{normalizedUsername}
+                </p>
+              </div>
+              <div>
+                <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#0CF1FF]/70">
+                  Connected Wallet
+                </p>
+                <p className="mt-1 break-all font-mono text-sm text-foreground">
+                  {truncateAddress(address, 6, 6)}
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-4 font-mono text-[10px] leading-5 text-slate-500">
+              Make sure this is the correct X account before continuing. The
+              profile link will be generated from this username.
+            </p>
+
+            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => setShowXConfirmation(false)}
+                className="hud-chip w-full uppercase"
+              >
+                CANCEL
+              </button>
+              <button
+                type="button"
+                onClick={confirmXProfile}
+                className="hud-chip w-full uppercase"
+              >
+                CONFIRM &amp; REGISTER
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
