@@ -11,31 +11,6 @@ import {
   saveCyborgPunkProfile,
 } from "@/lib/allowlist/profile-storage";
 
-use client";
-
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { useAccount } from "wagmi";
-import { cyborgPunksNfts } from "@/data/nfts";
-import { truncateAddress } from "@/lib/web3/multi-chain";
-import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
-import {
-  loadCyborgPunkProfile,
-  saveCyborgPunkProfile,
-} from "@/lib/allowlist/profile-storage";
-
-const TASKS = [
-  {
-    id: "follow",
-    title: "FOLLOW THE SIGNAL",
-    description: "Follow @cyborgpunky on X.",
-  },
-  {
-    id: "engagement",
-    title: "ENGAGE THE TRANSMISSION",
-    description: "Like and repost the pinned CyborgPunks Club post.",
-  },
-] as const;
 
 export function CyborgPunkProfile() {
   const { address, isConnected } = useAccount();
