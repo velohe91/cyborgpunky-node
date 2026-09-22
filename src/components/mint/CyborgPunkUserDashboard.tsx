@@ -196,8 +196,8 @@ export function CyborgPunkUserDashboard() {
             {TASKS.map((task) => {
               const complete =
                 task.id === "follow"
-                  ? profile.followCompleted
-                  : profile.engagementCompleted;
+                  ? registeredProfile.followCompleted
+                  : registeredProfile.engagementCompleted;
 
               return (
                 <div
