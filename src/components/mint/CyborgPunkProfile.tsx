@@ -91,7 +91,7 @@ export function CyborgPunkProfile() {
           <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#0CF1FF]/70">
             Connected wallet
           </p>
-          <p className="mt-2 break-all font-mono text-sm text-foreground">
+          <p className="mt-2 break-all font-mono text-[14px] text-foreground">
             {truncateAddress(address, 6, 6)}
           </p>
           <p className="mt-1 font-mono text-[10px] text-slate-500">
@@ -115,7 +115,7 @@ export function CyborgPunkProfile() {
                     href={xProfileUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="font-mono text-sm text-[#0CF1FF] underline decoration-[#FF2CF0]/70 underline-offset-4 hover:text-[#FF2CF0]"
+                    className="font-mono text-[14px] text-[#0CF1FF] underline decoration-[#FF2CF0]/70 underline-offset-4 hover:text-[#FF2CF0]"
                   >
                     @{savedXUsername} ↗
                   </a>
