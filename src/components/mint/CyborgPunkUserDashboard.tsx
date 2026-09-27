@@ -257,6 +257,9 @@ export function CyborgPunkUserDashboard() {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
+          <Link href="/profile" className="hud-chip uppercase">
+            OPEN USER DASHBOARD
+          </Link>
           <Link href="/mint" className="hud-chip uppercase">
             EDIT PROFILE
           </Link>
