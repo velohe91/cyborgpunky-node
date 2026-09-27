@@ -76,19 +76,24 @@ export function CyborgPunkUserDashboard() {
     registeredProfile?.followCompleted && registeredProfile?.engagementCompleted,
   );
 
-  const toggleTask = (taskId: (typeof TASKS)[number]["id"]) => {
-    if (!profile) return;
+  const markFollowCompleted = () => {
+    if (!profile || profile.followCompleted) return;
 
     const nextProfile = {
       ...profile,
-      followCompleted:
-        taskId === "follow"
-          ? !profile.followCompleted
-          : profile.followCompleted,
-      engagementCompleted:
-        taskId === "engagement"
-          ? !profile.engagementCompleted
-          : profile.engagementCompleted,
+      followCompleted: true,
+    };
+
+    setProfile(nextProfile);
+    saveCyborgPunkProfile(nextProfile);
+  };
+
+  const toggleTask = (taskId: (typeof TASKS)[number]["id"]) => {
+    if (!profile || taskId === "follow") return;
+
+    const nextProfile = {
+      ...profile,
+      engagementCompleted: !profile.engagementCompleted,
     };
 
     setProfile(nextProfile);
@@ -205,21 +210,35 @@ export function CyborgPunkUserDashboard() {
                   className="border border-[#3003D9]/60 bg-black/30 p-3"
                 >
                   <div className="flex items-start gap-3">
-                    <button
-                      type="button"
-                      onClick={() => toggleTask(task.id)}
+                    <span
                       className="hud-chip shrink-0 !px-2 !py-1"
-                      aria-pressed={complete}
+                      aria-hidden="true"
                     >
                       {complete ? "✓" : "○"}
-                    </button>
+                    </span>
                     <div>
                       <p className="font-sans text-[10px] uppercase tracking-wide text-[#0CF1FF]">
                         {task.title}
                       </p>
-                      <p className="mt-1 font-mono text-xs leading-5 text-slate-400">
-                        {task.description}
-                      </p>
+                      {task.id === "follow" ? (
+                        <a
+                          href="https://x.com/cyborgpunky"
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={markFollowCompleted}
+                          className="mt-1 block font-mono text-xs leading-5 text-slate-400 underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#0CF1FF]"
+                        >
+                          {task.description}
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => toggleTask(task.id)}
+                          className="mt-1 block text-left font-mono text-xs leading-5 text-slate-400"
+                        >
+                          {task.description}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
