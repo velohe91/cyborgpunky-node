@@ -28,6 +28,8 @@ export function CyborgPunkUserDashboard() {
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const [profile, setProfile] = useState<CyborgPunkLocalProfile | null>(null);
+  const [isAllowlistRegistered, setIsAllowlistRegistered] = useState(false);
+  const [isCheckingAllowlist, setIsCheckingAllowlist] = useState(false);
   const [registrationState, setRegistrationState] = useState<
     "idle" | "signing" | "registering" | "registered" | "error"
   >("idle");
@@ -36,12 +38,56 @@ export function CyborgPunkUserDashboard() {
   );
 
   useEffect(() => {
+    let cancelled = false;
+
     if (!address) {
       setProfile(null);
+      setIsAllowlistRegistered(false);
+      setIsCheckingAllowlist(false);
       return;
     }
 
     setProfile(loadCyborgPunkProfile(address));
+    setIsCheckingAllowlist(true);
+
+    fetch(`/api/mint/allowlist/status?address=${encodeURIComponent(address)}`, {
+      cache: "no-store",
+    })
+      .then(async (response) => {
+        const result = (await response.json()) as {
+          registered?: boolean;
+          profile?: CyborgPunkLocalProfile;
+        };
+
+        if (!response.ok) {
+          throw new Error("Could not check the allowlist.");
+        }
+
+        if (cancelled) return;
+
+        if (result.registered && result.profile) {
+          setProfile(result.profile);
+          saveCyborgPunkProfile(result.profile);
+          setIsAllowlistRegistered(true);
+          setRegistrationState("registered");
+        } else {
+          setIsAllowlistRegistered(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setIsAllowlistRegistered(false);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsCheckingAllowlist(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [address]);
 
   if (!address) {
@@ -79,7 +125,7 @@ export function CyborgPunkUserDashboard() {
 
   const registeredProfile =
     profile?.xUsername && profile?.xProfileUrl ? profile : null;
-    const eligible = Boolean(
+  const eligible = isAllowlistRegistered || Boolean(
     registeredProfile?.followCompleted && registeredProfile?.engagementCompleted,
   );
 
@@ -108,7 +154,9 @@ export function CyborgPunkUserDashboard() {
   };
 
   const registerForWhitelist = async () => {
-    if (!address || !registeredProfile || !eligible) return;
+    if (!address || !registeredProfile || !eligible || isAllowlistRegistered) {
+      return;
+    }
 
     setRegistrationError(null);
     setRegistrationState("signing");
@@ -152,7 +200,21 @@ export function CyborgPunkUserDashboard() {
         throw new Error(result.error ?? "Registration failed.");
       }
 
+      setIsAllowlistRegistered(true);
       setRegistrationState("registered");
+
+      const registeredProfileFromServer = profile
+        ? {
+            ...profile,
+            followCompleted: true,
+            engagementCompleted: true,
+          }
+        : null;
+
+      if (registeredProfileFromServer) {
+        setProfile(registeredProfileFromServer);
+        saveCyborgPunkProfile(registeredProfileFromServer);
+      }
     } catch (error) {
       setRegistrationState("error");
       setRegistrationError(
@@ -174,7 +236,11 @@ export function CyborgPunkUserDashboard() {
             </h1>
           </div>
           <span className="hud-chip !px-2 !py-1">
-            {eligible ? "WL ELIGIBLE" : "IN PROGRESS"}
+            {isAllowlistRegistered
+              ? "COMPLETED"
+              : eligible
+                ? "WL ELIGIBLE"
+                : "IN PROGRESS"}
           </span>
         </div>
 
@@ -250,81 +316,99 @@ export function CyborgPunkUserDashboard() {
                 Registration // Tasks
               </p>
               <h2 className="mt-2 font-sans text-sm tracking-wide text-[#FF2CF0]">
-                WL TASKS
+                {isAllowlistRegistered ? "WL TASK COMPLETED" : "WL TASKS"}
               </h2>
             </div>
             <span className="font-mono text-[10px] text-slate-500">
-              {eligible ? "COMPLETE" : "PENDING"}
+              {isAllowlistRegistered ? "ELIGIBLE" : eligible ? "COMPLETE" : "PENDING"}
             </span>
           </div>
 
-          <div className="mt-4 grid gap-3">
-            {TASKS.map((task) => {
-              const complete =
-                task.id === "follow"
-                  ? registeredProfile.followCompleted
-                  : registeredProfile.engagementCompleted;
+          {isAllowlistRegistered ? (
+            <div className="mt-4 border border-[#0CF1FF]/40 bg-black/30 p-4">
+              <p className="font-sans text-[12px] uppercase tracking-wide text-[#0CF1FF]">
+                YOUR WALLET IS ELIGIBLE
+              </p>
+              <p className="mt-2 font-mono text-sm leading-6 text-slate-400">
+                This wallet is registered for the CyborgPunks Club allowlist.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="mt-4 grid gap-3">
+                {TASKS.map((task) => {
+                  const complete =
+                    task.id === "follow"
+                      ? registeredProfile.followCompleted
+                      : registeredProfile.engagementCompleted;
 
-              return (
-                <div
-                  key={task.id}
-                  className="border border-[#3003D9]/60 bg-black/30 p-3"
-                >
-                  <div className="flex items-start gap-3">
-                    <span
-                      className="hud-chip shrink-0 !px-2 !py-1"
-                      aria-hidden="true"
+                  return (
+                    <div
+                      key={task.id}
+                      className="border border-[#3003D9]/60 bg-black/30 p-3"
                     >
-                      {complete ? "✓" : "○"}
-                    </span>
-                    <div>
-                      <p className="font-sans text-[10px] uppercase tracking-wide text-[#0CF1FF]">
-                        {task.title}
-                      </p>
-                      {task.id === "follow" ? (
-                        <a
-                          href="https://x.com/cyborgpunky"
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={markFollowCompleted}
-                          className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
+                      <div className="flex items-start gap-3">
+                        <span
+                          className="hud-chip shrink-0 !px-2 !py-1"
+                          aria-hidden="true"
                         >
-                          {task.description}
-                        </a>
-                      ) : (
-                        <a
-                          href="https://x.com/cyborgpunky/status/2104023199336083865?s=20"
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={markEngagementCompleted}
-                          className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
-                        >
-                          {task.description}
-                        </a>
-                      )}
+                          {complete ? "✓" : "○"}
+                        </span>
+                        <div>
+                          <p className="font-sans text-[10px] uppercase tracking-wide text-[#0CF1FF]">
+                            {task.title}
+                          </p>
+                          {task.id === "follow" ? (
+                            <a
+                              href="https://x.com/cyborgpunky"
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={markFollowCompleted}
+                              className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
+                            >
+                              {task.description}
+                            </a>
+                          ) : (
+                            <a
+                              href="https://x.com/cyborgpunky/status/2104023199336083865?s=20"
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={markEngagementCompleted}
+                              className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
+                            >
+                              {task.description}
+                            </a>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
 
-          <button
-            type="button"
-            disabled={!eligible || registrationState === "signing" || registrationState === "registering" || registrationState === "registered"}
-            onClick={registerForWhitelist}
-            className="hud-chip mt-4 w-full uppercase disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            {registrationState === "registered"
-              ? "REGISTERED"
-              : registrationState === "signing"
-                ? "SIGN REGISTRATION"
-                : registrationState === "registering"
-                  ? "REGISTERING..."
-                  : eligible
-                    ? "REGISTER FOR WHITELIST"
-                    : "COMPLETE TASKS TO REGISTER"}
-          </button>
+              <button
+                type="button"
+                disabled={
+                  !eligible ||
+                  registrationState === "signing" ||
+                  registrationState === "registering" ||
+                  registrationState === "registered"
+                }
+                onClick={registerForWhitelist}
+                className="hud-chip mt-4 w-full uppercase disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                {registrationState === "registered"
+                  ? "REGISTERED"
+                  : registrationState === "signing"
+                    ? "SIGN REGISTRATION"
+                    : registrationState === "registering"
+                      ? "REGISTERING..."
+                      : eligible
+                        ? "REGISTER FOR WHITELIST"
+                        : "COMPLETE TASKS TO REGISTER"}
+              </button>
+            </>
+          )}
 
           {registrationError ? (
             <p className="mt-3 font-mono text-xs leading-5 text-[#FF2CF0]">
