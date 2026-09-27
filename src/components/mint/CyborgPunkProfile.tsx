@@ -211,7 +211,7 @@ export function CyborgPunkProfile() {
             </p>
           </div>
           <span className="font-mono text-[9px] text-slate-500">
-            SAMPLE // NOT FINAL
+            ARC CHAIN // MINT NETWORK
           </span>
         </div>
 
