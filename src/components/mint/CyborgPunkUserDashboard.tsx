@@ -88,12 +88,12 @@ export function CyborgPunkUserDashboard() {
     saveCyborgPunkProfile(nextProfile);
   };
 
-  const toggleTask = (taskId: (typeof TASKS)[number]["id"]) => {
-    if (!profile || taskId === "follow") return;
+  const markEngagementCompleted = () => {
+    if (!profile || profile.engagementCompleted) return;
 
     const nextProfile = {
       ...profile,
-      engagementCompleted: !profile.engagementCompleted,
+      engagementCompleted: true,
     };
 
     setProfile(nextProfile);
@@ -231,13 +231,15 @@ export function CyborgPunkUserDashboard() {
                           {task.description}
                         </a>
                       ) : (
-                        <button
-                          type="button"
-                          onClick={() => toggleTask(task.id)}
-                          className="mt-1 block text-left font-mono text-xs leading-5 text-slate-400"
+                        <a
+                          href="https://x.com/cyborgpunky/status/2104023199336083865?s=20"
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={markEngagementCompleted}
+                          className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
                         >
                           {task.description}
-                        </button>
+                        </a>
                       )}
                     </div>
                   </div>
