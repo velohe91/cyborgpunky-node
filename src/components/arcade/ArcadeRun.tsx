@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { NftItem } from "@/lib/types";
 import { cyborgPunksNfts, getNftById } from "@/data/nfts";
 import { RARITY_COLORS } from "@/lib/constants";
@@ -1011,10 +1012,13 @@ export function ArcadeRun() {
               SPECIAL // {special.name} — {special.blurb}
             </p>
           )}
-          <div className="flex justify-center pt-1">
+          <div className="flex justify-center gap-2 pt-1">
             <NeonButton onClick={startRun} disabled={!pilot}>
               Start Run
             </NeonButton>
+            <Link href="/arcade/user" className="hud-chip inline-flex items-center uppercase">
+              My Score
+            </Link>
           </div>
         </>
       )}
