@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { useAccount } from "wagmi";
+import { useState } from "react";
+import { truncateAddress } from "@/lib/web3/multi-chain";
 import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
 import { useLockedPilot } from "@/hooks/useLockedPilot";
 import { getNftById } from "@/data/nfts";
 
 export function ArcadeUserDashboard() {
   const { address } = useAccount();
+  const [copied, setCopied] = useState(false);
   const { pilotId } = useLockedPilot();
   const pilot = pilotId ? getNftById(pilotId) : null;
 
@@ -29,8 +32,26 @@ export function ArcadeUserDashboard() {
     <main className="mx-auto grid max-w-3xl gap-4 px-3 py-6 sm:px-4 sm:py-10">
       <article className="circuit-frame p-4 sm:p-5">
         <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">Arcade // User</p>
-        <div className="mt-2">
-          <h1 className="break-all font-mono text-[18px] tracking-wide text-[#FF2CF0] sm:text-[24px]">{address}</h1>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <h1 className="font-mono text-[18px] tracking-wide text-[#FF2CF0] sm:text-[24px]">
+            {truncateAddress(address, 6, 6)}
+          </h1>
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(address);
+                setCopied(true);
+                window.setTimeout(() => setCopied(false), 1400);
+              } catch {
+                setCopied(false);
+              }
+            }}
+            className="hud-chip uppercase"
+            aria-label="Copy wallet address"
+          >
+            {copied ? "COPIED" : "COPY"}
+          </button>
         </div>
       </article>
 
