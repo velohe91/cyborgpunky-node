@@ -33,8 +33,17 @@ export function CyborgPunkProfile() {
   }, [address]);
   const specimens = useMemo(
     () =>
-      Array.from({ length: 12 }, (_, index) => ({
-        id: `ARC-SPECIMEN-${String(index + 1).padStart(2, "0")}`,
+      [
+        "VIREX",
+        "NULLA",
+        "LYNX",
+        "STRIPE",
+        "ARC",
+        "CYBORGPUNKY",
+        "UNKNOWN",
+        "NEON-BYTE BUNNY",
+      ].map((id, index) => ({
+        id,
         image: `/mint/specimens/specimen-${String(index + 1).padStart(2, "0")}.png`,
       })),
     [],
@@ -197,6 +206,9 @@ export function CyborgPunkProfile() {
             <h3 className="mt-2 font-sans text-sm tracking-wide text-[#FF2CF0]">
               MINT SPECIMENS
             </h3>
+            <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[#0CF1FF]/70">
+              Cryogenic Room Background
+            </p>
           </div>
           <span className="font-mono text-[9px] text-slate-500">
             SAMPLE // NOT FINAL
