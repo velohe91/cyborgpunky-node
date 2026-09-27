@@ -5,7 +5,6 @@ import { useAccount } from "wagmi";
 import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
 import { useLockedPilot } from "@/hooks/useLockedPilot";
 import { getNftById } from "@/data/nfts";
-import { truncateAddress } from "@/lib/web3/multi-chain";
 
 export function ArcadeUserDashboard() {
   const { address } = useAccount();
