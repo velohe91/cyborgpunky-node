@@ -38,7 +38,7 @@ export default function MintPage() {
           >
             MINT
           </a>
-          <NeonButton href="/">RETURN TO SYSTEM</NeonButton>
+          <NeonButton href="/arcade" variant="outline">ARCADE</NeonButton>
         </div>
 
         <p className="mt-6 text-center font-mono text-xs leading-5 text-slate-500">
