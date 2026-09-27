@@ -26,41 +26,7 @@ function formatUsd(value: number | null): string {
   })}`;
 }
 
-const COIN_LOGO_NAMES: Record<string, string> = {
-  BTC: "bitcoin",
-  ETH: "eth",
-  USDT: "tether",
-  BNB: "bnb",
-  XRP: "xrp",
-  USDC: "usdc",
-  SOL: "solana",
-  TRX: "tron",
-  ZEC: "zec",
-  HYPE: "hyperliquid",
-  DOGE: "dogecoin",
-  LINK: "chainlink",
-  XMR: "monero",
-  WBTC: "wrapped-bitcoin",
-  ADA: "cardano",
-  XLM: "stellar",
-  XTZ: "tezos",
-};
 
-function CoinIcon({ symbol }: { symbol: string }) {
-  const name = COIN_LOGO_NAMES[symbol];
-  if (!name) return null;
-
-  return (
-    <img
-      src={`https://cdn.jsdmirror.com/gh/GMWalletApp/crypto-icons@main/assets/tokens/branded/${name}.svg`}
-      alt=""
-      aria-hidden="true"
-      width={14}
-      height={14}
-      className="shrink-0"
-    />
-  );
-}
 
 function chipTone(symbol: string, offline: boolean): string {
   if (offline) return "text-muted";
@@ -86,7 +52,18 @@ function CoinChip({
       className={`ticker-chip shrink-0 ${className} ${chipTone(coin.symbol, offline)}`}
       title={coin.name}
     >
-      <CoinIcon symbol={coin.symbol} /> {coin.symbol} {"//"} {price}
+      {coin.image ? (
+        <span
+          aria-hidden="true"
+          className="h-3.5 w-3.5 shrink-0 rounded-full bg-center bg-contain bg-no-repeat sm:h-4 sm:w-4"
+          style={{ backgroundImage: `url(${coin.image})` }}
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="h-3.5 w-3.5 shrink-0 rounded-full border border-current/30 sm:h-4 sm:w-4"
+        />
+      )} {coin.symbol} {"//"} {price}
     </span>
   );
 }
