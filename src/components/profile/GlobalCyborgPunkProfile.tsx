@@ -111,6 +111,30 @@ export function GlobalCyborgPunkProfile() {
 
       <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
         <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
+          Activity // Arcade
+        </p>
+        <h2 className="mt-2 font-sans text-sm tracking-wide text-[#FF2CF0]">
+          ARCADE SCORE
+        </h2>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="border border-[#3003D9]/60 bg-black/30 p-3">
+            <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">High Score</p>
+            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">000000</p>
+          </div>
+          <div className="border border-[#3003D9]/60 bg-black/30 p-3">
+            <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">Total Score</p>
+            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">000000</p>
+          </div>
+        </div>
+        <Link href="/arcade/user" className="hud-chip mt-4 inline-flex uppercase">
+          OPEN ARCADE DASHBOARD
+        </Link>
+      </article>
+    </main>
+  );
+}
+      <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
+        <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
           Activity // Allowlist
         </p>
         <h2 className="mt-2 font-sans text-sm tracking-wide text-[#FF2CF0]">
@@ -135,27 +159,3 @@ export function GlobalCyborgPunkProfile() {
         </Link>
       </article>
 
-      <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
-        <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
-          Activity // Arcade
-        </p>
-        <h2 className="mt-2 font-sans text-sm tracking-wide text-[#FF2CF0]">
-          ARCADE SCORE
-        </h2>
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          <div className="border border-[#3003D9]/60 bg-black/30 p-3">
-            <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">High Score</p>
-            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">000000</p>
-          </div>
-          <div className="border border-[#3003D9]/60 bg-black/30 p-3">
-            <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">Total Score</p>
-            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">000000</p>
-          </div>
-        </div>
-        <Link href="/arcade/user" className="hud-chip mt-4 inline-flex uppercase">
-          OPEN ARCADE DASHBOARD
-        </Link>
-      </article>
-    </main>
-  );
-}
