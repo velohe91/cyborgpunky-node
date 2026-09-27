@@ -264,7 +264,7 @@ export function ArcadeRun() {
         `Wallet: ${normalizedAddress}`,
         `Score: ${score}`,
         `Nonce: ${challenge.nonce}`,
-      ].join("\\n");
+      ].join("\n");
 
       const signature = await signMessageAsync({ message });
 
