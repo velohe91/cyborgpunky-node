@@ -28,9 +28,9 @@ function formatUsd(value: number | null): string {
 
 function CoinIcon({ symbol }: { symbol: string }) {
   const common = {
-    width: 12,
-    height: 12,
-    viewBox: "0 0 12 12",
+    width: 14,
+    height: 14,
+    viewBox: "0 0 14 14",
     "aria-hidden": true,
     className: "shrink-0",
     style: { imageRendering: "pixelated" as const },
@@ -38,49 +38,89 @@ function CoinIcon({ symbol }: { symbol: string }) {
 
   if (symbol === "BTC") {
     return (
-      <svg {...common}>
-        <path d="M4 1h3v1h2v2H8v1h1v2H7v2H4v1H2V9h1V3H2V1h2Zm0 2v2h2V3H4Zm0 4v2h2V7H4Z" fill="currentColor" />
-        <path d="M3 0h1v1H3Zm5 1h1v1H8ZM3 10h1v1H3Z" fill="currentColor" />
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#F7931A" />
+        <path d="M6 2h2v1h1v2H8v1h1v2H8v2H6V9H4V7h2V6H4V4h2V2Zm0 2v1h1V4H6Zm0 3v2h1V7H6Z" fill="#fff" />
       </svg>
     );
   }
 
   if (symbol === "ETH") {
     return (
-      <svg {...common}>
-        <path d="M6 0 3 6l3 2 3-2L6 0Zm0 9L3 7l3 5 3-5-3 2Z" fill="currentColor" />
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#627EEA" />
+        <path d="M7 2 4 7l3 2 3-2-3-5Zm0 6L4 7l3 5 3-5-3 1Z" fill="#fff" />
+      </svg>
+    );
+  }
+
+  if (symbol === "USDT") {
+    return (
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#26A17B" />
+        <path d="M4 3h6v2H8v1h1v1H8v3H6V7H5V6h1V5H4V3Z" fill="#fff" />
+      </svg>
+    );
+  }
+
+  if (symbol === "BNB") {
+    return (
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#F3BA2F" />
+        <path d="M7 2 9 4 8 5 7 4 6 5 5 4 7 2Zm-3 3 1-1 1 1-1 1-1-1Zm6 0-1-1-1 1 1 1 1-1ZM7 6l1 1-1 1-1-1 1-1Zm0 4-2-2 1-1 1 1 1-1 1 1-2 2Z" fill="#fff" />
+      </svg>
+    );
+  }
+
+  if (symbol === "XRP") {
+    return (
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#23292F" />
+        <path d="M3 4h2l2 2 2-2h2L8 8 11 10H9L7 8l-2 2H3l3-2-3-4Z" fill="#fff" />
+      </svg>
+    );
+  }
+
+  if (symbol === "USDC") {
+    return (
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#2775CA" />
+        <path d="M8 3H6v1H5v1H4v2h1v2h1v1h2V9H7V8H6V6h1V5h1V3Zm1 1h1v1h1v4h-1v1H9V9h1V5H9V4Z" fill="#fff" />
       </svg>
     );
   }
 
   if (symbol === "SOL") {
     return (
-      <svg {...common}>
-        <path d="M1 2h9L8 4H1l2-2Zm2 3h8L9 7H1l2-2Zm-2 3h9l-2 2H1l2-2Z" fill="currentColor" />
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#14F195" />
+        <path d="M3 4h8L9 6H3l2-2Zm0 3h8L9 9H3l2-2Zm0 3h8l-2 2H3l2-2Z" fill="#121212" />
       </svg>
     );
   }
 
-  if (symbol === "XTZ") {
+  if (symbol === "TRX") {
     return (
-      <svg {...common}>
-        <path d="M6 0 9 3H7v2h2v2H7v2h2v2H6V9H4V7h2V5H4V3h2V0Zm-3 2h1v1H3V2Z" fill="currentColor" />
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#EF0027" />
+        <path d="M3 3h7l1 1-4 7-1-1L3 3Zm2 1 1 5 3-5H5Z" fill="#fff" />
       </svg>
     );
   }
 
-  if (symbol === "POL" || symbol === "MATIC") {
+  if (symbol === "ZEC") {
     return (
-      <svg {...common}>
-        <path d="M3 3h2v2H3v2h2v2H3V7H1V5h2V3Zm4 0h2v2h2v2H9V5H7V3Zm0 6h2v2H7V9Z" fill="currentColor" />
+      <svg {...common} shapeRendering="crispEdges">
+        <circle cx="7" cy="7" r="6" fill="#F4B728" />
+        <path d="M4 3h6v2L6 9h4v2H4V9l4-4H4V3Z" fill="#151515" />
       </svg>
     );
   }
 
   return (
-    <svg {...common}>
-      <path d="M2 1h8v2H3v6h7v2H2V9H1V3h1V1Zm2 3h4v4H4V4Z" fill="currentColor" />
-      <path d="M5 5h2v2H5V5Z" fill="currentColor" />
+    <svg {...common} shapeRendering="crispEdges">
+      <rect x="1" y="1" width="12" height="12" fill="currentColor" />
+      <rect x="4" y="4" width="6" height="6" fill="#05010d" />
     </svg>
   );
 }
