@@ -31,12 +31,12 @@ export default function MintPage() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
-            href="https://x.com/cyborgpunky"
+            href="https://opensea.io/collection/arc-cyborgpunks"
             target="_blank"
             rel="noopener noreferrer"
             className="hud-chip inline-flex"
           >
-            OPEN @CYBORGPUNKY
+            MINT
           </a>
           <NeonButton href="/">RETURN TO SYSTEM</NeonButton>
         </div>
