@@ -128,7 +128,7 @@ export function ArcadeUserDashboard() {
             <p className="mt-2 font-mono text-xl text-[#0CF1FF]">{String(totalScore).padStart(6, "0")}</p>
           </div>
         </div>
-        <div className="mt-3 flex justify-center">
+        <div className="mt-3 flex justify-start">
           <Link href="/profile" className="hud-chip uppercase">OPEN DASHBOARD</Link>
         </div>
       </article>
