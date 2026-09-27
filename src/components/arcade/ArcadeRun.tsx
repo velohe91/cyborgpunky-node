@@ -220,6 +220,12 @@ export function ArcadeRun() {
     setPhaseSync("run");
   };
 
+  useEffect(() => {
+    if (!pilotId || !pilot || phaseRef.current !== "select") return;
+    if (new URLSearchParams(window.location.search).get("run") !== "1") return;
+    startRun();
+  }, [pilotId, pilot]);
+
   const changePilot = () => {
     setPhaseSync("select");
   };
