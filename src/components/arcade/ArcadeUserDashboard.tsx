@@ -113,6 +113,11 @@ export function ArcadeUserDashboard() {
         </div>
       </article>
 
+      <div className="flex flex-wrap justify-center gap-2">
+        <NeonButton href="/arcade?run=1">START RUN</NeonButton>
+        <Link href="/arcade" className="hud-chip uppercase">SELECT PILOT</Link>
+      </div>
+
       <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
         <div className="grid grid-cols-2 gap-3">
           <div className="border border-[#3003D9]/60 bg-black/30 p-3">
@@ -123,10 +128,6 @@ export function ArcadeUserDashboard() {
             <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">Total Score</p>
             <p className="mt-2 font-mono text-xl text-[#0CF1FF]">{String(totalScore).padStart(6, "0")}</p>
           </div>
-        </div>
-        <div className="mt-4 flex flex-wrap justify-center gap-2">
-          <NeonButton href="/arcade?run=1">START RUN</NeonButton>
-          <Link href="/arcade" className="hud-chip uppercase">SELECT PILOT</Link>
         </div>
         <div className="mt-3 flex justify-center">
           <Link href="/profile" className="hud-chip uppercase">OPEN DASHBOARD</Link>
