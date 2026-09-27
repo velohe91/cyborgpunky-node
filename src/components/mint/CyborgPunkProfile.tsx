@@ -18,6 +18,7 @@ export function CyborgPunkProfile() {
   const [savedXUsername, setSavedXUsername] = useState("");
   const [xProfileUrl, setXProfileUrl] = useState("");
   const [showXConfirmation, setShowXConfirmation] = useState(false);
+  const [isEditingXProfile, setIsEditingXProfile] = useState(false);
 
   const xProfileRegistered = Boolean(savedXUsername && xProfileUrl);
 
@@ -49,12 +50,14 @@ export function CyborgPunkProfile() {
     setSavedXUsername(profile.xUsername);
     setXUsername(profile.xUsername);
     setXProfileUrl(profile.xProfileUrl);
+    setIsEditingXProfile(false);
     saveCyborgPunkProfile(profile);
     setShowXConfirmation(false);
   };
 
   const editXProfile = () => {
     setXUsername(savedXUsername);
+    setIsEditingXProfile(true);
     setShowXConfirmation(false);
   };
 
@@ -125,7 +128,7 @@ export function CyborgPunkProfile() {
             X Username
           </label>
 
-          {xProfileRegistered ? (
+          {xProfileRegistered && !isEditingXProfile ? (
             <div className="mt-2 border border-[#0CF1FF]/50 bg-black/50 p-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
