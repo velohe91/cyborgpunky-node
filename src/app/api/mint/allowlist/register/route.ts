@@ -82,8 +82,23 @@ export async function POST(request: Request) {
     );
 
     if (!existingResponse.ok) {
+      const supabaseError = await existingResponse.text();
+
+      console.error("Allowlist lookup failed:", {
+        status: existingResponse.status,
+        statusText: existingResponse.statusText,
+        body: supabaseError,
+      });
+
       return NextResponse.json(
-        { error: "Could not check the allowlist." },
+        {
+          error: "Could not check the allowlist.",
+          debug: {
+            status: existingResponse.status,
+            statusText: existingResponse.statusText,
+            supabaseError,
+          },
+        },
         { status: 502 },
       );
     }
@@ -111,8 +126,23 @@ export async function POST(request: Request) {
     });
 
     if (!insertResponse.ok) {
+      const supabaseError = await insertResponse.text();
+
+      console.error("Allowlist registration failed:", {
+        status: insertResponse.status,
+        statusText: insertResponse.statusText,
+        body: supabaseError,
+      });
+
       return NextResponse.json(
-        { error: "Could not register the wallet." },
+        {
+          error: "Could not register the wallet.",
+          debug: {
+            status: insertResponse.status,
+            statusText: insertResponse.statusText,
+            supabaseError,
+          },
+        },
         { status: 502 },
       );
     }
