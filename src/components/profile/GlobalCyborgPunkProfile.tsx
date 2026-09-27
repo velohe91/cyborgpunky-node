@@ -103,7 +103,7 @@ export function GlobalCyborgPunkProfile() {
           <Link href="/arcade" className="hud-chip inline-flex uppercase">
             SELECT PILOT
           </Link>
-          <Link href="/arcade" className="hud-chip inline-flex uppercase">
+          <Link href="/arcade?run=1" className="hud-chip inline-flex uppercase">
             START RUN
           </Link>
         </div>
