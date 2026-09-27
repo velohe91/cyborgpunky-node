@@ -473,7 +473,7 @@ export function CyborgPunkUserDashboard() {
         </div>
       </article>
 
-      <div className="mt-4 flex flex-wrap justify-start gap-3">
+      <div className="mt-4 flex flex-wrap justify-center gap-3">
         <a
           href="https://opensea.io/collection/arc-cyborgpunks"
           target="_blank"
