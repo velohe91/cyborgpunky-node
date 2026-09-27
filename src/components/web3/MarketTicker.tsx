@@ -26,6 +26,8 @@ function formatUsd(value: number | null): string {
   })}`;
 }
 
+
+
 function chipTone(symbol: string, offline: boolean): string {
   if (offline) return "text-muted";
   if (symbol === "BTC") return "text-neon-gold";
@@ -50,7 +52,18 @@ function CoinChip({
       className={`ticker-chip shrink-0 ${className} ${chipTone(coin.symbol, offline)}`}
       title={coin.name}
     >
-      {coin.symbol} {"//"} {price}
+      {coin.image ? (
+        <span
+          aria-hidden="true"
+          className="h-3.5 w-3.5 shrink-0 rounded-full bg-center bg-contain bg-no-repeat sm:h-4 sm:w-4"
+          style={{ backgroundImage: `url(${coin.image})` }}
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="h-3.5 w-3.5 shrink-0 rounded-full border border-current/30 sm:h-4 sm:w-4"
+        />
+      )} {coin.symbol} {"//"} {price}
     </span>
   );
 }

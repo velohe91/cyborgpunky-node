@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useAccount, useSignMessage } from "wagmi";
+import Link from "next/link";
 import type { NftItem } from "@/lib/types";
 import { cyborgPunksNfts, getNftById } from "@/data/nfts";
 import { RARITY_COLORS } from "@/lib/constants";
@@ -94,6 +96,13 @@ export function ArcadeRun() {
   const [wave, setWave] = useState(1);
   const [bossHp, setBossHp] = useState(0);
   const [scale, setScale] = useState(2);
+  const [saveState, setSaveState] = useState<"idle" | "signing" | "saving" | "saved" | "error">("idle");
+  const [saveError, setSaveError] = useState("");
+  const [showScoreModal, setShowScoreModal] = useState(false);
+  const [savedHighScore, setSavedHighScore] = useState(0);
+  const [savedTotalScore, setSavedTotalScore] = useState(0);
+  const { address } = useAccount();
+  const { signMessageAsync } = useSignMessage();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -214,10 +223,95 @@ export function ArcadeRun() {
 
   const startRun = () => {
     if (!pilot) return;
+    setShowScoreModal(false);
+    setSaveState("idle");
+    setSaveError("");
     specialRef.current = getPilotSpecial(pilot);
     resetRun();
     setPhaseSync("run");
   };
+
+  const saveScore = async () => {
+    if (saveState === "signing" || saveState === "saving" || saveState === "saved") return;
+
+    if (!address) {
+      setSaveState("error");
+      setSaveError("CONNECT YOUR NODE BEFORE SAVING SCORE.");
+      return;
+    }
+
+    try {
+      setSaveState("signing");
+      setSaveError("");
+
+      const challengeResponse = await fetch("/api/arcade/score/challenge", {
+        method: "GET",
+        cache: "no-store",
+      });
+
+      if (!challengeResponse.ok) {
+        throw new Error("Unable to create score challenge.");
+      }
+
+      const challenge = (await challengeResponse.json()) as { nonce?: string };
+      if (!challenge.nonce) {
+        throw new Error("Score challenge is missing.");
+      }
+
+      const normalizedAddress = address.toLowerCase();
+      const message = [
+        "CyborgPunks Club Arcade Score",
+        `Wallet: ${normalizedAddress}`,
+        `Score: ${score}`,
+        `Nonce: ${challenge.nonce}`,
+      ].join("\n");
+
+      const signature = await signMessageAsync({ message });
+
+      setSaveState("saving");
+
+      const saveResponse = await fetch("/api/arcade/score", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          address: normalizedAddress,
+          score,
+          signature,
+          nonce: challenge.nonce,
+        }),
+      });
+
+      const result = (await saveResponse.json()) as {
+        highScore?: number;
+        totalScore?: number;
+        error?: string;
+      };
+
+      if (!saveResponse.ok) {
+        throw new Error(result.error ?? "Could not save arcade score.");
+      }
+
+      setSavedHighScore(result.highScore ?? score);
+      setSavedTotalScore(result.totalScore ?? score);
+      setSaveState("saved");
+      setShowScoreModal(true);
+    } catch (error) {
+      setSaveState("error");
+      setSaveError(
+        error instanceof Error
+          ? error.message.toUpperCase()
+          : "UNABLE TO SAVE SCORE.",
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!pilotId || !pilot || phaseRef.current !== "select") return;
+    if (new URLSearchParams(window.location.search).get("run") !== "1") return;
+    startRun();
+  }, [pilotId, pilot]);
 
   const changePilot = () => {
     setPhaseSync("select");
@@ -1011,10 +1105,13 @@ export function ArcadeRun() {
               SPECIAL // {special.name} — {special.blurb}
             </p>
           )}
-          <div className="flex justify-center pt-1">
+          <div className="flex justify-center gap-2 pt-1">
             <NeonButton onClick={startRun} disabled={!pilot}>
               Start Run
             </NeonButton>
+            <Link href="/arcade/user" className="hud-chip inline-flex items-center uppercase">
+              My Score
+            </Link>
           </div>
         </>
       )}
@@ -1068,8 +1165,68 @@ export function ArcadeRun() {
           </div>
 
           {(phase === "over" || phase === "clear") && (
-            <div className="flex flex-wrap justify-center gap-2">
-              <NeonButton onClick={startRun}>Reboot</NeonButton>
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex flex-wrap justify-center gap-2">
+                <NeonButton
+                  onClick={saveScore}
+                  disabled={saveState === "signing" || saveState === "saving" || saveState === "saved"}
+                >
+                  {saveState === "signing"
+                    ? "Sign..."
+                    : saveState === "saving"
+                      ? "Saving..."
+                      : saveState === "saved"
+                        ? "Score Saved"
+                        : "Save Score"}
+                </NeonButton>
+                <NeonButton onClick={startRun}>Reboot</NeonButton>
+              </div>
+              {saveError && (
+                <p className="max-w-xl text-center font-sans text-[8px] uppercase tracking-[0.12em] text-[#FF4D4D]">
+                  {saveError}
+                </p>
+              )}
+            </div>
+          )}
+
+          {showScoreModal && saveState === "saved" && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="arcade-score-saved-title"
+            >
+              <div className="circuit-frame w-full max-w-sm bg-[#05010a] p-5 text-center shadow-[0_0_30px_rgba(219,63,253,0.25)]">
+                <p
+                  id="arcade-score-saved-title"
+                  className="font-sans text-base tracking-[0.14em] text-[#DB3FFD]"
+                >
+                  SCORE SAVED
+                </p>
+                <div className="mt-5 space-y-4 font-sans uppercase tracking-[0.12em]">
+                  <div>
+                    <p className="text-[8px] text-neon-cyan">High Score</p>
+                    <p className="mt-1 font-mono text-xl text-[#FFC825]">
+                      {String(savedHighScore).padStart(6, "0")}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[8px] text-neon-cyan">Total Score</p>
+                    <p className="mt-1 font-mono text-xl text-[#FFC825]">
+                      {String(savedTotalScore).padStart(6, "0")}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-6 flex flex-wrap justify-center gap-2">
+                  <NeonButton onClick={startRun}>Reboot</NeonButton>
+                  <Link
+                    href="/arcade/user"
+                    className="hud-chip inline-flex items-center uppercase"
+                  >
+                    My Score
+                  </Link>
+                </div>
+              </div>
             </div>
           )}
 

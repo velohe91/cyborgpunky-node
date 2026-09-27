@@ -152,6 +152,7 @@ export type MarketCoinQuote = {
   id: string;
   symbol: string;
   name: string;
+  image?: string;
   usd: number | null;
   marketCapRank: number;
 };

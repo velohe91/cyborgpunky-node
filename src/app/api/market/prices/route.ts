@@ -16,6 +16,7 @@ type CoinGeckoMarket = {
   current_price?: number | null;
   market_cap?: number | null;
   market_cap_rank?: number | null;
+  image?: string;
 };
 
 function toCoin(row: CoinGeckoMarket, index: number): MarketCoinQuote {
@@ -31,6 +32,7 @@ function toCoin(row: CoinGeckoMarket, index: number): MarketCoinQuote {
     id: row.id ?? `coin-${index}`,
     symbol: (row.symbol ?? "").toUpperCase(),
     name: row.name ?? "",
+    image: row.image,
     usd,
     marketCapRank: rank,
   };

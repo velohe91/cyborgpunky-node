@@ -3,6 +3,7 @@
 import { SystemBootSequence } from "@/components/home/SystemBootSequence";
 import { EnterArchiveButton } from "@/components/home/EnterArchiveButton";
 import { PlayGameButton } from "@/components/home/PlayGameButton";
+import { NeonButton } from "@/components/ui/NeonButton";
 import { motion } from "framer-motion";
 
 /**
@@ -26,6 +27,10 @@ export default function HomePage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         />
+
+        <div className="mt-4">
+          <NeonButton href="/mint">MINTING SOON</NeonButton>
+        </div>
 
         <SystemBootSequence />
 
