@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { loadCyborgPunkProfile } from "@/lib/allowlist/profile-storage";
@@ -20,9 +21,17 @@ export function MintStageHeader() {
 
   return (
     <article className="circuit-frame p-4 sm:p-5">
-      <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
-        {profileRegistered ? "WL // Minting Stage" : "Mint // Allowlist"}
-      </p>
+      <div className="flex items-start justify-between gap-4">
+        <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
+          {profileRegistered ? "WL // Minting Stage" : "Mint // Allowlist"}
+        </p>
+        <Link
+          href="/mint/user"
+          className="hud-chip inline-flex shrink-0 uppercase"
+        >
+          WL DASHBOARD
+        </Link>
+      </div>
       <h1 className="mt-2 max-w-full font-sans text-[18px] tracking-wide text-[#FF2CF0] [overflow-wrap:anywhere] [text-wrap:wrap] sm:text-[24px]">
         WL MINTING STAGE
       </h1>
