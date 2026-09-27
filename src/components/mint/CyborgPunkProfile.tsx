@@ -206,13 +206,13 @@ export function CyborgPunkProfile() {
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {specimens.map((specimen) => (
             <div
-              key=ARC SPECIMEN // RECOVERED
+              key={specimen.id}
               className="group border border-[#3003D9]/60 bg-black/40 p-2"
             >
               <div className="aspect-square overflow-hidden border border-[#0CF1FF]/20 bg-black">
                 <img
                   src={specimen.image}
-                  alt={specimen.title}
+                  alt={specimen.id}
                   className="h-full w-full object-cover transition duration-200 group-hover:scale-[1.03]"
                   style={{ imageRendering: "pixelated" }}
                 />
