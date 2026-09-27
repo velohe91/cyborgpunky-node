@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
  */
 export default function HomePage() {
   return (
-    <section className="relative flex flex-col items-center justify-start overflow-visible px-4 py-4 sm:py-6">
+    <section className="relative flex flex-col items-center justify-start overflow-visible px-4 py-4 sm:py-6 lg:pt-0">
       <div className="relative z-10 flex w-full max-w-5xl flex-col items-center text-center">
         <motion.img
           src="/brand/cyborgpunks-club-logo.png"
