@@ -26,6 +26,65 @@ function formatUsd(value: number | null): string {
   })}`;
 }
 
+function CoinIcon({ symbol }: { symbol: string }) {
+  const common = {
+    width: 12,
+    height: 12,
+    viewBox: "0 0 12 12",
+    "aria-hidden": true,
+    className: "shrink-0",
+    style: { imageRendering: "pixelated" as const },
+  };
+
+  if (symbol === "BTC") {
+    return (
+      <svg {...common}>
+        <path d="M4 1h3v1h2v2H8v1h1v2H7v2H4v1H2V9h1V3H2V1h2Zm0 2v2h2V3H4Zm0 4v2h2V7H4Z" fill="currentColor" />
+        <path d="M3 0h1v1H3Zm5 1h1v1H8ZM3 10h1v1H3Z" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (symbol === "ETH") {
+    return (
+      <svg {...common}>
+        <path d="M6 0 3 6l3 2 3-2L6 0Zm0 9L3 7l3 5 3-5-3 2Z" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (symbol === "SOL") {
+    return (
+      <svg {...common}>
+        <path d="M1 2h9L8 4H1l2-2Zm2 3h8L9 7H1l2-2Zm-2 3h9l-2 2H1l2-2Z" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (symbol === "XTZ") {
+    return (
+      <svg {...common}>
+        <path d="M6 0 9 3H7v2h2v2H7v2h2v2H6V9H4V7h2V5H4V3h2V0Zm-3 2h1v1H3V2Z" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (symbol === "POL" || symbol === "MATIC") {
+    return (
+      <svg {...common}>
+        <path d="M3 3h2v2H3v2h2v2H3V7H1V5h2V3Zm4 0h2v2h2v2H9V5H7V3Zm0 6h2v2H7V9Z" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...common}>
+      <path d="M2 1h8v2H3v6h7v2H2V9H1V3h1V1Zm2 3h4v4H4V4Z" fill="currentColor" />
+      <path d="M5 5h2v2H5V5Z" fill="currentColor" />
+    </svg>
+  );
+}
+
 function chipTone(symbol: string, offline: boolean): string {
   if (offline) return "text-muted";
   if (symbol === "BTC") return "text-neon-gold";
@@ -50,7 +109,7 @@ function CoinChip({
       className={`ticker-chip shrink-0 ${className} ${chipTone(coin.symbol, offline)}`}
       title={coin.name}
     >
-      {coin.symbol} {"//"} {price}
+      <CoinIcon symbol={coin.symbol} /> {coin.symbol} {"//"} {price}
     </span>
   );
 }
