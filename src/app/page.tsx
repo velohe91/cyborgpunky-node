@@ -24,8 +24,20 @@ export default function HomePage() {
               "drop-shadow(-2px 0 0 #FF2CF0) drop-shadow(2px 0 0 #0CF1FF)",
           }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          animate={{
+            opacity: [1, 1, 0.96, 1],
+            scale: [1, 1.008, 1],
+            filter: [
+              "drop-shadow(-2px 0 0 #FF2CF0) drop-shadow(2px 0 0 #0CF1FF)",
+              "drop-shadow(-3px 0 0 #FF2CF0) drop-shadow(3px 0 0 #0CF1FF)",
+              "drop-shadow(-2px 0 0 #FF2CF0) drop-shadow(2px 0 0 #0CF1FF)",
+            ],
+          }}
+          transition={{
+            opacity: { duration: 0.8, delay: 0.5 },
+            scale: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
+            filter: { duration: 2.8, repeat: Infinity, ease: "easeInOut" },
+          }}
         />
 
         <div className="mt-4">
