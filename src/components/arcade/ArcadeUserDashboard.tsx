@@ -7,6 +7,7 @@ import { truncateAddress } from "@/lib/web3/multi-chain";
 import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
 import { useLockedPilot } from "@/hooks/useLockedPilot";
 import { getNftById } from "@/data/nfts";
+import { NeonButton } from "@/components/ui/NeonButton";
 
 export function ArcadeUserDashboard() {
   const { address } = useAccount();
@@ -85,7 +86,7 @@ export function ArcadeUserDashboard() {
           </div>
         </div>
         <div className="mt-4 flex flex-wrap justify-center gap-2">
-          <Link href="/arcade" className="hud-chip uppercase">REBOOT</Link>
+          <NeonButton href="/arcade">REBOOT</NeonButton>
           <Link href="/arcade" className="hud-chip uppercase">SELECT PILOT</Link>
         </div>
         <div className="mt-3 flex justify-center">
