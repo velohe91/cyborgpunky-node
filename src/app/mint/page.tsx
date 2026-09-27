@@ -1,7 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
 import type { Metadata } from "next";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { CyborgPunkProfile } from "@/components/mint/CyborgPunkProfile";
+import { loadCyborgPunkProfile } from "@/lib/allowlist/profile-storage";
 
 export const metadata: Metadata = {
   title: "WL Minting Stage",
@@ -10,6 +15,19 @@ export const metadata: Metadata = {
 };
 
 export default function MintPage() {
+  const { address } = useAccount();
+  const [profileRegistered, setProfileRegistered] = useState(false);
+
+  useEffect(() => {
+    if (!address) {
+      setProfileRegistered(false);
+      return;
+    }
+
+    const profile = loadCyborgPunkProfile(address);
+    setProfileRegistered(Boolean(profile?.xUsername && profile?.xProfileUrl));
+  }, [address]);
+
   return (
     <PageTransition>
       <div className="mx-auto max-w-4xl px-3 py-6 sm:px-4 sm:py-10">
@@ -22,8 +40,9 @@ export default function MintPage() {
           </h1>
           <div className="circuit-crosshair my-3 h-0 border-t-2 border-[#0CF1FF]/50" />
           <p className="font-mono text-[14px] leading-[1.7] text-foreground/90 sm:text-[16px]">
-            Connect your wallet to initialize your CyborgPunk Profile and
-            register for the upcoming allowlist.
+            {profileRegistered
+              ? "Your wallet is eligible for the upcoming allowlist."
+              : "Connect your wallet to initialize your CyborgPunk Profile and register for the upcoming allowlist."}
           </p>
         </article>
 
