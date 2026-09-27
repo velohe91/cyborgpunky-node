@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useSignMessage } from "wagmi";
 import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
 import {
   loadCyborgPunkProfile,
@@ -26,7 +26,14 @@ const TASKS = [
 
 export function CyborgPunkUserDashboard() {
   const { address } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const [profile, setProfile] = useState<CyborgPunkLocalProfile | null>(null);
+  const [registrationState, setRegistrationState] = useState<
+    "idle" | "signing" | "registering" | "registered" | "error"
+  >("idle");
+  const [registrationError, setRegistrationError] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     if (!address) {
@@ -98,6 +105,60 @@ export function CyborgPunkUserDashboard() {
 
     setProfile(nextProfile);
     saveCyborgPunkProfile(nextProfile);
+  };
+
+  const registerForWhitelist = async () => {
+    if (!address || !registeredProfile || !eligible) return;
+
+    setRegistrationError(null);
+    setRegistrationState("signing");
+
+    const timestamp = Date.now();
+    const normalizedAddress = address.toLowerCase();
+    const message = [
+      "CyborgPunks Club Allowlist Registration",
+      `Wallet: ${normalizedAddress}`,
+      `X Username: ${registeredProfile.xUsername}`,
+      `X Profile: ${registeredProfile.xProfileUrl}`,
+      "Follow: true",
+      "Engagement: true",
+      `Timestamp: ${timestamp}`,
+    ].join("\n");
+
+    try {
+      const signature = await signMessageAsync({ message });
+      setRegistrationState("registering");
+
+      const response = await fetch("/api/mint/allowlist/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          address,
+          signature,
+          xUsername: registeredProfile.xUsername,
+          xProfileUrl: registeredProfile.xProfileUrl,
+          timestamp,
+        }),
+      });
+
+      const result = (await response.json()) as {
+        error?: string;
+        registered?: boolean;
+      };
+
+      if (!response.ok && response.status !== 409) {
+        throw new Error(result.error ?? "Registration failed.");
+      }
+
+      setRegistrationState("registered");
+    } catch (error) {
+      setRegistrationState("error");
+      setRegistrationError(
+        error instanceof Error ? error.message : "Registration failed.",
+      );
+    }
   };
 
   return (
@@ -250,11 +311,26 @@ export function CyborgPunkUserDashboard() {
 
           <button
             type="button"
-            disabled={!eligible}
+            disabled={!eligible || registrationState === "signing" || registrationState === "registering" || registrationState === "registered"}
+            onClick={registerForWhitelist}
             className="hud-chip mt-4 w-full uppercase disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {eligible ? "REGISTER FOR WHITELIST" : "COMPLETE TASKS TO REGISTER"}
+            {registrationState === "registered"
+              ? "REGISTERED"
+              : registrationState === "signing"
+                ? "SIGN REGISTRATION"
+                : registrationState === "registering"
+                  ? "REGISTERING..."
+                  : eligible
+                    ? "REGISTER FOR WHITELIST"
+                    : "COMPLETE TASKS TO REGISTER"}
           </button>
+
+          {registrationError ? (
+            <p className="mt-3 font-mono text-xs leading-5 text-[#FF2CF0]">
+              {registrationError}
+            </p>
+          ) : null}
 
           <p className="mt-3 font-mono text-[10px] leading-5 text-slate-500">
             Task verification is manual in this first version. X API
