@@ -111,7 +111,7 @@ export function ArcadeUserDashboard() {
             <p className="font-mono text-sm text-slate-500">No pilot selected yet.</p>
           )}
         </div>
-        <div className="mt-4 flex flex-wrap justify-center gap-2">
+        <div className="mt-4 flex flex-wrap justify-start gap-2">
           <NeonButton href="/arcade?run=1">START RUN</NeonButton>
           <Link href="/arcade" className="hud-chip uppercase">SELECT PILOT</Link>
         </div>
