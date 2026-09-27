@@ -210,7 +210,7 @@ export function CyborgPunkProfile() {
               Cryogenic Room Background
             </p>
           </div>
-          <span className="font-mono text-[9px] text-slate-500">
+          <span className="font-mono text-[11px] text-slate-400">
             ARC CHAIN // MINT NETWORK
           </span>
         </div>
