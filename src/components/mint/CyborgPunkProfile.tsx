@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
-import { cyborgPunksNfts } from "@/data/nfts";
 import { truncateAddress } from "@/lib/web3/multi-chain";
 import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
 import {
@@ -32,7 +31,14 @@ export function CyborgPunkProfile() {
     setXUsername(savedProfile.xUsername);
     setXProfileUrl(savedProfile.xProfileUrl);
   }, [address]);
-  const specimens = useMemo(() => cyborgPunksNfts.slice(0, 4), []);
+  const specimens = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, index) => ({
+        id: `ARC-SPECIMEN-${String(index + 1).padStart(2, "0")}`,
+        image: `/mint/specimens/specimen-${String(index + 1).padStart(2, "0")}.png`,
+      })),
+    [],
+  );
 
   const normalizedUsername = xUsername.trim().replace(/^@+/, "");
 
