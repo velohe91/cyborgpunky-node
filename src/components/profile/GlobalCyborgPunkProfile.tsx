@@ -99,6 +99,14 @@ export function GlobalCyborgPunkProfile() {
             <p className="font-mono text-sm text-slate-500">No pilot selected yet.</p>
           )}
         </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Link href="/arcade" className="hud-chip inline-flex uppercase">
+            SELECT PILOT
+          </Link>
+          <Link href="/arcade" className="hud-chip inline-flex uppercase">
+            START RUN
+          </Link>
+        </div>
       </article>
 
       <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
