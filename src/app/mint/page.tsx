@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
 import type { Metadata } from "next";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { NeonButton } from "@/components/ui/NeonButton";
