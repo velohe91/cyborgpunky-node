@@ -130,10 +130,34 @@ export function GlobalCyborgPunkProfile() {
           OPEN ARCADE DASHBOARD
         </Link>
       </article>
+      <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
+        <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
+          Activity // Allowlist
+        </p>
+        <h2 className="mt-2 font-sans text-sm tracking-wide text-[#FF2CF0]">
+          WL STATUS
+        </h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="border border-[#3003D9]/60 bg-black/30 p-3">
+            <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">X Profile</p>
+            <p className="mt-2 font-mono text-sm text-foreground">
+              {profile?.xUsername ? `@${profile.xUsername}` : "NOT REGISTERED"}
+            </p>
+          </div>
+          <div className="border border-[#3003D9]/60 bg-black/30 p-3">
+            <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">WL Tasks</p>
+            <p className="mt-2 font-mono text-sm text-foreground">
+              {profile?.followCompleted && profile?.engagementCompleted ? "COMPLETED" : "IN PROGRESS"}
+            </p>
+          </div>
+        </div>
+        <Link href="/mint/user" className="hud-chip mt-4 inline-flex uppercase">
+          OPEN WL DASHBOARD
+        </Link>
+      </article>
     </main>
   );
-}
-      <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
+} bg-[#05010d]/80 p-4 sm:p-5">
         <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
           Activity // Allowlist
         </p>
