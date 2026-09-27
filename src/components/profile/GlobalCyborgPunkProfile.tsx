@@ -13,10 +13,47 @@ export function GlobalCyborgPunkProfile() {
   const { address } = useAccount();
   const { pilotId } = useLockedPilot();
   const [profile, setProfile] = useState<CyborgPunkLocalProfile | null>(null);
+  const [highScore, setHighScore] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
 
   useEffect(() => {
     if (address) setProfile(loadCyborgPunkProfile(address));
     else setProfile(null);
+  }, [address]);
+
+  useEffect(() => {
+    if (!address) {
+      setHighScore(0);
+      setTotalScore(0);
+      return;
+    }
+
+    let cancelled = false;
+
+    fetch(`/api/arcade/score/status?address=${encodeURIComponent(address)}`, {
+      cache: "no-store",
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Could not load arcade score.");
+        return (await response.json()) as {
+          highScore?: number;
+          totalScore?: number;
+        };
+      })
+      .then((result) => {
+        if (cancelled) return;
+        setHighScore(result.highScore ?? 0);
+        setTotalScore(result.totalScore ?? 0);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setHighScore(0);
+        setTotalScore(0);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [address]);
 
   const pilot = pilotId ? getNftById(pilotId) : null;
@@ -119,11 +156,11 @@ export function GlobalCyborgPunkProfile() {
         <div className="mt-4 grid grid-cols-2 gap-3">
           <div className="border border-[#3003D9]/60 bg-black/30 p-3">
             <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">High Score</p>
-            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">000000</p>
+            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">{String(highScore).padStart(6, "0")}</p>
           </div>
           <div className="border border-[#3003D9]/60 bg-black/30 p-3">
             <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">Total Score</p>
-            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">000000</p>
+            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">{String(totalScore).padStart(6, "0")}</p>
           </div>
         </div>
         <Link href="/arcade/user" className="hud-chip mt-4 inline-flex uppercase">
