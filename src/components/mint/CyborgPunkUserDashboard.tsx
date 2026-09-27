@@ -226,7 +226,7 @@ export function CyborgPunkUserDashboard() {
                           target="_blank"
                           rel="noreferrer"
                           onClick={markFollowCompleted}
-                          className="mt-1 block font-mono text-xs leading-5 text-slate-400 underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#0CF1FF]"
+                          className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
                         >
                           {task.description}
                         </a>
