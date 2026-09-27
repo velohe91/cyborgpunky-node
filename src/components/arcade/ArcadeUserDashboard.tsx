@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useAccount } from "wagmi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { truncateAddress } from "@/lib/web3/multi-chain";
 import { ConnectNodeButton } from "@/components/web3/ConnectNodeButton";
 import { useLockedPilot } from "@/hooks/useLockedPilot";
@@ -12,8 +12,47 @@ import { NeonButton } from "@/components/ui/NeonButton";
 export function ArcadeUserDashboard() {
   const { address } = useAccount();
   const [copied, setCopied] = useState(false);
+  const [highScore, setHighScore] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
   const { pilotId } = useLockedPilot();
   const pilot = pilotId ? getNftById(pilotId) : null;
+
+  useEffect(() => {
+    if (!address) {
+      setHighScore(0);
+      setTotalScore(0);
+      return;
+    }
+
+    let cancelled = false;
+
+    fetch(`/api/arcade/score/status?address=${encodeURIComponent(address)}`, {
+      cache: "no-store",
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Could not load arcade score.");
+        return (await response.json()) as {
+          highScore?: number;
+          totalScore?: number;
+        };
+      })
+      .then((result) => {
+        if (cancelled) return;
+        setHighScore(result.highScore ?? 0);
+        setTotalScore(result.totalScore ?? 0);
+      })
+      .catch(() => {
+        if (cancelled) {
+          return;
+        }
+        setHighScore(0);
+        setTotalScore(0);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [address]);
 
   if (!address) {
     return (
@@ -78,11 +117,11 @@ export function ArcadeUserDashboard() {
         <div className="grid grid-cols-2 gap-3">
           <div className="border border-[#3003D9]/60 bg-black/30 p-3">
             <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">High Score</p>
-            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">000000</p>
+            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">{String(highScore).padStart(6, "0")}</p>
           </div>
           <div className="border border-[#3003D9]/60 bg-black/30 p-3">
             <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">Total Score</p>
-            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">000000</p>
+            <p className="mt-2 font-mono text-xl text-[#0CF1FF]">{String(totalScore).padStart(6, "0")}</p>
           </div>
         </div>
         <div className="mt-4 flex flex-wrap justify-center gap-2">
