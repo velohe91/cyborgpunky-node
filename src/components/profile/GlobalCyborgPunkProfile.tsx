@@ -9,6 +9,17 @@ import { getNftById } from "@/data/nfts";
 import { loadCyborgPunkProfile, type CyborgPunkLocalProfile } from "@/lib/allowlist/profile-storage";
 import { truncateAddress } from "@/lib/web3/multi-chain";
 
+const SPECIMENS = [
+  { id: "VIREX", image: "/mint/specimens/specimen-01.png" },
+  { id: "NULLA", image: "/mint/specimens/specimen-02.png" },
+  { id: "LYNX", image: "/mint/specimens/specimen-03.png" },
+  { id: "STRIPE", image: "/mint/specimens/specimen-04.png" },
+  { id: "ARC", image: "/mint/specimens/specimen-05.png" },
+  { id: "CYBORGPUNKY", image: "/mint/specimens/specimen-06.png" },
+  { id: "UNKNOWN", image: "/mint/specimens/specimen-07.png" },
+  { id: "NEON-BYTE BUNNY", image: "/mint/specimens/specimen-08.png" },
+] as const;
+
 export function GlobalCyborgPunkProfile() {
   const { address } = useAccount();
   const { pilotId } = useLockedPilot();
@@ -192,6 +203,59 @@ export function GlobalCyborgPunkProfile() {
           OPEN WL DASHBOARD
         </Link>
       </article>
+      <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="font-sans text-[8px] uppercase tracking-wide text-[#0CF1FF]/80 sm:text-[10px]">
+              Specimen // Preview
+            </p>
+            <h2 className="mt-2 font-sans text-sm tracking-wide text-[#FF2CF0]">
+              MINT SPECIMENS
+            </h2>
+            <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[#0CF1FF]/70">
+              Cryogenic Room Background
+            </p>
+          </div>
+          <span className="font-mono text-[11px] text-slate-400">
+            ARC CHAIN // MINT NETWORK
+          </span>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {SPECIMENS.map((specimen) => (
+            <div
+              key={specimen.id}
+              className="group border border-[#3003D9]/60 bg-black/40 p-2"
+            >
+              <div className="aspect-square overflow-hidden border border-[#0CF1FF]/20 bg-black">
+                <img
+                  src={specimen.image}
+                  alt={specimen.id}
+                  className="h-full w-full object-cover transition duration-200 group-hover:scale-[1.03]"
+                  style={{ imageRendering: "pixelated" }}
+                />
+              </div>
+              <p className="mt-2 truncate font-mono text-[9px] text-[#0CF1FF]">
+                {specimen.id}
+              </p>
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <div className="mt-4 flex flex-wrap justify-center gap-3">
+        <a
+          href="https://opensea.io/collection/arc-cyborgpunks"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hud-chip inline-flex uppercase"
+        >
+          MINT
+        </a>
+        <Link href="/arcade" className="hud-chip inline-flex uppercase">
+          ARCADE
+        </Link>
+      </div>
     </main>
   );
 }
