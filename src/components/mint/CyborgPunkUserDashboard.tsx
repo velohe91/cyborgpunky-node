@@ -472,6 +472,20 @@ export function CyborgPunkUserDashboard() {
           ))}
         </div>
       </article>
+
+      <div className="mt-4 flex flex-wrap justify-start gap-3">
+        <a
+          href="https://opensea.io/collection/arc-cyborgpunks"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hud-chip inline-flex uppercase"
+        >
+          MINT
+        </a>
+        <Link href="/arcade" className="hud-chip inline-flex uppercase">
+          ARCADE
+        </Link>
+      </div>
     </section>
   );
 }
