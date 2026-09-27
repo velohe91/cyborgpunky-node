@@ -111,12 +111,11 @@ export function ArcadeUserDashboard() {
             <p className="font-mono text-sm text-slate-500">No pilot selected yet.</p>
           )}
         </div>
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          <NeonButton href="/arcade?run=1">START RUN</NeonButton>
+          <Link href="/arcade" className="hud-chip uppercase">SELECT PILOT</Link>
+        </div>
       </article>
-
-      <div className="flex flex-wrap justify-center gap-2">
-        <NeonButton href="/arcade?run=1">START RUN</NeonButton>
-        <Link href="/arcade" className="hud-chip uppercase">SELECT PILOT</Link>
-      </div>
 
       <article className="border border-[#3003D9]/70 bg-[#05010d]/80 p-4 sm:p-5">
         <div className="grid grid-cols-2 gap-3">
