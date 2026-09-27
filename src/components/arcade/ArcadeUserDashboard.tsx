@@ -86,7 +86,7 @@ export function ArcadeUserDashboard() {
           </div>
         </div>
         <div className="mt-4 flex flex-wrap justify-center gap-2">
-          <NeonButton href="/arcade">REBOOT</NeonButton>
+          <NeonButton href="/arcade">START RUN</NeonButton>
           <Link href="/arcade" className="hud-chip uppercase">SELECT PILOT</Link>
         </div>
         <div className="mt-3 flex justify-center">
