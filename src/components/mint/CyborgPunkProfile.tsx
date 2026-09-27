@@ -128,7 +128,7 @@ export function CyborgPunkProfile() {
             This wallet is the identity associated with this profile.
           </p>
           <Link
-            href="/mint/user"
+            href="/profile"
             className="hud-chip mt-3 inline-flex uppercase"
           >
             OPEN USER DASHBOARD
