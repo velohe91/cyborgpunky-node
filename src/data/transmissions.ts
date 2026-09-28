@@ -8,7 +8,7 @@ export const transmissions: TransmissionArticle[] = [
     title: "Cryogenic Room Network Expanded",
     tags: ["cryogenic-room", "ethereum", "minting"],
     content:
-      "The live Ethereum identity vault is now connected to market access, live mints on other chains, the generation lab, and WL registration.",
+      "The live Ethereum identity vault is now linked to market access, live mints on other chains, the generation lab, and WL registration.",
   },
   {
     kind: "transmission",
@@ -17,7 +17,7 @@ export const transmissions: TransmissionArticle[] = [
     title: "Market Signal Online",
     tags: ["market", "signals"],
     content:
-      "Live crypto market signals are now integrated into the CyborgPunks Club interface.",
+      "Live crypto market signals are now streaming through the CyborgPunks Club interface.",
   },
   {
     kind: "transmission",
@@ -26,7 +26,7 @@ export const transmissions: TransmissionArticle[] = [
     title: "Cryogenic Room Activated",
     tags: ["cryogenic-room", "ethereum"],
     content:
-      "The Cryogenic Room is now connected to live CyborgPunks on Ethereum. Newly minted identities appear automatically.",
+      "The Cryogenic Room is now connected to live CyborgPunks on Ethereum. Newly minted identities appear here automatically.",
   },
   {
     kind: "transmission",
