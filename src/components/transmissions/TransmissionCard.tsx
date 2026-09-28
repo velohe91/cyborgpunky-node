@@ -29,11 +29,11 @@ export function TransmissionCard({
       <div className="circuit-frame p-4 sm:p-5">
         <div className="mb-3 flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em]">
           <span className="text-[#FF2CF0]">SIGNAL RECEIVED</span>
-          <span className="text-muted/30">///</span>
+          <span className="text-muted/30">{"///"}</span>
           <time dateTime={entry.date} className="text-muted">
             {entry.date}
           </time>
-          <span className="text-muted/30">///</span>
+          <span className="text-muted/30">{"///"}</span>
           <span className="text-neon-blue/70">{entry.id}</span>
         </div>
 
