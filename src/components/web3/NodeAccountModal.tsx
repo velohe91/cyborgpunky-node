@@ -175,6 +175,12 @@ export function NodeAccountModal({ open, onClose, onSwitchNetwork }: Props) {
               >
                 Explorer
               </a>
+              <a
+                href="/profile"
+                className="hud-chip hud-chip-outline !px-2 !py-1"
+              >
+                View My Node
+              </a>
             </div>
           </article>
         ) : (
