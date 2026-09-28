@@ -57,7 +57,7 @@ export default async function CryogenicRoomPage() {
   return (
     <PageTransition>
       <div className="mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-8">
-        <div className="circuit-frame mb-5 p-4 sm:p-5">
+        <div className="circuit-frame mb-5 p-4 sm:p-5 [&>header]:mb-0">
           <SectionHeading
             eyebrow="Cryogenic Room // Identity Vault"
             title="Cryogenic Room"
