@@ -81,6 +81,17 @@ export default async function CryogenicRoomPage() {
           >
             Open Market
           </a>
+          <a
+            href="https://opensea.io/collection/arc-cyborgpunks"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hud-chip inline-flex"
+          >
+            Live Mint
+          </a>
+          <NeonButton href="/mint">
+            Request WL
+          </NeonButton>
         </div>
         {items.length === 0 ? (
           <p className="mb-4 font-mono text-[14px] uppercase tracking-[0.2em] text-muted">
