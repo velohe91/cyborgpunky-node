@@ -61,7 +61,7 @@ export default async function CryogenicRoomPage() {
           <SectionHeading
             eyebrow="Cryogenic Room // Identity Vault"
             title="Cryogenic Room"
-            subtitle="LIVE CyborgPunks on Ethereum — newly minted identities appear here automatically."
+            subtitle="LIVE CyborgPunks on Ethereum — newly minted identities appear here automatically. Explore the market, access live mints on other chains, enter the generation lab, or request WL access."
           />
         </div>
         <div className="mb-4 flex flex-wrap items-center gap-2">
