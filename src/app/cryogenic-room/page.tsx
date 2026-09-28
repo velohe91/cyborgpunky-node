@@ -64,10 +64,18 @@ export default async function CryogenicRoomPage() {
             subtitle="LIVE CyborgPunks on Ethereum — newly minted identities appear here automatically."
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-4 flex flex-wrap items-center gap-2">
           <NeonButton href="/cryogenic-room/lab">
             Enter Generation Lab
           </NeonButton>
+          <a
+            href="https://opensea.io/collection/cyborgpunksclub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hud-chip inline-flex"
+          >
+            Open Market
+          </a>
         </div>
         {items.length === 0 ? (
           <p className="mb-4 font-mono text-[14px] uppercase tracking-[0.2em] text-muted">
