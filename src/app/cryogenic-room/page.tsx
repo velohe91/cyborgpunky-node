@@ -66,14 +66,6 @@ export default async function CryogenicRoomPage() {
         </div>
         <div className="mb-4 flex flex-wrap items-center gap-2">
           <a
-            href="https://www.cyborgpunks.xyz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hud-chip inline-flex"
-          >
-            Enter Generation Lab
-          </a>
-          <a
             href="https://opensea.io/collection/cyborgpunksclub"
             target="_blank"
             rel="noopener noreferrer"
@@ -92,6 +84,14 @@ export default async function CryogenicRoomPage() {
           <NeonButton href="/mint">
             Request WL
           </NeonButton>
+          <a
+            href="https://www.cyborgpunks.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hud-chip inline-flex"
+          >
+            Enter Generation Lab
+          </a>
         </div>
         {items.length === 0 ? (
           <p className="mb-4 font-mono text-[14px] uppercase tracking-[0.2em] text-muted">
