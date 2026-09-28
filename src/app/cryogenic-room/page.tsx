@@ -57,11 +57,13 @@ export default async function CryogenicRoomPage() {
   return (
     <PageTransition>
       <div className="mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-8">
-        <SectionHeading
-          eyebrow="Cryogenic Room // Identity Vault"
-          title="Cryogenic Room"
-          subtitle="Genesis CPC nodes in stasis — compressed CyborgPunks Club identities."
-        />
+        <div className="circuit-frame mb-5 p-4 sm:p-5">
+          <SectionHeading
+            eyebrow="Cryogenic Room // Identity Vault"
+            title="Cryogenic Room"
+            subtitle="LIVE CyborgPunks on Ethereum — newly minted identities appear here automatically."
+          />
+        </div>
         <div className="mb-4">
           <NeonButton href="/cryogenic-room/lab">
             Enter Generation Lab
