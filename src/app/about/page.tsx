@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { AboutView } from "@/components/lore/AboutView";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About // CyborgPunks Club",
   description:
-    "Genesis Layer // CyborgPunks — compressed identity nodes of CyborgPunks Club.",
+    "A guide to the CyborgPunks Club Web3 hub, its collections, Cryogenic Room, Arcade, profiles, market signals, and future deployments.",
 };
 
 export default function AboutPage() {
