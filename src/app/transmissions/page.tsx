@@ -16,15 +16,15 @@ export default function TransmissionsPage() {
       <div className="mx-auto max-w-4xl px-3 py-6 sm:px-4 sm:py-8">
         <div className="circuit-frame mb-6 p-4 sm:p-5 [&>header]:mb-0">
           <SectionHeading
-            eyebrow="Comms // Outer Mesh"
-            title="Transmissions"
-            subtitle="Short signals from the CyborgPunks Club network. New developments, delivered without the noise."
+            eyebrow="COMMS // OUTER MESH"
+            title="TRANSMISSIONS"
+            subtitle="Public signals from the CyborgPunks Club network. New developments, sent without the noise."
           />
         </div>
 
-        <div className="relative">
+        <section aria-label="CyborgPunks Club transmissions" className="relative">
           <div
-            className="absolute bottom-0 left-[5px] top-0 w-0.5 bg-[#FF2CF0]"
+            className="absolute bottom-0 left-[5px] top-0 w-px bg-[#FF2CF0]/60"
             aria-hidden
           />
 
@@ -37,7 +37,7 @@ export default function TransmissionsPage() {
               />
             ))}
           </div>
-        </div>
+        </section>
       </div>
     </PageTransition>
   );
