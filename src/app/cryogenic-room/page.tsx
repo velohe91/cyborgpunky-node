@@ -65,9 +65,14 @@ export default async function CryogenicRoomPage() {
           />
         </div>
         <div className="mb-4 flex flex-wrap items-center gap-2">
-          <NeonButton href="/cryogenic-room/lab">
+          <a
+            href="https://www.cyborgpunks.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hud-chip inline-flex"
+          >
             Enter Generation Lab
-          </NeonButton>
+          </a>
           <a
             href="https://opensea.io/collection/cyborgpunksclub"
             target="_blank"
