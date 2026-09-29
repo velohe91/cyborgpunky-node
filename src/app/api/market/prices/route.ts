@@ -14,18 +14,19 @@ type CoinMarketCapListing = {
   symbol?: string;
   name?: string;
   cmc_rank?: number | null;
-  quote?: {
-    USD?: {
-      price?: number | null;
-    };
-  };
+  quote?: Array<{
+    id?: number;
+    symbol?: string;
+    price?: number | null;
+  }>;
 };
 
 function toCoin(row: CoinMarketCapListing, index: number): MarketCoinQuote {
+  const usdQuote =
+    row.quote?.find((quote) => quote.symbol === "USD") ?? row.quote?.[0];
   const usd =
-    typeof row.quote?.USD?.price === "number" &&
-    Number.isFinite(row.quote.USD.price)
-      ? row.quote.USD.price
+    typeof usdQuote?.price === "number" && Number.isFinite(usdQuote.price)
+      ? usdQuote.price
       : null;
   const rank =
     typeof row.cmc_rank === "number" && row.cmc_rank > 0
