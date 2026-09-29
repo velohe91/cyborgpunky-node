@@ -1,23 +1,40 @@
-/**
- * Long-form transmissions (articles).
- * Live channel labels: TX-000 · LOG-000
- * Merged/sorted in data/feed.ts.
- */
-
 import type { TransmissionArticle } from "@/lib/types";
 
-export const transmissionArticles: TransmissionArticle[] = [
+export const transmissions: TransmissionArticle[] = [
   {
     kind: "transmission",
-    era: "live",
+    id: "TX-004",
+    date: "2026.09.27",
+    title: "Cryogenic Room Network Expanded",
+    tags: ["cryogenic-room", "ethereum", "minting"],
+    content:
+      "The live Ethereum identity vault is now linked to market access, live mints on other chains, the generation lab, and WL registration.",
+  },
+  {
+    kind: "transmission",
+    id: "TX-003",
+    date: "2026.09.27",
+    title: "Market Signal Online",
+    tags: ["market", "signals"],
+    content:
+      "Live crypto market signals are now streaming through the CyborgPunks Club interface.",
+  },
+  {
+    kind: "transmission",
+    id: "TX-002",
+    date: "2026.09.27",
+    title: "Cryogenic Room Activated",
+    tags: ["cryogenic-room", "ethereum"],
+    content:
+      "The Cryogenic Room is now connected to live CyborgPunks on Ethereum. Newly minted identities appear here automatically.",
+  },
+  {
+    kind: "transmission",
     id: "TX-001",
-    date: "2026.09.11_00:00",
+    date: "2026.09.11",
     title: "Genesis Activation",
-    tags: ["genesis", "cryogenic", "club"],
-    content: `Chamber boot complete.
-
-Identities compressed into genesis CPC nodes.
-
-CyborgPunks Club is online.`,
+    tags: ["genesis", "club"],
+    content:
+      "CyborgPunks Club entered operational state. Genesis identities are now part of the active network.",
   },
 ];

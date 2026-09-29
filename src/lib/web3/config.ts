@@ -3,27 +3,17 @@
  * (injected Phantom/Solflare; not a wagmi chain).
  */
 
+import { defineChain } from "viem";
 import { http, createConfig, createStorage, cookieStorage } from "wagmi";
 import {
-  abstract,
-  apeChain,
   arbitrum,
   avalanche,
   base,
-  berachain,
-  blast,
-  flowMainnet,
-  ink,
+  bsc,
   mainnet,
-  monad,
   optimism,
   polygon,
-  ronin,
-  sei,
-  shape,
-  soneium,
-  unichain,
-  zora,
+  robinhood,
 } from "wagmi/chains";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
@@ -35,53 +25,55 @@ import {
 /** Default chain: Ethereum (CyborgPunks Club collection). */
 export const PRIMARY_CHAIN = mainnet;
 
+/** Arc mainnet — Circle's EVM chain. */
+export const arc = defineChain({
+  id: 5042,
+  name: "Arc",
+  nativeCurrency: {
+    name: "USDC",
+    symbol: "USDC",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.mainnet.arc.io"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Arc Explorer",
+      url: "https://explorer.arc.io",
+    },
+  },
+});
+
 /**
- * OpenSea EVM set, only chains exported by wagmi/viem.
- * Skip any OpenSea network not in wagmi/chains.
+ * CyborgPunks Club EVM network set.
+ * Keep this list aligned with the Network Switch modal.
  */
 export const SUPPORTED_CHAINS = [
   mainnet,
+  base,
   polygon,
+  bsc,
   arbitrum,
   optimism,
   avalanche,
-  base,
-  blast,
-  zora,
-  sei,
-  berachain,
-  flowMainnet,
-  apeChain,
-  soneium,
-  shape,
-  unichain,
-  ronin,
-  abstract,
-  monad,
-  ink,
+  robinhood,
+  arc,
 ] as const;
 
 /** Short labels for chrome that still reads chain id. */
 export const CHAIN_BADGE_LABELS: Record<number, string> = {
   [mainnet.id]: "ETHEREUM",
-  [polygon.id]: "POLYGON",
-  [arbitrum.id]: "ARBITRUM",
-  [optimism.id]: "OPTIMISM",
-  [avalanche.id]: "AVALANCHE",
   [base.id]: "BASE",
-  [blast.id]: "BLAST",
-  [zora.id]: "ZORA",
-  [sei.id]: "SEI",
-  [berachain.id]: "BERACHAIN",
-  [flowMainnet.id]: "FLOW",
-  [apeChain.id]: "APECHAIN",
-  [soneium.id]: "SONEIUM",
-  [shape.id]: "SHAPE",
-  [unichain.id]: "UNICHAIN",
-  [ronin.id]: "RONIN",
-  [abstract.id]: "ABSTRACT",
-  [monad.id]: "MONAD",
-  [ink.id]: "INK",
+  [polygon.id]: "POLYGON",
+  [bsc.id]: "BNB SMART CHAIN",
+  [arbitrum.id]: "ARBITRUM ONE",
+  [optimism.id]: "OP MAINNET",
+  [avalanche.id]: "AVALANCHE",
+  [robinhood.id]: "ROBINHOOD",
+  [arc.id]: "ARC",
 };
 
 export function getChainBadgeLabel(

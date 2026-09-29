@@ -5,7 +5,9 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const LINES = [
   { text: "> CRYOGENIC SYSTEM ACTIVATED", delay: 0.4 },
-  { text: "> SYSTEM ONLINE", delay: 0.9 },
+  { text: "> MINTING PROTOCOL ONLINE", delay: 0.9 },
+  { text: "> NODE REGISTRATION AVAILABLE", delay: 1.4 },
+  { text: "> ARCADE SCORE LINK ESTABLISHED", delay: 1.9 },
 ];
 
 export function SystemBootSequence() {

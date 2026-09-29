@@ -93,6 +93,10 @@ export function ConnectNodeButton() {
       <NetworkSwitchModal
         open={networkOpen}
         onClose={() => setNetworkOpen(false)}
+        onSwitchSuccess={() => {
+          setNetworkOpen(false);
+          setAccountOpen(true);
+        }}
       />
     </>
   );

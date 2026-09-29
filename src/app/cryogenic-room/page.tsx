@@ -57,15 +57,41 @@ export default async function CryogenicRoomPage() {
   return (
     <PageTransition>
       <div className="mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-8">
-        <SectionHeading
-          eyebrow="Cryogenic Room // Identity Vault"
-          title="Cryogenic Room"
-          subtitle="Genesis CPC nodes in stasis — compressed CyborgPunks Club identities."
-        />
-        <div className="mb-4">
-          <NeonButton href="/cryogenic-room/lab">
-            Enter Generation Lab
+        <div className="circuit-frame mb-5 p-4 sm:p-5 [&>header]:mb-0">
+          <SectionHeading
+            eyebrow="Cryogenic Room // Identity Vault"
+            title="Cryogenic Room"
+            subtitle="LIVE CyborgPunks on Ethereum — newly minted identities appear here automatically. Explore the market, access live mints on other chains, enter the generation lab, or request WL access."
+          />
+        </div>
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <a
+            href="https://opensea.io/collection/cyborgpunksclub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hud-chip inline-flex"
+          >
+            Open Market
+          </a>
+          <a
+            href="https://opensea.io/collection/arc-cyborgpunks"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hud-chip inline-flex"
+          >
+            Live Mint
+          </a>
+          <NeonButton href="/mint">
+            Request WL
           </NeonButton>
+          <a
+            href="https://www.cyborgpunks.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hud-chip inline-flex"
+          >
+            Enter Generation Lab
+          </a>
         </div>
         {items.length === 0 ? (
           <p className="mb-4 font-mono text-[14px] uppercase tracking-[0.2em] text-muted">

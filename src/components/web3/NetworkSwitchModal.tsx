@@ -8,6 +8,7 @@ import { SUPPORTED_CHAINS, getChainBadgeLabel } from "@/lib/web3/config";
 type Props = {
   open: boolean;
   onClose: () => void;
+  onSwitchSuccess?: () => void;
 };
 
 const EVM_ROWS: { chainId: number; label: string }[] = SUPPORTED_CHAINS.map(
@@ -21,7 +22,11 @@ const EVM_ROWS: { chainId: number; label: string }[] = SUPPORTED_CHAINS.map(
  * EVM network switcher for CyborgPunks Club (OpenSea set).
  * Portaled to document.body.
  */
-export function NetworkSwitchModal({ open, onClose }: Props) {
+export function NetworkSwitchModal({
+  open,
+  onClose,
+  onSwitchSuccess,
+}: Props) {
   const [mounted, setMounted] = useState(false);
   const { chain } = useAccount();
   const { switchChain, isPending } = useSwitchChain();
@@ -49,7 +54,10 @@ export function NetworkSwitchModal({ open, onClose }: Props) {
     switchChain(
       { chainId },
       {
-        onSuccess: () => onClose(),
+        onSuccess: () => {
+          onClose();
+          onSwitchSuccess?.();
+        },
       },
     );
   };
