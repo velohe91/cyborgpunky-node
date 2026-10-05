@@ -384,7 +384,7 @@ export function CyborgPunkUserDashboard() {
                             </a>
                           ) : (
                             <a
-                              href="https://x.com/cyborgpunky/status/2104023199336083865?s=20"
+                              href="https://x.com/cyborgpunky/status/2107110373119631424?s=20"
                               target="_blank"
                               rel="noreferrer"
                               onClick={markEngagementCompleted}
