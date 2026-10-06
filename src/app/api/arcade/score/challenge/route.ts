@@ -15,7 +15,7 @@ export async function GET() {
     response.cookies.set(COOKIE_NAME, `${nonce}.${signature}`, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       path: "/api/arcade/score",
       maxAge: MAX_AGE_SECONDS,
     });
