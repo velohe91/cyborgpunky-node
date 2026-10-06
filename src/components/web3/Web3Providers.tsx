@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { WagmiProvider } from "wagmi";
+import { reconnect, WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -56,6 +56,34 @@ export function Web3Providers({ children }: { children: ReactNode }) {
       window.fetch = originalFetch;
     };
   }, []);
+
+  useEffect(() => {
+    let resumeTimer: number | undefined;
+
+    const resumeWalletSession = () => {
+      if (document.visibilityState !== "visible") return;
+
+      window.clearTimeout(resumeTimer);
+      // Give mobile browsers a tick to restore the wallet provider after the
+      // app returns from a wallet deeplink before wagmi rehydrates it.
+      resumeTimer = window.setTimeout(() => {
+        void reconnect(config).catch(() => {
+          // A failed background reconnect must never interrupt the active UI.
+        });
+      }, 150);
+    };
+
+    window.addEventListener("pageshow", resumeWalletSession);
+    window.addEventListener("focus", resumeWalletSession);
+    document.addEventListener("visibilitychange", resumeWalletSession);
+
+    return () => {
+      window.clearTimeout(resumeTimer);
+      window.removeEventListener("pageshow", resumeWalletSession);
+      window.removeEventListener("focus", resumeWalletSession);
+      document.removeEventListener("visibilitychange", resumeWalletSession);
+    };
+  }, [config]);
 
   return (
     <WagmiProvider config={config}>
