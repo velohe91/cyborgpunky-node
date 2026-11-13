@@ -331,10 +331,7 @@ export function CyborgPunkUserDashboard() {
             <>
               <div className="mt-4 grid gap-3">
                 {TASKS.map((task) => {
-                  const complete =
-                    task.id === "follow"
-                      ? registeredProfile.followCompleted
-                      : registeredProfile.engagementCompleted;
+                  const complete = registeredProfile.followCompleted;
 
                   return (
                     <div
