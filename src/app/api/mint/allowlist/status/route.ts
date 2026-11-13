@@ -43,7 +43,6 @@ export async function GET(request: Request) {
         xUsername: entry.x_username,
         xProfileUrl: entry.x_profile_url,
         followCompleted: true,
-        engagementCompleted: true,
       },
       status: entry.status,
     });

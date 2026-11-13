@@ -60,7 +60,6 @@ export async function POST(request: Request) {
       `X Username: ${xUsername}`,
       `X Profile: ${xProfileUrl}`,
       "Follow: true",
-      "Engagement: true",
       `Timestamp: ${timestamp}`,
     ].join("\n");
 

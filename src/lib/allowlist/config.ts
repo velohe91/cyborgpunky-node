@@ -9,7 +9,6 @@ export type AllowlistProfile = {
   walletAddress: string;
   xUsername: string;
   followCompleted: boolean;
-  engagementCompleted: boolean;
   status: AllowlistStatus;
   createdAt: string;
   updatedAt: string;

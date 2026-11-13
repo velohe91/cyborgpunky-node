@@ -28,11 +28,6 @@ const TASKS = [
     title: "FOLLOW THE SIGNAL",
     description: "Follow @cyborgpunky on X.",
   },
-  {
-    id: "engagement",
-    title: "ENGAGE THE TRANSMISSION",
-    description: "Like and repost the pinned CyborgPunks Club post.",
-  },
 ] as const;
 
 export function CyborgPunkUserDashboard() {
@@ -136,9 +131,7 @@ export function CyborgPunkUserDashboard() {
 
   const registeredProfile =
     profile?.xUsername && profile?.xProfileUrl ? profile : null;
-  const eligible = isAllowlistRegistered || Boolean(
-    registeredProfile?.followCompleted && registeredProfile?.engagementCompleted,
-  );
+  const eligible = isAllowlistRegistered || Boolean(registeredProfile?.followCompleted);
 
   const markFollowCompleted = () => {
     if (!profile || profile.followCompleted) return;
@@ -146,18 +139,6 @@ export function CyborgPunkUserDashboard() {
     const nextProfile = {
       ...profile,
       followCompleted: true,
-    };
-
-    setProfile(nextProfile);
-    saveCyborgPunkProfile(nextProfile);
-  };
-
-  const markEngagementCompleted = () => {
-    if (!profile || profile.engagementCompleted) return;
-
-    const nextProfile = {
-      ...profile,
-      engagementCompleted: true,
     };
 
     setProfile(nextProfile);
@@ -180,7 +161,6 @@ export function CyborgPunkUserDashboard() {
       `X Username: ${registeredProfile.xUsername}`,
       `X Profile: ${registeredProfile.xProfileUrl}`,
       "Follow: true",
-      "Engagement: true",
       `Timestamp: ${timestamp}`,
     ].join("\n");
 
@@ -218,7 +198,6 @@ export function CyborgPunkUserDashboard() {
         ? {
             ...profile,
             followCompleted: true,
-            engagementCompleted: true,
           }
         : null;
 
@@ -351,10 +330,7 @@ export function CyborgPunkUserDashboard() {
             <>
               <div className="mt-4 grid gap-3">
                 {TASKS.map((task) => {
-                  const complete =
-                    task.id === "follow"
-                      ? registeredProfile.followCompleted
-                      : registeredProfile.engagementCompleted;
+                  const complete = registeredProfile.followCompleted;
 
                   return (
                     <div
@@ -372,27 +348,15 @@ export function CyborgPunkUserDashboard() {
                           <p className="font-sans text-[10px] uppercase tracking-wide text-[#0CF1FF]">
                             {task.title}
                           </p>
-                          {task.id === "follow" ? (
-                            <a
-                              href="https://x.com/cyborgpunky"
-                              target="_blank"
-                              rel="noreferrer"
-                              onClick={markFollowCompleted}
-                              className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
-                            >
-                              {task.description}
-                            </a>
-                          ) : (
-                            <a
-                              href="https://x.com/cyborgpunky/status/2107110373119631424?s=20"
-                              target="_blank"
-                              rel="noreferrer"
-                              onClick={markEngagementCompleted}
-                              className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
-                            >
-                              {task.description}
-                            </a>
-                          )}
+                          <a
+                            href="https://x.com/cyborgpunky"
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={markFollowCompleted}
+                            className="mt-2 block font-mono text-sm leading-6 text-[#0CF1FF] underline decoration-[#0CF1FF]/40 underline-offset-4 hover:text-[#FF2CF0]"
+                          >
+                            {task.description}
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -419,7 +383,7 @@ export function CyborgPunkUserDashboard() {
                       ? "REGISTERING..."
                       : eligible
                         ? "REGISTER FOR WHITELIST"
-                        : "COMPLETE TASKS TO REGISTER"}
+                        : "FOLLOW TO REGISTER"}
               </button>
             </>
           )}

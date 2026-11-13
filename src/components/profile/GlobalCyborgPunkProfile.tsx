@@ -195,7 +195,7 @@ export function GlobalCyborgPunkProfile() {
           <div className="border border-[#3003D9]/60 bg-black/30 p-3">
             <p className="font-mono text-[9px] uppercase text-[#0CF1FF]/70">WL Tasks</p>
             <p className="mt-2 font-mono text-sm text-foreground">
-              {profile?.followCompleted && profile?.engagementCompleted ? "COMPLETED" : "IN PROGRESS"}
+              {profile?.followCompleted ? "COMPLETED" : "IN PROGRESS"}
             </p>
           </div>
         </div>
