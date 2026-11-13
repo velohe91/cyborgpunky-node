@@ -59,7 +59,6 @@ export function CyborgPunkProfile() {
       xUsername: normalizedUsername,
       xProfileUrl: `https://x.com/${normalizedUsername}`,
       followCompleted: false,
-      engagementCompleted: false,
     };
 
     setSavedXUsername(profile.xUsername);
