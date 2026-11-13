@@ -3,7 +3,6 @@ export type CyborgPunkLocalProfile = {
   xUsername: string;
   xProfileUrl: string;
   followCompleted: boolean;
-  engagementCompleted: boolean;
 };
 
 const storageKey = (walletAddress: string) =>
