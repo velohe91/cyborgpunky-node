@@ -41,7 +41,7 @@ export default function HomePage() {
         />
 
         <div className="mt-4 md:mt-0">
-          <NeonButton href="/mint">MINTING SOON</NeonButton>
+          <NeonButton href="/mint">Mint Live</NeonButton>
         </div>
 
         <SystemBootSequence />
